@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <h1>Welcome Back</h1>
-    <form class="vertical-center">
-        <label for="userid">User id:</label><br>
-        <input type="text" id="username" name="username"><br><br>
+    <img class="loginbanner" src="loginbanner.gif" alt="Welcome Back">
+    <form id="formcon">
+        <label for="userid">User ID:</label><br>
+        <input type="text" id="inputbox" name="userid" placeholder="User name"><br><br>
         <label for="pass">Password</label><br>
-        <input type="password" id="pass" name="pass"><br><br>
-        <label for="user">Select Your Role: </label>
-        <input list="user" name="user">
-        <datalist id="user">
-            <option value="Admin">
-            <option value="Customer">
-            <option value="Employee">
-        </datalist><br><br>
-        <input type="submit" value="Submit">
+        <input type="password" id="inputbox" name="pass" placeholder="Password"><br><br>
+        <label for="user">Select Your Role:</label><br>
+        <input type="radio" name="admin" id="radio">
+        <label for="Admin">Admin</label>
+        <input type="radio" name="customer" id="radio">
+        <label for="Customer">Customer</label>
+        <input type="radio" name="employee" id="radio">
+        <label for="Employee">Employee</label><br><br>
+        <input type="submit" value="Login" id="loginbutton">
     </form> 
 </body>
 </html>
