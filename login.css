@@ -35,6 +35,7 @@ body{
 }
 #inputbox{
     height: 30px;
+    width: 450px;
     font-size: 18px;
     color: darkslateblue;
 }

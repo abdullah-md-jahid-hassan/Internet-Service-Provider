@@ -8,15 +8,15 @@
     <img class="loginbanner" src="loginbanner.gif" alt="Welcome Back">
     <form id="formcon">
         <label for="userid">User ID:</label><br>
-        <input type="text" id="inputbox" name="userid" placeholder="User name"><br><br>
+        <input type="text" id="inputbox" name="userid" placeholder="User name" required><br><br>
         <label for="pass">Password</label><br>
-        <input type="password" id="inputbox" name="pass" placeholder="Password"><br><br>
+        <input type="password" id="inputbox" name="pass" placeholder="Password" required><br><br>
         <label for="user">Select Your Role:</label><br>
-        <input type="radio" name="admin" id="radio">
+        <input type="radio" name="user" id="radio" value="admin">
         <label for="Admin">Admin</label>
-        <input type="radio" name="customer" id="radio">
+        <input type="radio" name="user" id="radio" value="customer">
         <label for="Customer">Customer</label>
-        <input type="radio" name="employee" id="radio">
+        <input type="radio" name="user" id="radio" value="employee">
         <label for="Employee">Employee</label><br><br>
         <input type="submit" value="Login" id="loginbutton">
     </form> 
