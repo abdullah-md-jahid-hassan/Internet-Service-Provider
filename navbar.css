@@ -1,0 +1,16 @@
+.navbar{
+    background-color: rgba(8, 235, 50, 0.3);
+}
+
+.fa-list-ul{
+    color: black;
+}
+
+.navbar-toggler:hover{
+    background-color: greenyellow;
+}
+
+.text-decoration-none{
+    text-decoration: none;
+    color: black;
+}

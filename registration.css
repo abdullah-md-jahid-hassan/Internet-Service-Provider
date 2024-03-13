@@ -1,0 +1,46 @@
+*{
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #cecdfa, #D4A373);
+}
+
+#registrationbanner{
+    width: 100%;
+    height: auto;
+}
+
+#formdiv{
+    max-width: 500px;
+    width: 100%;
+    padding-top: 50px;
+    font-size: 20px;
+    margin: 0 auto;
+}
+
+#formcon{
+    background: #CCD5AE;
+}
+
+#registarbutton{
+    background-color: #CCD5AE;
+    color: darkgreen;
+    width: 100%;
+    height: auto;
+    font-weight: 900;
+    font-size: 20px;
+}
+#inputbox{
+    background: linear-gradient(90deg, #cecdfa, #D4A373);
+    border-radius: 30px;
+    height: 30px;
+    width: 450px;
+    font-size: 18px;
+    color: darkslateblue;
+}
