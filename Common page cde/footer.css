@@ -15,7 +15,7 @@
     transition: 0.5s;
 }
 
-.footer .fa-brands{
+.footer .mediaicons{
     font-size: 40px;
     color: white;
     border-radius: 50%;
@@ -23,7 +23,7 @@
     text-decoration: none;
 }
 
-.footer .fa-brands:hover{
+.footer .mediaicons:hover{
     background-color: white;
     color: black;
     transition: 0.5s;
