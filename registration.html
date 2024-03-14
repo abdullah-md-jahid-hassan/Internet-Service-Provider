@@ -1,36 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Registation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+
+    
+    <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="images/title_logo.png">
     <link rel="stylesheet" href="registration.css">
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="footer.css">
+    <script src="bootstrap5/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
 </head>
 <body>
-    <img id="registrationbanner" src="images/registrationbanner.gif" alt="Welcome To The Family">
-    <div id="formdiv">
-        <form id="formcon">
-            <label for="name">Full Name:</label><br>
-            <input type="text" id="inputbox" name="name" placeholder="Name" required><br><br>
-            
-            <label for="address">Presrnt Address:</label><br>
-            <input type="text" id="inputbox" name="address" placeholder="Address" required><br><br>
-            
-            <label for="nid">NID Number:</label><br>
-            <input type="number" id="inputbox" name="nid" placeholder="NID" required><br><br>
-            
-            <label for="email">Email Address:</label><br>
-            <input type="email" id="inputbox" name="email" placeholder="Email" required><br><br>
-            
-            <label for="phone">Phone Number:</label><br>
-            <input type="number" id="inputbox" name="phone" placeholder="Phone Number" required><br><br>
-            
-            <label for="pass">New Password:</label><br>
-            <input type="password" id="inputbox" name="pass" placeholder="Password" required><br><br>
-            
-            <label for="repass">Re-enter password:</label><br>
-            <input type="password" id="inputbox" name="repass" placeholder="Re enter Password" required><br><br>
-    
-            <input type="submit" value="Registar Your Self" id="registarbutton">
+    <!-- Top Banner -->
+    <div class="container text-center p-5">
+        <h1 class="page-title p-3">
+            Welcome To The Family
+            <span class="span-top"></span>
+            <span class="span-right"></span>
+            <span class="span-bottom"></span>
+            <span class="span-left"></span>
+        </h1>
+    </div>
+
+    <!-- registration Box -->
+    <div class="registration-box mb-5">
+        <form autocomplete="on">
+            <h2>Registration</h2>
+            <div class="user-input">
+                <input type="text" id="full_name" name="full_name" required>
+                <label>Full Name</label>
+            </div>
+            <div class="user-input">
+                <input type="text" id="address" name="address" required>
+                <label>Presrnt Address</label>
+            </div>
+            <div class="user-input">
+            <input type="number" id="nid" name="nid" required>
+                <label>NID Number</label>
+            </div>
+            <div class="user-input">
+            <input type="email" id="email" name="email" required>
+                <label>E-mail <Address></Address></label>
+            </div>
+            <div class="user-input">
+            <input type="number" id="phone" name="phone" required>
+                <label>Phone Number</label>
+            </div>
+
+            <label class="text-light fs-6">Gender</label><br>
+            <div class="form-check form-switch form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" value="male" id="gender-male">
+                <label class="form-check-label text-light fs-7" for="user-admin">Male</label>
+            </div>
+            <div class="form-check form-switch form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" value="customer" id="gender-female">
+                <label class="form-check-label text-light fs-7" for="user-customer">Female</label>
+            </div>
+
+
+            <div class="user-input mt-3">
+                <input type="password" id="pass" name="pass" required>
+                <label>Password</label>
+            </div>
+            <div class="user-input">
+                <input type="password" id="repass" name="repass" required>
+                <label>Re-enter The Password</label>
+            </div>
+
+            <span class="registration-span my-4">
+                <span class="span-top"></span>
+                <span class="span-right"></span>
+                <span class="span-bottom"></span>
+                <span class="span-left"></span>
+                <input class="registration-btn" type="submit" value="Register">
+            </span>
+
+            <div class="position-relative bg-light mt-5">
+                <div class="position-absolute top-0 end-0 mt-4">
+                    <a class="btn btn-success" href="login.php">Already have account? Login</a><br>
+                </div>
+            </div>
         </form>
-    </div> 
+    </div>
+
+    <!-- Nab Bar End -->
+
+    <!-- Footer start -->
+    <div class="footer text-white">
+        <button class="footer-uper-btn btn">.</button>
+        <footer class="py-2">
+
+            <!-- 1st column -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 py-2 my-5 px-2 my-2 justify-content-center">
+                
+                <div class="col mb-3 px-lg-5 ">
+                    <h5 class="px-2"><u>Links</u></h5>
+                    <ul class="nav flex-column gap-2">
+                        <li><a href="#" target="_blank" class="footer-links">Home</a></li>
+                        <li><a href="#" target="_blank" class="footer-links">FaQ</a></li>
+                        <li><a href="#" target="_blank" class="footer-links">Give Suggestion</a></li>
+                </div>
+
+                <div class="col mb-3">
+                    <h5 class="px-2"><u>Contract Info</u></h5>
+                    <ul class="nav flex-column gap-2">
+                        <li><a href="#" target="_blank" class="footer-links"><i al class="fa-solid fa-location-dot p-1"></i>Uttara, Dhaka, Bangladahs</a></li>
+                        <li><a href="#" target="_blank" class="footer-links"><i class="fa-solid fa-phone p-1"></i>+880 1756-254873</a></li>
+                        <li><a href="#" target="_blank" class="footer-links"><i class="fa-solid fa-envelope p-1"></i>abdullahmdjahidhassan@gmail.com</a></li>
+                </div>
+            </div>
+
+            <!-- 2nd column -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-2 my-2 justify-content-center">
+                <div class="col-auto ">
+                    <ul class="list-unstyled d-flex">
+                        <li class="ms-3"><a href="https://www.facebook.com/profile.php?id=100011730976656" target="_blank" class="fa-brands fa-facebook mediaicons"></a></li>
+                        <li class="ms-3"><a href="https://www.facebook.com/profile.php?id=100011730976656" target="_blank" class="fa-brands fa-facebook-messenger mediaicons"></a></li>
+                        <li class="ms-3"><a href="https://wa.me/qr/SCY3CD2PK635G1" target="_blank" class="fa-brands fa-whatsapp mediaicons"></a></li>
+                        <li class="ms-3"><a href="https://www.instagram.com/hassanjahid042000/" target="_blank" class="fa-brands fa-instagram mediaicons"></a></li>
+                        <li class="ms-3"><a href="https://www.youtube.com/@azoobgamers" target="_blank" class="fa-brands fa-youtube mediaicons"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3rd column -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 justify-content-center">
+                <div class="col-auto ">
+                    <p class="text-muted">©CoppyRight 2024 | Designed By A.M.J. Hassan </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+<!-- Footer End -->
 </body>
 </html>
