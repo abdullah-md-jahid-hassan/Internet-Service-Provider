@@ -106,6 +106,13 @@ form{
     font-size: 12px;
 }
 
+.input-error{
+    position: absolute;
+    text-overflow: ellipsis;
+    margin-top: -30px;
+    font-size: 13px;
+}
+
 .registration-span {
     overflow: hidden;
     transition: 1s;
@@ -124,7 +131,6 @@ form{
     font-size: 16px;
     transition: .5s;
     margin: 2px;
-    letter-spacing: 2px;
     background: black;
     border: none;
 }

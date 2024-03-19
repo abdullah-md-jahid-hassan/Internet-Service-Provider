@@ -17,6 +17,20 @@ body {
     box-shadow: 15px 15px 25px rgba(0,0,0,.6);
 }
 
+.login-box h2 {
+    margin: 0 0 30px; 
+    color: #fff;
+    text-align: center;
+}
+
+.login-box p{
+    position: relative;
+    color: red;
+    font-size: 12px;
+    text-align: center;
+    z-index: 2;
+}
+
 .login-box {
     position: relative;
     top: 50%;
@@ -65,12 +79,6 @@ form{
 @keyframes ani-form-div{
     0% {transform: rotate(0deg);}
     100% {transform: rotate(360deg);}
-}
-
-.login-box h2 {
-    margin: 0 0 30px; 
-    color: #fff;
-    text-align: center;
 }
 
 .login-box .user-input {
