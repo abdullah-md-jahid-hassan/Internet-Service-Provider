@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sidebar</title>
+
+    <link rel="stylesheet" href="bootstrap5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="all_body.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="slidebar.css">
+
+    <script src="bootstrap5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/58ab45c4fa.js" 
+    crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        <i class="fa-solid fa-angles-right"></i>
+    </button>
+    
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    
+        <!-- Slidebar Header -->
+        <div class="offcanvas-header ms-2">
+            <h3 class="offcanvas-title font-weight-bolder" id="offcanvasExampleLabel"><i class="fa-solid fa-gauge"></i> DASHBOARD</h3>
+            <button type="button" class="btn position-absolute top-0 end-0 m-2 text-light" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-angles-left"></i> </button>
+        </div>
+        
+        <!-- slide bar boddy -->
+        <div class="offcanvas-body ms-2">
+        
+            <div class="offcanvas-options fs-5">
+                <ul class="list-unstyled">
+                    <li class="">
+                        <a class="dropdown-item rounded p-2" href="dash_admin.php"><i class="fa-solid fa-house"></i> Home</a>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle dropdown-item rounded p-2" id="requests" data-bs-toggle="dropdown">
+                            <i class="fa-regular fa-hand"></i> Requests
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="requests">
+                            <li><a class="dropdown-item rounded p-2" href="new_connections.php">
+                                <i class="fa-solid fa-plus"></i> 
+                                New Connections
+                            </a></li>
+                            <li><a class="dropdown-item rounded p-2" href="update_requests.php">
+                                <i class="fa-solid fa-circle-up"></i> 
+                                Update Requests
+                            </a></li>
+                            <li><a class="dropdown-item rounded p-2" href="delete_requests.php">
+                                <i class="fa-solid fa-trash-can"></i> 
+                                Delete Requests
+                            </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle dropdown-item rounded p-2" id="plans" data-bs-toggle="dropdown"><i class="fa-solid fa-clipboard-list"></i> Plans</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="plans">
+                            <li><form method="post"><button class="dropdown-item rounded p-2" type="submit" name="residential_plans">
+                                <i class="fa-solid fa-house-laptop"></i> 
+                                Residential Plans
+                            </button></form></li>
+                            <li><form method="post"><button class="dropdown-item rounded p-2" type="submit" name="organizational_plans">
+                                <i class="fa-solid fa-building"></i> 
+                                Organizational plans
+                            </button></form></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle dropdown-item rounded p-2" id="reports" data-bs-toggle="dropdown">
+                            <i class="fa-regular fa-flag"></i> Reports
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="reports">
+                            <li><a class="dropdown-item rounded p-2" href="payment_reports.php">
+                                <i class="fa-solid fa-house"></i> 
+                                Payment Reports
+                            </a></li>
+                            <li><a class="dropdown-item rounded p-2" href="task_reports.php">
+                                <i class="fa-solid fa-briefcase"></i> 
+                                Task Reports
+                            </a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item rounded p-2" href="manage_employee.php"><i class="fa-solid fa-users-gear"></i> Manage Employee</a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item rounded p-2 op-ac" href="customer_complaints.php"><i class="fa-solid fa-not-equal"></i> Complaints</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
