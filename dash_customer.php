@@ -23,6 +23,7 @@
 
         $con_name = "";
         $page_name = "Home";
+        $page_type = "home";
 
 
         //Navbar
