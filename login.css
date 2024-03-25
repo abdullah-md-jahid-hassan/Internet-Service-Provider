@@ -24,8 +24,8 @@ body {
 }
 
 .login-box p{
+    color: white;
     position: relative;
-    color: red;
     font-size: 12px;
     text-align: center;
     z-index: 2;

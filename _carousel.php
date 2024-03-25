@@ -18,7 +18,9 @@
                         <li class="m-2">Same Speed 24/7.</li>
                         <li class="m-2">Highly Responsive Customer Service.</li>
                     </ul>
-                    <a href="residential_plans.php" class="btn btn-hov m-1">See Plans</a>
+                    <form method="post">
+                        <button class="btn btn-hov m-1"  type="submit" name="residential_plans">See Plans</button>
+                    </form>
                 </div>
             </div>
 
@@ -32,7 +34,9 @@
                         <li class="m-2">Same Speed 24/7.</li>
                         <li class="m-2">Highly Responsive Customer Service.</li>
                     </ul>
-                    <a href="residential_plans.php" class="btn m-1">See Plans</a>
+                    <form method="post">
+                        <button class="btn btn-hov m-1"  type="submit" name="organizational_plans">See Plans</button>
+                    </form>
                 </div>
             </div>
 
@@ -50,3 +54,16 @@
 
     </div>
     <!-- Carousel Slide end -->
+
+    <?php
+        //Plans Rederection PHP
+        if(isset($_POST['residential_plans'])){
+            $_SESSION['plan_type'] = "residential_plans";
+            echo "<script> window.location.href='plans_admin.php';</script>";
+            die();
+        } else if(isset($_POST['organizational_plans'])){
+            $_SESSION['plan_type'] = "organizational_plans";
+            echo "<script> window.location.href='plans_admin.php';</script>";
+            die();
+        }
+    ?>

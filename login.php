@@ -8,7 +8,7 @@
     
     <!-- Links Start -->
 
-    <?php require '_common_link.php'; ?>
+    <?php require '_link_common.php'; ?>
 
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="footer.css">
@@ -16,33 +16,45 @@
 
 </head>
 <body>
-
-    <!-- Databas Connection -->
     <?php
         $inval_mass = "";
         if($_SERVER["REQUEST_METHOD"] == "POST") {
 
+            // connection the database
             require '_database_connect.php';
             
+            // Get form inputs
             $userid = $_POST["userid"];
             $pss = $_POST["pass"];
             $user = $_POST["user"];
             
+            // SQL to check login
             $login_sql = "SELECT * FROM `$user` WHERE `email` = '$userid' AND `password` = '$pss'";
             $login_check = mysqli_query($connect, $login_sql);
             $login_state = mysqli_num_rows($login_check);
 
+            // If login is successful
             if ($login_state == 1){
-                $login = true;
-                session_start();
-                $_SESSION['loggedin'] = true;
-                $_SESSION['user' ] = $phone;
-                $_SESSION['user' ] = $user;
+                // Fetch the row
+                $row = mysqli_fetch_assoc($login_check);
+            
+                // Retrieve the 'id' from the row
+                $id = $row['id'];
                 
-                if($user=="customer"){ header("location: customer_dash.php"); }
-                if($user=="admin"){ header("location: admin_dash.php"); }
-                if($user=="employee"){ header("location: employee_dash.php"); }
-            } else{$inval_mass = "Invalid User-name or Password";}
+                // Start the session and store 'id' and 'user'
+                session_start();
+                $_SESSION['id'] = $id;
+                $_SESSION['user'] = $user;
+                
+                // Redirect based on user role
+                if($user=="customer"){ header("location: dash_customer.php"); die();}
+                else if($user=="admin"){ header("location: dash_admin.php"); die();}
+                else if($user=="employee"){ header("location: dash_employee.php"); die();}
+                else {$inval_mass = "Invalid User";}
+            } else{
+                // Invalid login
+                $inval_mass = "Invalid User-name or Password";
+            }
         }
     ?>
 
@@ -59,9 +71,10 @@
 
     <!-- Login Box -->
     <div class="login-box mb-5">
-            <?php
-                if($inval_mass != "") {echo '<p>' . $inval_mass . '</p>';}
-            ?>
+        <?php
+            // Display error message if login is invalid
+            if($inval_mass != "") {echo '<p class="py-3">' . $inval_mass . '</p>';}
+        ?>
         <form autocomplete="on" action="login.php" method="post">
             <h2>Login</h2>
             <div class="user-input">
@@ -73,12 +86,14 @@
                 <label>Password</label>
             </div>
 
+            <!-- Forgot Password Link -->
             <div class="position-relative bg-light">
                 <div class="position-absolute top-0 end-0">
-                    <a class="btn btn-danger" href="forgot-pass.php">Forgot Password?</a><br>
+                    <a href="forgot-pass.php">Forgot Password?</a><br>
                 </div>
             </div>
 
+            <!-- Choose User Role -->
             <label class="text-light fs-6">Choose Your Role</label>
             <div class="form-check form-switch">
                 <input class="form-check-input" type="radio" name="user" value="admin" id="user-admin">
@@ -93,8 +108,7 @@
                 <label class="form-check-label text-light fs-7" for="user-employee">Employee</label>
             </div>
 
-
-
+            <!-- Login Button -->
             <span class="login-span my-4">
                 <span class="span-top"></span>
                 <span class="span-right"></span>
@@ -103,15 +117,16 @@
                 <input class="login-btn" type="submit" value="LOGIN">
             </span>
 
+            <!-- Registration Link -->
             <div class="position-relative bg-light mt-5">
                 <div class="position-absolute top-0 end-0 mt-4">
-                    <a class="btn btn-success" href="registration.php">Don't have account? Register your-self</a><br>
+                    <a href="registration.php">Don't have an account? Register</a><br>
                 </div>
             </div>
         </form>
     </div>
 
     <!-- Footer -->
-    <?php require '_common_footer.php';?>
+    <?php include '_footer_common.php';?>
 </body>
 </html>

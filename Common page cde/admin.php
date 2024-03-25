@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comone page for Admin</title>
     <!-- Links Start -->
-    <?php include '_common_link.php'; ?>
+    <?php include '_link_common.php'; ?>
 
     <link rel="stylesheet" href="footer.css">
     <link rel="stylesheet" href="navbar.css">
@@ -13,10 +13,19 @@
 
 </head>
 <body>
-<?php require '_admin_nav.php';?>
+<?php
+    //Login check
+    require '_logincheck_admin.php';
+    //Navbar
+    require '_nav_admin.php';
+        
+    //Defining Page
+    $page_type = "";
+    $page_name = "";
+?>
 
 Mid Code
 
-<?php require '_admin_footer.php';?>
+<?php require '_footer_admin.php';?>
 </body>
 </html>

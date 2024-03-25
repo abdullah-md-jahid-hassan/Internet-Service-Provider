@@ -13,10 +13,15 @@
 
 </head>
 <body>
-<?php require '_employee_nav.php';?>
+<?php
+    //Login check
+    require '_logincheck_admin.php';
+    //Navbar
+    require '_nav_employee.php';
+?>
 
 Mid Code
 
-<?php require '_common_footer.php';?>
+<?php require '_footer_common.php';?>
 </body>
 </html>

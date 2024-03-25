@@ -7,7 +7,7 @@
 
     
     <!-- Links Start -->
-    <?php require '_common_link.php'; ?>
+    <?php require '_link_common.php'; ?>
     
     <link rel="stylesheet" href="registration.css">
     <link rel="stylesheet" href="footer.css">
@@ -20,6 +20,7 @@
 
 <!-- Databas Connection -->
 <?php
+    $massage = "";
     $error = false;
     $hold_value = false;
     $invalid_nid = "";
@@ -84,7 +85,13 @@
         if($error!=true){
             $hold_value = false;
             $state = mysqli_query($connect, $registration_sql);
+
+            // Close the database connection
+            mysqli_close($connect);
+
+            //Redirect to the login
             header("location: login.php");
+            die();
         }
         
     }
@@ -185,13 +192,13 @@
 
             <div class="position-relative bg-light mt-5">
                 <div class="position-absolute top-0 end-0 mt-4">
-                    <a class="btn btn-success" href="login.php">Already have account? Login</a><br>
+                    <a href="login.php">Already have account? Login</a><br>
                 </div>
             </div>
         </form>
     </div>
 
 <!-- Footer -->
-<?php require '_common_footer.php';?>
+<?php include '_footer_common.php';?>
 </body>
 </html>
