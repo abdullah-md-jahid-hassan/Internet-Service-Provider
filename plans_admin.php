@@ -108,6 +108,11 @@
 
         // Fatching Data form database
         if($total_plans>0){
+            echo"<div class='container mt-4'>
+                <div class='num_of_res text-light btn btn-dark'>
+                    <h7 class='pt-2'>Total Result: $total_plans</h7>
+                </div>
+            </div>";
             for($i=0; $i<$total_plans; $i++){
                 $plan = mysqli_fetch_assoc($run_show_plan);
                 echo "<div class='container shadow-lg p-1 my-4 bg-dark rounded-3 text-light'>
