@@ -1,0 +1,23 @@
+.card-box{
+    width: 25rem;
+    height: 10rem;
+    cursor: pointer;
+}
+
+.card-box:hover{
+    width: 27rem;
+    height: 11rem;
+    box-shadow: 0 0 5px white, 0 0 10px white, 0 0 30px white;
+}
+
+.card-text{
+    padding: 10px;
+    padding-left: 30px;
+}
+
+.card-side{
+    width: 10px;
+    height: 100%;
+}
+
+

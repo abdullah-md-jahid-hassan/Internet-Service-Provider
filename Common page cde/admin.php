@@ -16,16 +16,16 @@
 <?php
     //Login check
     require '_logincheck_admin.php';
-    //Navbar
-    require '_nav_admin.php';
         
     //Defining Page
     $page_type = "";
     $page_name = "";
+    
+    //Navbar
+    require '_nav_admin.php';
 ?>
 
 Mid Code
 
-<?php require '_footer_admin.php';?>
 </body>
 </html>

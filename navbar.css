@@ -3,11 +3,11 @@
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-.offcanvas-options a{
+.offcanvas-options .dropdown-item{
     cursor: pointer;
 }
 
-.offcanvas-options a:hover{
+.offcanvas-options .dropdown-item:hover{
     background-color: rgba(255, 255, 255, 0.2);
     font-weight: 900;
 }

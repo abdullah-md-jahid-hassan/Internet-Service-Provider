@@ -100,8 +100,5 @@
         </form>
         <h5 class="text-danger"><?php echo $error;?></h5>
     </div>
-
-
-    <?php require '_footer_admin.php';?>
 </body>
 </html>

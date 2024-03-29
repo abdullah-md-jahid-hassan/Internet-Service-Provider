@@ -135,9 +135,6 @@
         }
         // Close the database connection
         mysqli_close($connect);
-
-        // footer
-        require '_footer_admin.php';
     ?>
 </body>
 </html>
