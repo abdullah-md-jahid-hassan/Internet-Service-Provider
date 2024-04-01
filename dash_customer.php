@@ -29,7 +29,7 @@
         //Navbar
         require '_nav_customer.php';
         //Carousel
-        include '_carousel.php';
+        //include '_carousel.php';
 
     ?>
 

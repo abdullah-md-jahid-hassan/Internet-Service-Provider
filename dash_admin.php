@@ -32,7 +32,7 @@
 
 
 
-    <div class="container d-grid">
+    <div class="container">
         <div class="row justify-content-center my-5">
 
             <!-- Customers -->
@@ -40,7 +40,7 @@
                 <div class="card-box card-2 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #bc6c25"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-people-line" style="color: #bc6c25"></i> Customers</h3>
+                        <h5><i class="fa-solid fa-people-line" style="color: #bc6c25"></i> Customers</h5>
                         <p>Total Active Customer: 20</p>
                             <a class="btn btn-secondary rounded p-2" href="customer_list.php">Customers</a>
                     </div>
@@ -52,7 +52,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: blue"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-house-laptop" style="color: blue"></i> Residential Plans</h3>
+                        <h5><i class="fa-solid fa-house-laptop" style="color: blue"></i> Residential Plans</h5>
                         <p>Total Active Residential Plans: 30</p>
                         <form method="post">
                             <button class="btn btn-secondary rounded" type="submit" name="residential_plans">
@@ -68,7 +68,7 @@
                 <div class="card-box card-2 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #e09f3e"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-building" style="color: #e09f3e"></i> Organizational plans</h3>
+                        <h5><i class="fa-solid fa-building" style="color: #e09f3e"></i> Organizational plans</h5>
                         <p>Total Active Organizational Plans: 20</p>
                         <form method="post">
                             <button class="btn btn-secondary rounded p-2" type="submit" name="organizational_plans">
@@ -84,7 +84,7 @@
                 <div class="card-box card-2 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #003049"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-circle-nodes" style="color: #003049"></i> Connections</h3>
+                        <h5><i class="fa-solid fa-circle-nodes" style="color: #003049"></i> Connections</h5>
                         <p>Total Active Connections Plans: 20</p>
                         <a class="btn btn-secondary rounded p-2" href="connections.php">Connections</a>
                     </div>
@@ -96,13 +96,11 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: green"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-plus" style="color: green"></i> New Connections</h3>
+                        <h5><i class="fa-solid fa-plus" style="color: green"></i> New Connections</h5>
                         <p>Panding New Connection Requests: 30</p>
-                        <form method="post">
-                            <button class="btn btn-secondary rounded" type="submit" name="residential_plans">
+                        <a class="btn btn-secondary rounded" href="connections.php">
                                 See Requests
-                            </button>
-                        </form>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -112,7 +110,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #ffb703"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-circle-up" style="color: #ffb703"></i> Update Requests</h3>
+                        <h5><i class="fa-solid fa-circle-up" style="color: #ffb703"></i> Update Requests</h5>
                         <p>Panding Update Requests: 30</p>
                         <form method="post">
                             <button class="btn btn-secondary rounded" type="submit" name="residential_plans">
@@ -128,7 +126,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: red"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-trash-can" style="color: red"></i> Delete Requests</h3>
+                        <h5><i class="fa-solid fa-trash-can" style="color: red"></i> Delete Requests</h5>
                         <p>Panding Delete Requests: 30</p>
                         <form method="post">
                             <button class="btn btn-secondary rounded" type="submit" name="residential_plans">
@@ -144,7 +142,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #606c38"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-users-gear" style="color: #606c38"></i> Manage Employee</h3>
+                        <h5><i class="fa-solid fa-users-gear" style="color: #606c38"></i> Manage Employee</h5>
                         <p>Total Active Employees: 30</p>
                         <a class="btn btn-secondary rounded p-2" href="employee.php">Employee</a>
                     </div>
@@ -156,7 +154,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #9d8189"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-list-check" style="color: #9d8189"></i> Tasks</h3>
+                        <h5><i class="fa-solid fa-list-check" style="color: #9d8189"></i> Tasks</h5>
                         <p>On-Going Task: 30</p>
                         <a class="btn btn-secondary rounded p-2" href="employee.php">Employee</a>
                     </div>
@@ -168,7 +166,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #000000"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-not-equal" style="color: #000000"></i> Complaints</h3>
+                        <h5><i class="fa-solid fa-not-equal" style="color: #000000"></i> Complaints</h5>
                         <p>Panding Complaints: 30</p>
                         <a class="btn btn-secondary rounded p-2" href="complaints.php">Complaints</a>
                     </div>
@@ -180,7 +178,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #e63946"></div>
                     <div class="card-text">
-                        <h3><i class="fa-solid fa-money-check-dollar" style="color: #e63946"></i> Payment Reports</h3>
+                        <h5><i class="fa-solid fa-money-check-dollar" style="color: #e63946"></i> Payment Reports</h5>
                         <p>Panding Payment: 30</p>
                         <a class="btn btn-secondary rounded p-2" href="paymentreport.php">Reports</a>
                     </div>
@@ -192,7 +190,7 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #8ac926"></div>
                     <div class="card-text">
-                        <h3><i class="fa-regular fa-eye" style="color: #8ac926"></i> Customer View Control</h3>
+                        <h5><i class="fa-regular fa-eye" style="color: #8ac926"></i> Customer View Control</h5>
                         <p>On-Going Task: 30</p>
                         <a class="btn btn-secondary rounded p-2" href="Cus_view_control.php">Edite</a>
                     </div>
@@ -253,12 +251,12 @@
                     {
                         label: 'Customers',
                         data: [15, 30, 25, 40, 55, 100, 150, 250, 350, 330, 375, 413],
-                        borderColor: 'rgb(0, 255, 0)',
+                        borderColor: 'rgb(0, 255, 0)'
                     },
                     {
                         label: 'Connections',
                         data: [10, 35, 37, 50, 45, 90, 102, 157, 170, 210, 203, 256],
-                        borderColor: 'rgb(0, 0, 255)',
+                        borderColor: 'rgb(0, 0, 255)'
                     }
                 ]
             },
@@ -290,7 +288,7 @@
                 labels: ['Total Connections', 'Residential Plan', 'Organizational plan'],
                 datasets: [
                     {
-                        data: [0, 50, 60],
+                        data: [0, 20, 60],
                         backgroundColor: [
                             'rgb(0, 255, 255)',
                             'rgb(255, 99, 132)',
@@ -300,13 +298,14 @@
                     },
                     {
                         label: 'Customers',
-                        data: [110, 0, 0],
+                        data: [80, 0, 0],
                         backgroundColor: [
                             'rgb(0, 255, 255)',
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)'
                         ],
-                        hoverOffset: 20
+                        hoverOffset: 20,
+                        borderWidth: 0
                     }
                 ]
             }

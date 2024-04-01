@@ -77,69 +77,69 @@
                 <button class="btn btn-success btn-outline-light" name="reset" type="submit"><i class="fa-solid fa-rotate"></i></i> Re-set</button>  
             </div>
         </form>
-    </div>
 
-    <?php
-        // Showing result
 
-        // connect to the database
-        require '_database_connect.php';
+        <?php
+            // Showing result
 
-        //sql
-        if(isset($key) && isset($word)){
-            if($key=="all" && $word==""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";
-            } else if($key=="all" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE CONCAT(name, speed, price, realip) LIKE '%$word%'";
-            } else if($key=="name" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `name` LIKE '%$word%'";
-            } else if($key=="speed" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `speed` LIKE '$word'";
-            } else if($key=="price" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `price` LIKE '$word'";
-            } else if($key=="realip" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `realip` LIKE '$word'";
-            }
-        } else {$show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";}
+            // connect to the database
+            require '_database_connect.php';
 
-        //Query
-        $run_show_plan = mysqli_query($connect, $show_plans_sql);
-        $total_plans = mysqli_num_rows($run_show_plan);
+            //sql
+            if(isset($key) && isset($word)){
+                if($key=="all" && $word==""){
+                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";
+                } else if($key=="all" && $word!=""){
+                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE CONCAT(name, speed, price, realip) LIKE '%$word%'";
+                } else if($key=="name" && $word!=""){
+                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `name` LIKE '%$word%'";
+                } else if($key=="speed" && $word!=""){
+                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `speed` LIKE '$word'";
+                } else if($key=="price" && $word!=""){
+                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `price` LIKE '$word'";
+                } else if($key=="realip" && $word!=""){
+                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `realip` LIKE '$word'";
+                }
+            } else {$show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";}
 
-        // Fatching Data form database
-        if($total_plans>0){
-            echo"<div class='container mt-4'>
-                <div class='num_of_res text-light btn btn-dark'>
-                    <h7 class='pt-2'>Total Result: $total_plans</h7>
-                </div>
+            //Query
+            $run_show_plan = mysqli_query($connect, $show_plans_sql);
+            $total_plans = mysqli_num_rows($run_show_plan);
+
+            echo"
+        <div class='container mt-4'>
+            <h7 class='num_of_res text-light btn btn-dark pt-2'>Total Result: $total_plans</h7>
+        </div>";
+
+            // Fatching Data form database
+            if($total_plans>0){
+                echo"
+        <!-- Plans -->
+        <div class='row row-cols-auto justify-content-center'>";
+        for($i=0; $i<$total_plans; $i++){
+            $plan = mysqli_fetch_assoc($run_show_plan);
+            echo "
+            <!-- Print Each Plan -->
+            <div class='row-auto bg-dark text-light p-4 rounded m-2' style='width: 400px'>
+                    <h3 class='font-weight-bolder'>$plan[name]</h3>
+                    <p class='fs-5 mt-2'>
+                    <b>Speed: </b>$plan[speed]<br>
+                    <b>Real-IP: </b>$plan[realip]<br>
+                    <b>Price: </b>$plan[price]<br>
+                </p>
+                <form action='plans_admin.php' method='post'>
+                    <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
+                    <button type='submit' class='btn btn-success' name='update'><i class='fa-solid fa-up-down'></i> Update</button>
+                </form>
             </div>";
-            for($i=0; $i<$total_plans; $i++){
-                $plan = mysqli_fetch_assoc($run_show_plan);
-                echo "<div class='container shadow-lg p-1 my-4 bg-dark rounded-3 text-light'>
-                        <div class='row  py-2 my-2 d-flex justify-content-between'>
-                            <div class='col-auto'>
-                                <ul class='list-unstyled'>
-                                    <li class='ms-3 connection_name fs-3 fw-bolder'>$plan[name]</li>
-                                    <li class='ms-3 connection_address fs-4'><b>Speed:</b> $plan[speed] Mbps</li>
-                                    <li class='ms-3 connection_status fs-5'><b>Real-IP:</b> $plan[realip]</li>
-                                    <li class='ms-3 connection_plan fs-6'><b>Price:</b> $plan[price] tk/Month</li>
-                                </ul>
-                            </div>
-                            <div class='col-auto mx-2'>
-                                <div class='btn-group'>
-                                    <form action='plans_admin.php' method='post'>
-                                        <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
-                                        <button type='submit' class='btn btn-success' name='update'><i class='fa-solid fa-up-down'></i> Update</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>";
-        
-            }
         }
+        echo "
+        </div>";
         // Close the database connection
         mysqli_close($connect);
-    ?>
+            }
+        ?>
+    </div>
+
 </body>
 </html>

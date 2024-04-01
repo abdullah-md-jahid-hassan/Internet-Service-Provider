@@ -93,43 +93,38 @@
         $run_show_plan = mysqli_query($connect, $show_plans_sql);
         $total_plans = mysqli_num_rows($run_show_plan);
 
+        echo"
+    <div class='container mt-4'>
+        <h7 class='num_of_res text-light btn btn-dark pt-2'>Total Result: $total_plans</h7>
+    </div>";
+
         // Fatching Data form database
         if($total_plans>0){
-            echo"<div class='container mt-4'>
-                <div class='num_of_res text-light btn btn-dark'>
-                    <h7 class='pt-2'>Total Result: $total_plans</h7>
-                </div>
-            </div>";
-            for($i=0; $i<$total_plans; $i++){
-                $plan = mysqli_fetch_assoc($run_show_plan);
-                echo "<div class='container shadow-lg p-1 my-4 bg-dark rounded-3 text-light'>
-                        <div class='row  py-2 my-2 d-flex justify-content-between'>
-                            <div class='col-auto'>
-                                <ul class='list-unstyled'>
-                                    <li class='ms-3 connection_name fs-3 fw-bolder'>$plan[name]</li>
-                                    <li class='ms-3 connection_address fs-4'><b>Speed:</b> $plan[speed] Mbps</li>
-                                    <li class='ms-3 connection_status fs-5'><b>Real-IP:</b> $plan[realip]</li>
-                                    <li class='ms-3 connection_plan fs-6'><b>Price:</b> $plan[price] tk/Month</li>
-                                </ul>
-                            </div>
-                            <div class='col-auto mx-2'>
-                                <div class='btn-group'>
-                                    <form method='post'>
-                                        <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
-                                        <button type='submit' class='btn btn-success' name='new_plan'><i class='fa-solid fa-plus'></i> Request For This Connection</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>";
-        
-            }
+            echo"
+    <!-- Plans -->
+    <div class='row row-cols-auto justify-content-center'>";
+    for($i=0; $i<$total_plans; $i++){
+        $plan = mysqli_fetch_assoc($run_show_plan);
+        echo "
+    <!-- Print Each Plan -->
+    <div class='row-auto bg-dark text-light p-4 rounded m-2' style='width: 400px'>
+            <h3 class='font-weight-bolder'>$plan[name]</h3>
+            <p class='fs-5 mt-2'>
+            <b>Speed: </b>$plan[speed]<br>
+            <b>Real-IP: </b>$plan[realip]<br>
+            <b>Price: </b>$plan[price]<br>
+        </p>
+            <form action='plans_admin.php' method='post'>
+            <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
+            <button type='submit' class='btn btn-success' name='new_connection'><i class='fa-solid fa-plus'></i> Request A New Connection</button>
+        </form>
+    </div>";
+    }
+        echo "
+    </div>";
+            // Close the database connection
+            mysqli_close($connect);
         }
-        // Close the database connection
-        mysqli_close($connect);
-
-        // footer
-        require '_footer_common.php';
     ?>
 </body>
 </html>
