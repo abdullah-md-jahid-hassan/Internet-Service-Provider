@@ -24,12 +24,6 @@
         
         //Navbar
         require '_nav_admin.php';
-        
-        //Chacking Seasion Variable
-        if(!isset($_SESSION['customer_id_details'])){
-            echo "<script> window.location.href='customer_list.php';</script>";
-            die();
-        }
 
         // connect to the database
         require '_database_connect.php';

@@ -37,7 +37,7 @@
         }
 
         // if Request for connection
-        if(isset($_POST['new_plan'])) {
+        if(isset($_POST['new_connection'])) {
             // seting Seasion Value for Updte Page
             $_SESSION['plan_id'] = $_POST['plan_id'];
             echo "<script> window.location.href='request_connection_customer.php';</script>";
@@ -114,7 +114,7 @@
             <b>Real-IP: </b>$plan[realip]<br>
             <b>Price: </b>$plan[price]<br>
         </p>
-            <form action='plans_admin.php' method='post'>
+            <form method='post'>
             <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
             <button type='submit' class='btn btn-success' name='new_connection'><i class='fa-solid fa-plus'></i> Request A New Connection</button>
         </form>

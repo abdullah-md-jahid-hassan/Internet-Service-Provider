@@ -99,6 +99,7 @@
                             <th>Name</th>
                             <th>Address</th>
                             <th>Type</th>
+                            <th>State</th>
                             <th>Speed (Mbps)</th>
                             <th>Price (TK)</th>
                             <th>Details</th>
@@ -125,11 +126,12 @@
                             <td>$connections[name]</td>
                             <td>$connections[address]</td>
                             <td>$type</td>
+                            <td>$connections[state]</td>
                             <td>$plan[speed]</td>
                             <td>$plan[price]</td>
                             <td>
                                 <form method='post'>
-                                    <input class='visually-hidden' type='text' name='c_id' value='$connections[id]'</input>
+                                    <input class='visually-hidden' type='text' name='con_id' value='$connections[id]'</input>
                                     <button class='btn btn-success' type='submit' name='details'>Details</button>
                                 </form>
                             </td>
