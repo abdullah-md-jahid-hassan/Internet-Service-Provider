@@ -8,7 +8,7 @@
             </button>
 
             <!-- Page Name -->
-            <a class="navbar-brand" href="about.php"><?php echo $page_name;?></a>
+            <a class="navbar-brand text-uppercase" href="about.php"><?php echo $page_name;?></a>
 
             <!-- Nav Icons -->
             <div class="nav-icon">

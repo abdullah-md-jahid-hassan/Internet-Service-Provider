@@ -36,14 +36,6 @@
             $word = "";
         }
 
-        // if Request for connection
-        if(isset($_POST['new_connection'])) {
-            // seting Seasion Value for Updte Page
-            $_SESSION['plan_id'] = $_POST['plan_id'];
-            echo "<script> window.location.href='request_connection_customer.php';</script>";
-            die();
-        }
-
         //Navbar
         require '_nav_customer.php';
     ?>
@@ -93,38 +85,80 @@
         $run_show_plan = mysqli_query($connect, $show_plans_sql);
         $total_plans = mysqli_num_rows($run_show_plan);
 
+        //total result define
+        if(isset($_SESSION['plan_id'])){$result = $total_plans-1;}
+        else {$result = $total_plans;}
+
         echo"
     <div class='container mt-4'>
-        <h7 class='num_of_res text-light btn btn-dark pt-2'>Total Result: $total_plans</h7>
+        <h7 class='num_of_res text-light btn btn-dark pt-2'>Total Result: $result</h7>
     </div>";
 
         // Fatching Data form database
         if($total_plans>0){
             echo"
-    <!-- Plans -->
-    <div class='row row-cols-auto justify-content-center'>";
-    for($i=0; $i<$total_plans; $i++){
-        $plan = mysqli_fetch_assoc($run_show_plan);
-        echo "
-    <!-- Print Each Plan -->
-    <div class='row-auto bg-dark text-light p-4 rounded m-2' style='width: 400px'>
-            <h3 class='font-weight-bolder'>$plan[name]</h3>
-            <p class='fs-5 mt-2'>
-            <b>Speed: </b>$plan[speed]<br>
-            <b>Real-IP: </b>$plan[realip]<br>
-            <b>Price: </b>$plan[price]<br>
-        </p>
-            <form method='post'>
-            <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
-            <button type='submit' class='btn btn-success' name='new_connection'><i class='fa-solid fa-plus'></i> Request A New Connection</button>
-        </form>
-    </div>";
-    }
-        echo "
-    </div>";
-            // Close the database connection
-            mysqli_close($connect);
+        <!-- Plans -->
+        <div class='row row-cols-auto justify-content-center'>";
+            for($i=0; $i<$total_plans; $i++){
+                $plan = mysqli_fetch_assoc($run_show_plan);
+
+                //Escaping privious plan for plan update
+                if($plan['id']==$_SESSION['plan_id']){continue;}
+
+                echo "
+            <!-- Print Each Plan -->
+            <div class='row-auto bg-dark text-light p-4 rounded m-2' style='width: 400px'>
+                <h3 class='font-weight-bolder'>$plan[name]</h3>
+                <p class='fs-5 mt-2'>
+                    <b>Speed: </b>$plan[speed]<br>
+                    <b>Real-IP: </b>$plan[realip]<br>
+                    <b>Price: </b>$plan[price]<br>
+                </p>
+                <form method='post'>
+                    <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
+                    <button type='submit' class='btn btn-success' name='action'>";
+                if($_SESSION['action']=="update"){
+                    echo "
+                        <i class='fa-solid fa-rotate'></i> Choose</button>
+                    </form>
+                </div>";
+                } else {
+                    echo "
+                        <i class='fa-solid fa-up-down'></i> Update</button>
+                    </form>
+                </div>";
+                }
+
+            }
+            echo "
+            </div>";
+
         }
+        
+        
+        // if button clicked
+        if(isset($_POST['action'])) {
+            if($_SESSION['action']=="update"){
+                //Update the connection database
+                $plan_update_sql = "UPDATE `connections` SET `state` = '{$_POST['plan_id']}' WHERE `id` = '{$_SESSION['connections_id_details']}'";
+                $plan_update = mysqli_query($connect, $plan_update_sql);
+                // Close the database connection
+                mysqli_close($connect);
+                //Redirect to the connection details
+                echo "<script> window.location.href='connections_details_customer.php';</script>";
+                die();
+            } else {
+                // if Request for connection
+                // seting Seasion Value for Updte Page
+                $_SESSION['plan_id'] = $_POST['plan_id'];
+                // Close the database connection
+                mysqli_close($connect);
+                echo "<script> window.location.href='request_connection_customer.php';</script>";
+                die();
+            }
+        }
+        // Close the database connection
+        mysqli_close($connect);
     ?>
 </body>
 </html>

@@ -33,6 +33,11 @@
         $find_connection = mysqli_query($connect, $find_connection_sql);
         $connection = mysqli_fetch_assoc($find_connection);
 
+        //To show Update State Not Requested Plan ID
+        if($connection['state']!="Active" && $connection['state']!="Delete Request Panding" && $connection['state']!="Connection Panding"){
+            $connection['state'] = "Update Request Panding";
+        }
+
         //Get plan info
         $plan_sql = "SELECT * FROM `{$connection['type']}` WHERE `id` = '{$connection['plan_id']}'";
         $get_plan = mysqli_query($connect, $plan_sql);
@@ -103,7 +108,7 @@
             </div>
 
         </div>
-        <a class="btn btn-info" href="connections.php"><i class="fa-solid fa-delete-left"></i> Back</a>
+        <a class="btn btn-info" href="connections_admin.php"><i class="fa-solid fa-delete-left"></i> Back</a>
     </div>
 
 

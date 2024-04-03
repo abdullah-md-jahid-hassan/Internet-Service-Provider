@@ -86,7 +86,7 @@
                     <div class="card-text">
                         <h5><i class="fa-solid fa-circle-nodes" style="color: #003049"></i> Connections</h5>
                         <p>Total Active Connections Plans: 20</p>
-                        <a class="btn btn-secondary rounded p-2" href="connections.php">Connections</a>
+                        <a class="btn btn-secondary rounded p-2" href="connections_admin.php">Connections</a>
                     </div>
                 </div>
             </div>

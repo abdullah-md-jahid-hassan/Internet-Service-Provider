@@ -106,7 +106,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item rounded p-2 <?php if($page_type == "connections"){echo "op-ac";}?>" href="connections.php"><i class="fa-solid fa-circle-nodes"></i> Connections</a>
+                        <a class="dropdown-item rounded p-2 <?php if($page_type == "connections"){echo "op-ac";}?>" href="connections_admin.php"><i class="fa-solid fa-circle-nodes"></i> Connections</a>
                     </li>
 
                     <li class="dropdown">

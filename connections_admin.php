@@ -21,6 +21,10 @@
         $page_type = "connections";
         $page_name = "cunnections";
 
+        //variables
+        $key = "all";
+        $word = "";
+
         //Navbar
         require '_nav_admin.php';
 
@@ -39,7 +43,7 @@
         //Seeing Details
         if(isset($_POST['details'])){
             $_SESSION['connections_id_details'] = $_POST['con_id'];
-            echo "<script> window.location.href='connections_details.php';</script>";
+            echo "<script> window.location.href='connections_details_admin.php';</script>";
             die();
         }
         
@@ -56,6 +60,9 @@
                     <option value="all" selected>Search By</option>
                     <option value="name">Name</option>
                     <option value="address">Address</option>
+                    <option value="type">Type (res/org)</option>
+                    <option value="speed">Speed</option>
+                    <option value="price">Price</option>
                 </select>
                 <input type="text" class="form-control" name="word" placeholder="Search">
                 <button class="btn btn-danger btn-outline-light" name="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></i> Search</button>  
@@ -70,17 +77,18 @@
         require '_database_connect.php';
 
         //Sarcbar function
+        $find_connections_sql = "SELECT * FROM `connections`";
         if(isset($key) && isset($word)){
-            if($key=="all" && $word==""){
-                $find_connections_sql = "SELECT * FROM `connections`";
-            } else if($key=="all" && $word!=""){
+            if($key=="all" && $word!=""){
                 $find_connections_sql = "SELECT * FROM `connections` WHERE CONCAT(name, address) LIKE '%$word%'";
             } else if($key=="name" && $word!=""){
                 $find_connections_sql = "SELECT * FROM `connections` WHERE `name` LIKE '%$word%'";
             } else if($key=="address" && $word!=""){
                 $find_connections_sql = "SELECT * FROM `connections` WHERE `address` LIKE '%$word%'";
+            } else if($key=="type" && $word!=""){
+                $find_connections_sql = "SELECT * FROM `connections` WHERE `type` LIKE '%$word%'";
             }
-        } else {$find_connections_sql = "SELECT * FROM `connections`";}
+        }
 
         //Query
         $find_connections = mysqli_query($connect, $find_connections_sql);
@@ -114,6 +122,15 @@
                     $plan_sql = "SELECT * FROM `{$connections['type']}` WHERE `id` = '{$connections['plan_id']}'";
                     $get_plan = mysqli_query($connect, $plan_sql);
                     $plan = mysqli_fetch_assoc($get_plan);
+
+                    //To show Update State Not Requested Plan ID
+                    if($connections['state']!="Active" && $connections['state']!="Delete Request Panding" && $connections['state']!="Connection Panding"){
+                        $connections['state'] = "Update Request Panding";
+                    }
+
+                    //Search Filter for Speed and Price
+                    if($key=="speed" && $word!=""){if ($plan['speed']!=$word){continue;}}
+                    if($key=="price" && $word!=""){if ($plan['price']!=$word){continue;}}
 
                     //Get Plan type
                     if($connections['type'] == "residential_plans"){
