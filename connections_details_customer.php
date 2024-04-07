@@ -39,8 +39,8 @@
         $plan = mysqli_fetch_assoc($get_plan);
 
         //To show Update State Not Requested Plan ID
-        if($connection['state']!="Active" || $connection['state']!="Delete Request Panding"){
-            $connection['state'] = "Update Request Panding";
+        if($connection['state']!="Active" && $connection['state']!="Delete Request Pending" && $connection['state']!="Connection Pending"){
+            $connection['state'] = "Update Request Pending";
         }
 
         // Close the database connection
@@ -99,8 +99,12 @@
         if(isset($_POST['delete'])){
             // connect to the database
             require '_database_connect.php';
+
+            if($connection['state']=="Connection Panding"){
+                $delete_sql = "DELETE FROM `connections` WHERE `id` = '{$connection['id']}'";
+            }
+            else {$delete_sql = "UPDATE `connections` SET `state` = 'Delete Request Pending' WHERE `id` = '{$connection['id']}'";}
             
-            $delete_sql = "DELETE FROM `connections` WHERE `id` = '{$_SESSION['connections_id_details']}'";
             $delete = mysqli_query($connect, $delete_sql);
 
             // Close the database connection

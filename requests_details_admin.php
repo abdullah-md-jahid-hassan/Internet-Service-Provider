@@ -19,8 +19,8 @@
         require '_logincheck_admin.php';
             
         //Defining Page
-        $page_type = "connections";
-        $page_name = "Connection Details";
+        $page_type = "requests";
+        $page_name = "Request Details";
         
         //Navbar
         require '_nav_admin.php';
@@ -34,8 +34,8 @@
         $connection = mysqli_fetch_assoc($find_connection);
 
         //To show Update State Not Requested Plan ID
-        if($connection['state']!="Active" && $connection['state']!="Delete Request Panding" && $connection['state']!="Connection Panding"){
-            $connection['state'] = "Update Request Panding";
+        if($connection['state']!="Active" && $connection['state']!="Delete Request Pending" && $connection['state']!="Connection Pending"){
+            $connection['state'] = "Update Request Pending";
         }
 
         //Get plan info
@@ -66,7 +66,17 @@
                 </div>
                 <div class="card-footer">
                     <form method="post">
-                        <button class="btn btn-danger" type="submit" name="delete"><i class="fa-solid fa-trash-can"></i> Delete Connection</button>
+                        <?php
+                            if ($connection['state']=="Connection Pending"){
+                                echo "<button class='btn btn-success' type='submit' name='connection'><i class='fa-solid fa-plus'></i> Accept Connection</button>
+
+                                <button class='btn btn-danger' type='submit' name='reject'><i class='fa-solid fa-xmark'></i> Reject Request</button>";
+                            } else if ($connection['state']=="Delete Request Pending"){
+                                echo "<button class='btn btn-success' type='submit' name='delete'><i class='fa-solid fa-trash-can'></i> Accept Deletion</button>
+
+                                <button class='btn btn-danger' type='submit' name='reject'><i class='fa-solid fa-xmark'></i> Reject Request</button>";
+                            }
+                        ?>
                     </form>
                 </div>
             </div>
@@ -83,7 +93,13 @@
                 </div>
                 <div class="card-footer">
                     <form method="post">
-                        <button class="btn btn-primary" type="submit" name="update"><i class="fa-solid fa-circle-up"></i> Update Plan</button>
+                        <?php
+                            if ($connection['state']!="Connection Pending" && $connection['state']!="Delete Request Pending" && $connection['state']!="Active"){
+                                echo "<button class='btn btn-success' type='submit' name='update'><i class='fa-solid fa-plus'></i> Accept update</button>
+
+                                <button class='btn btn-danger' type='submit' name='reject'><i class='fa-solid fa-xmark'></i> Reject Request</button>";
+                            }
+                        ?>
                     </form>
                 </div>
             </div>
@@ -108,43 +124,41 @@
             </div>
 
         </div>
-        <a class="btn btn-info" href="connections_admin.php"><i class="fa-solid fa-delete-left"></i> Back</a>
+        <a class="btn btn-info" href="requests.php"><i class="fa-solid fa-delete-left"></i> Back</a>
     </div>
 
 
     <?php
 
-        //if Delete connection button Clicked
-        if(isset($_POST['delete'])){
-            // connect to the database
-            require '_database_connect.php';
-            
-            $delete_sql = "DELETE FROM `connections` WHERE `id` = '{$_SESSION['connections_id_details']}'";
-            $delete = mysqli_query($connect, $delete_sql);
-
-            // Close the database connection
-            mysqli_close($connect);
-
-            //Rederection to the connection page
-            echo "<script> window.location.href='connections.php';</script>";
-            die();
-        }
-
         //if Customer Details button Clicked
-        else if(isset($_POST['customer_details'])){
-            $_SESSION['customer_id_details'] = $customer['id'];
-            //Rederection to the connection page
-            echo "<script> window.location.href='customer_details.php';</script>";
-            die();
-        }
-
-        //if Customer Details button Clicked
-        else if(isset($_POST['update'])){
+        if(isset($_POST['update'])){
             $_SESSION['action'] = "update";
             $_SESSION['plan_type'] = $connection['type'];
             $_SESSION['plan_id'] = $plan['id'];
             //Rederection to the connection page
             echo "<script> window.location.href='plans_admin.php';</script>";
+            die();
+        }
+
+        //Accept or reject request
+        else if (isset($_POST['reject'])){
+            // connect to the database
+            require '_database_connect.php';
+
+            // Reject And Get Back to privious state
+            if ($connection['state']=="Connection Pending"){
+                $reject_sql = "DELETE FROM `connections` WHERE `id` = '{$connection['id']}'";
+            }else{
+                $reject_sql = "UPDATE `connections` SET `state` = 'Active' WHERE `id` = '{$connection['id']}'";
+            }
+            
+            $set_state = mysqli_query($connect, $reject_sql);
+
+            // Close the database connection
+            mysqli_close($connect);
+
+            //Rederection to the connection page
+            echo "<script> window.location.href='requests.php';</script>";
             die();
         }
     ?>

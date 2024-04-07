@@ -98,9 +98,9 @@
                     <div class="card-text">
                         <h5><i class="fa-solid fa-plus" style="color: green"></i> New Connections</h5>
                         <p>Panding New Connection Requests: 30</p>
-                        <a class="btn btn-secondary rounded" href="connections.php">
-                                See Requests
-                        </a>
+                        <form method="post">
+                            <button class="btn btn-secondary" type="submit" name="new_connections">See Requests</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -113,9 +113,7 @@
                         <h5><i class="fa-solid fa-circle-up" style="color: #ffb703"></i> Update Requests</h5>
                         <p>Panding Update Requests: 30</p>
                         <form method="post">
-                            <button class="btn btn-secondary rounded" type="submit" name="residential_plans">
-                                See Requests
-                            </button>
+                            <button class="btn btn-secondary" type="submit" name="update_coneections">See Requests</button>
                         </form>
                     </div>
                 </div>
@@ -129,9 +127,7 @@
                         <h5><i class="fa-solid fa-trash-can" style="color: red"></i> Delete Requests</h5>
                         <p>Panding Delete Requests: 30</p>
                         <form method="post">
-                            <button class="btn btn-secondary rounded" type="submit" name="residential_plans">
-                                See Requests
-                            </button>
+                            <button class="btn btn-secondary" type="submit" name="delete_connections">See Requests</button>
                         </form>
                     </div>
                 </div>
@@ -354,6 +350,23 @@
             }
         });
     </script>
+
+    <?php
+        //Requests Rederections
+        if(isset($_POST['new_connections'])){
+            $_SESSION['show'] = "new_connections";
+            echo "<script> window.location.href='requests.php';</script>";
+            die();
+        }else if(isset($_POST['update_coneections'])){
+            $_SESSION['show'] = "update_coneections";
+            echo "<script> window.location.href='requests.php';</script>";
+            die();
+        }else if(isset($_POST['delete_connections'])){
+            $_SESSION['show'] = "delete_connections";
+            echo "<script> window.location.href='requests.php';</script>";
+            die();
+        }
+    ?>
 
 </body>
 </html>

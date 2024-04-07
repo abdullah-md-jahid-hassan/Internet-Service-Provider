@@ -35,7 +35,7 @@
 
         //getting tthe plan details
         // SQL
-        $plan_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `id` = '{$_SESSION['plan_id']}'";
+        $plan_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `id` = '{$_SESSION['plan_id_new']}'";
         //Query
         $plan_query = mysqli_query($connect, $plan_sql);
         $total_plans = mysqli_num_rows($plan_query);
@@ -65,7 +65,7 @@
             // connect to the database
             require '_database_connect.php';
 
-            $new_connection_sql = "INSERT INTO `connections` (`type`, `name`, `customer_id`, `plan_id`, `address`, `starting_date`, `state`) VALUES ('{$_SESSION['plan_type']}', '{$_POST['name']}', '{$_SESSION['id']}', '{$_SESSION['plan_id']}', '{$_POST['address']}', '{$_POST['start_date_rq']}', 'Connection Panding')";
+            $new_connection_sql = "INSERT INTO `connections` (`type`, `name`, `customer_id`, `plan_id`, `address`, `starting_date`, `state`) VALUES ('{$_SESSION['plan_type']}', '{$_POST['name']}', '{$_SESSION['id']}', '{$_SESSION['plan_id_new']}', '{$_POST['address']}', '{$_POST['start_date_rq']}', 'Connection Pending')";
             $new_connection_query = mysqli_query($connect, $new_connection_sql);
 
             if($new_connection_query){

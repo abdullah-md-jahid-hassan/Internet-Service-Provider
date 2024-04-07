@@ -1,19 +1,4 @@
 
-    <?php
-        //Plans Rederection PHP
-        if(isset($_POST['residential_plans'])){
-            $_SESSION['plan_type'] = "residential_plans";
-            echo "<script> window.location.href='plans_admin.php';</script>";
-            die();
-        } else if(isset($_POST['organizational_plans'])){
-            $_SESSION['plan_type'] = "organizational_plans";
-            echo "<script> window.location.href='plans_admin.php';</script>";
-            die();
-        }
-    ?>
-
-
-
     <!-- Navbar Satrat -->
     <nav class="navbar bg-dark sticky-top" data-bs-theme="dark">
         <div class="container-fluid d-flex justify-content-between">
@@ -46,7 +31,7 @@
                 <?php
                     if($page_type == "dashboard"){ echo '<i class="fa-solid fa-gauge"></i> Dashboard'; }
                     else if($page_type == "customers"){ echo '<i class="fa-solid fa-people-line"></i> Customers'; }
-                    else if($page_type == "request"){ echo '<i class="fa-regular fa-hand"></i> Requests'; }
+                    else if($page_type == "requests"){ echo '<i class="fa-regular fa-hand"></i> Requests'; }
                     else if($page_type == "plans"){ echo '<i class="fa-solid fa-clipboard-list"></i> Plans'; }
                     else if($page_type == "customers_list"){ echo '<i class="fa-solid fa-circle-nodes"></i> Connections'; }
                     else if($page_type == "reports"){ echo '<i class="fa-regular fa-flag"></i> Reports'; }
@@ -72,23 +57,25 @@
                     </li>
 
                     <li class="dropdown">
-                        <a class="dropdown-toggle dropdown-item rounded p-2 <?php if($page_type == "requests"){echo "op-ac";}?>" id="requests" data-bs-toggle="dropdown">
+                        <span class="dropdown-toggle dropdown-item rounded p-2 <?php if($page_type == "requests"){echo "op-ac";}?>" id="requests" data-bs-toggle="dropdown">
                             <i class="fa-regular fa-hand"></i> Requests
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="requests">
-                            <li><a class="dropdown-item rounded p-2" href="new_connections.php">
-                                <i class="fa-solid fa-plus"></i> 
-                                New Connections
-                            </a></li>
-                            <li><a class="dropdown-item rounded p-2" href="update_requests.php">
-                                <i class="fa-solid fa-circle-up"></i> 
-                                Update Requests
-                            </a></li>
-                            <li><a class="dropdown-item rounded p-2" href="delete_requests.php">
-                                <i class="fa-solid fa-trash-can"></i> 
-                                Delete Requests
-                            </a></li>
-                        </ul>
+                        </span>
+                        <form method="post">
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="requests">
+                                <li><button class="dropdown-item rounded p-2" type="
+                                submit" name="new_connections">
+                                    <i class="fa-solid fa-plus"></i> New Connections
+                                </button></li>
+                                <li><button class="dropdown-item rounded p-2" type="
+                                submit" name="update_coneections">
+                                    <i class="fa-solid fa-circle-up"></i> Update Requests
+                                </button></li>
+                                <li><button class="dropdown-item rounded p-2" type="
+                                submit" name="delete_connections">
+                                    <i class="fa-solid fa-trash-can"></i> Delete Requests
+                                </button></li>
+                            </ul>
+                        </form>
                     </li>
 
                     <li class="dropdown">
@@ -151,3 +138,32 @@
         </div>
     </div>
     <!-- Sidebar/Offcanvas -->
+
+
+    <?php
+        //Plans Rederection PHP
+        if(isset($_POST['residential_plans'])){
+            $_SESSION['plan_type'] = "residential_plans";
+            echo "<script> window.location.href='plans_admin.php';</script>";
+            die();
+        } else if(isset($_POST['organizational_plans'])){
+            $_SESSION['plan_type'] = "organizational_plans";
+            echo "<script> window.location.href='plans_admin.php';</script>";
+            die();
+        }
+
+        //Requests Rederections
+        else if(isset($_POST['new_connections'])){
+            $_SESSION['show'] = "new_connections";
+            echo "<script> window.location.href='requests.php';</script>";
+            die();
+        }else if(isset($_POST['update_coneections'])){
+            $_SESSION['show'] = "update_coneections";
+            echo "<script> window.location.href='requests.php';</script>";
+            die();
+        }else if(isset($_POST['delete_connections'])){
+            $_SESSION['show'] = "delete_connections";
+            echo "<script> window.location.href='requests.php';</script>";
+            die();
+        }
+    ?>

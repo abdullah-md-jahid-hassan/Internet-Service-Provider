@@ -103,7 +103,7 @@
                 $plan = mysqli_fetch_assoc($run_show_plan);
 
                 //Escaping privious plan for plan update
-                if($plan['id']==$_SESSION['plan_id']){continue;}
+                if(isset($_SESSION['plan_id']) && $plan['id']==$_SESSION['plan_id']){continue;}
 
                 echo "
             <!-- Print Each Plan -->
@@ -117,14 +117,14 @@
                 <form method='post'>
                     <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
                     <button type='submit' class='btn btn-success' name='action'>";
-                if($_SESSION['action']=="update"){
+                if(isset($_SESSION['action']) && $_SESSION['action']=="update"){
                     echo "
                         <i class='fa-solid fa-rotate'></i> Choose</button>
                     </form>
                 </div>";
                 } else {
                     echo "
-                        <i class='fa-solid fa-up-down'></i> Update</button>
+                    <i class='fa-solid fa-plus'></i> Request For New Connection</button>
                     </form>
                 </div>";
                 }
@@ -150,7 +150,7 @@
             } else {
                 // if Request for connection
                 // seting Seasion Value for Updte Page
-                $_SESSION['plan_id'] = $_POST['plan_id'];
+                $_SESSION['plan_id_new'] = $_POST['plan_id'];
                 // Close the database connection
                 mysqli_close($connect);
                 echo "<script> window.location.href='request_connection_customer.php';</script>";
