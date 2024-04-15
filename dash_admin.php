@@ -22,6 +22,9 @@
     //Login check
     require '_logincheck_admin.php';
 
+    // Seasion variable clear
+    require '_unset_seasion_variable.php';
+
     //Defining Page Type
     $page_type = "dashboard";
     $page_name = "dashboard";

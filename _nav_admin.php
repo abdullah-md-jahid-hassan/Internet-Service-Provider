@@ -113,7 +113,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item rounded p-2 <?php if($page_type == "manage_employee"){echo "op-ac";}?>" href="manage_employee.php"><i class="fa-solid fa-users-gear"></i> Manage Employee</a>
+                        <a class="dropdown-item rounded p-2 <?php if($page_type == "manage_employee"){echo "op-ac";}?>" href="employee.php"><i class="fa-solid fa-users-gear"></i> Manage Employee</a>
                     </li>
 
                     <li>
