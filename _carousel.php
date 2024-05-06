@@ -10,7 +10,7 @@
         <div class="carousel-inner">
 
             <div class="carousel-item carousel-slide active">
-                <img src="images/index_slide1.jpg" class="d-block w-100 carousel-slide-img" alt="Check Out Our Services">
+                <img src="images/carousel/index_slide1.jpg" class="d-block w-100 carousel-slide-img" alt="Check Out Our Services">
                 <div class="carousel-caption text-uppercase top-0">
                     <h1 class="fw-bolder mt-lg-5 mt-2">Residential Services</h1>
                     <ul class="list-unstyled m-lg-3 m-md-2 m-sm-1">
@@ -25,7 +25,7 @@
             </div>
 
             <div class="carousel-item carousel-slide">
-                <img src="images/index_slide2.jpg" class="d-block w-100 carousel-slide-img" alt="Check Out Our Services">
+                <img src="images/carousel/index_slide2.jpg" class="d-block w-100 carousel-slide-img" alt="Check Out Our Services">
                 <div class="carousel-caption text-uppercase top-0">
                     <h1 class="fw-bolder mt-lg-5 mt-2">Organizational Services</h1>
                     <ul class="list-unstyled m-lg-3 m-md-2 m-sm-1">

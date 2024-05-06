@@ -97,7 +97,7 @@
         // Showing connections list
         if($total_connections>0){
             echo "
-            <div class='container overflow-x-scroll mt-4'>
+            <div class='container overflow-auto mt-4'>
                 <div class='num_of_res text-light btn btn-dark m-2'>
                     <h7 class='pt-2'>Total Result: $total_connections</h7>
                 </div>

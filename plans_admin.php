@@ -114,7 +114,7 @@
                     $plan = mysqli_fetch_assoc($run_show_plan);
 
                     //Escaping privious plan for plan update
-                    if($plan['id']==$_SESSION['plan_id']){continue;}
+                    if(isset($_SESSION['plan_id']) && $plan['id']==$_SESSION['plan_id']){continue;}
                     
                     echo "
                     <!-- Print Each Plan -->
@@ -128,7 +128,7 @@
                         <form method='post'>
                             <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
                             <button type='submit' class='btn btn-success' name='action'>";
-                    if($_SESSION['action']=="update"){
+                    if(isset($_SESSION['action']) && $_SESSION['action']=="update"){
                         echo "
                             <i class='fa-solid fa-rotate'></i> Choose</button>
                         </form>

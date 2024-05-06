@@ -89,7 +89,7 @@
             </div>
 
         </div>
-        <a class="btn btn-info" href="connections.php"><i class="fa-solid fa-delete-left"></i> Back</a>
+        <a class="btn btn-info" href="dash_customer.php"><i class="fa-solid fa-delete-left"></i> Back</a>
     </div>
 
 

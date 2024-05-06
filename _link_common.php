@@ -1,4 +1,4 @@
-<link rel="icon" type="image/x-icon" href="images/title_logo.png">
+<link rel="icon" type="image/x-icon" href="images/logo/title_logo.png">
 
 <link rel="stylesheet" href="bootstrap5.3.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="variables.css">
