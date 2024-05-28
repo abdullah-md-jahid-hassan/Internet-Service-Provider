@@ -34,9 +34,9 @@
         $connection = mysqli_fetch_assoc($find_connection);
 
         //To show Update State Not Requested Plan ID
-        if($connection['state']!="Active" && $connection['state']!="Delete Request Pending" && $connection['state']!="Connection Pending"){
+        if (strpbrk($connection['state'], "0123456789")!=false){
             $req_plan_id = $connection['state'];
-            $connection['state'] = "Update Request Pending";
+            $connection['state']="Update request pending";
         }
 
         //Get plan info
@@ -45,7 +45,7 @@
         $plan = mysqli_fetch_assoc($get_plan);
 
         //Getting Requested Plan Info
-        if($connection['state']=="Update Request Pending"){
+        if($connection['state']=="Update request pending"){
             $req_plan_sql = "SELECT * FROM `{$connection['type']}` WHERE `id` = '{$req_plan_id}'";
             $get_req_plan = mysqli_query($connect, $req_plan_sql);
             $req_plan = mysqli_fetch_assoc($get_req_plan);
@@ -102,7 +102,7 @@
             </div>
 
             <?php
-                if($connection['state']=="Update Request Pending"){
+                if($connection['state']=="Update request pending"){
                     echo "<div class='row-auto card bg-dark text-light py-3 rounded m-2'>
                         <div class=' card-header'>
                             <h3 class='text-center text-decoration-underline'>Requested Plan Info</h3>

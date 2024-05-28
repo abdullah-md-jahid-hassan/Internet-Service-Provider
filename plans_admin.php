@@ -154,13 +154,16 @@
                 require '_database_connect.php';
 
                 if($_SESSION['action']=="update"){
+                    
                     //Update the connection database
-                    $plan_update_sql = "UPDATE `connections` SET `plan_id` = '{$_POST['plan_id']}', `state` = 'Active' WHERE `connections`.`id` = '{$_SESSION['connections_id_details']}'";
+                    $plan_update_sql = "UPDATE `connections` SET `state` = '{$_POST['plan_id']}' WHERE `connections`.`id` = '{$_SESSION['connections_id_details']}'";
                     $plan_update = mysqli_query($connect, $plan_update_sql);
-                    //Redirect to the connection details
-                    echo "<script> window.location.href='connections_details.php';</script>";
+
                     // Close the database connection
                     mysqli_close($connect);
+
+                    //Rederection to the connection page
+                    echo "<script> window.location.href='assign_task.php';</script>";
                     die();
                 } else {
                     // seting Seasion Value for Update Page

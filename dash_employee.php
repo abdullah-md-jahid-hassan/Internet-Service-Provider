@@ -33,7 +33,7 @@
     $pending_task_num = mysqli_num_rows($find_pending_task);
 
     // Get number of conplited task
-    $find_completed_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `status` = 'Done'";
+    $find_completed_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `status` = 'Completed'";
     $find_completed_task = mysqli_query($connect, $find_completed_task_sql);
     $completed_task_num = mysqli_num_rows($find_completed_task);
 

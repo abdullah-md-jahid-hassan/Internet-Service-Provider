@@ -34,9 +34,7 @@
         $connection = mysqli_fetch_assoc($find_connection);
 
         //To show Update State Not Requested Plan ID
-        if($connection['state']!="Active" && $connection['state']!="Delete Request Panding" && $connection['state']!="Connection Panding"){
-            $connection['state'] = "Update Request Panding";
-        }
+        if (strpbrk($connection['state'], "0123456789")!=false){$connection['state']="Update request pending";}
 
         //Get plan info
         $plan_sql = "SELECT * FROM `{$connection['type']}` WHERE `id` = '{$connection['plan_id']}'";
@@ -66,7 +64,7 @@
                 </div>
                 <div class="card-footer">
                     <form method="post">
-                        <button class="btn btn-danger" type="submit" name="delete"><i class="fa-solid fa-trash-can"></i> Delete Connection</button>
+                        <button class="btn btn-danger" type="submit" name="delete"><i class="fa-solid fa-trash-can"></i> Disconnect Connection</button>
                     </form>
                 </div>
             </div>
@@ -77,7 +75,7 @@
                 </div>
                 <div class="card-body">
                     <b>Name: </b><?php echo $plan['name'] ?><br>
-                    <b>Speed: </b><?php echo $plan['speed'] ?><br>
+                    <b>Speed: </b><?php echo $plan['speed'] ?> MBps<br>
                     <b>Real-IP: </b><?php echo $plan['realip'] ?><br>
                     <b>Price: </b><?php echo $plan['price'] ?>
                 </div>
@@ -119,14 +117,15 @@
             // connect to the database
             require '_database_connect.php';
             
-            $delete_sql = "DELETE FROM `connections` WHERE `id` = '{$_SESSION['connections_id_details']}'";
+            $delete_sql = "UPDATE `connections` SET `state` = 'Delete Request Pending'  WHERE `id` = '{$_SESSION['connections_id_details']}'";
             $delete = mysqli_query($connect, $delete_sql);
 
             // Close the database connection
             mysqli_close($connect);
 
+            $_SESSION['connections_id_details'] =$connection['id'];
             //Rederection to the connection page
-            echo "<script> window.location.href='connections.php';</script>";
+            echo "<script> window.location.href='assign_task.php';</script>";
             die();
         }
 
@@ -138,7 +137,7 @@
             die();
         }
 
-        //if Customer Details button Clicked
+        //if update button Clicked
         else if(isset($_POST['update'])){
             $_SESSION['action'] = "update";
             $_SESSION['plan_type'] = $connection['type'];

@@ -124,9 +124,8 @@
                     $plan = mysqli_fetch_assoc($get_plan);
 
                     //To show Update State Not Requested Plan ID
-                    if($connections['state']!="Active" && $connections['state']!="Delete Request Panding" && $connections['state']!="Connection Panding"){
-                        $connections['state'] = "Update Request Panding";
-                    }
+                    if (strpbrk($connections['state'], "0123456789")!=false){$connections['state']="Update request pending";}
+
 
                     //Search Filter for Speed and Price
                     if($key=="speed" && $word!=""){if ($plan['speed']!=$word){continue;}}
