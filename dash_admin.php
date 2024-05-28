@@ -75,6 +75,11 @@
     $find_employee = mysqli_query($connect, $find_employee_sql);
     $employee_num = mysqli_num_rows($find_employee);
 
+    // Get number of task
+    $find_task_sql = "SELECT * FROM `task`";
+    $find_task = mysqli_query($connect, $find_task_sql);
+    $task_num = mysqli_num_rows($find_task);
+
     // Close the database connection
     mysqli_close($connect);
 ?>
@@ -102,7 +107,7 @@
                     <div class="card-side rounded-start" style="background-color: blue"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-house-laptop" style="color: blue"></i> Residential Plans</h5>
-                        <p>Active Residential Plans: <?php echo "$residential_plans_num"; ?></p>
+                        <p>Residential Plans: <?php echo "$residential_plans_num"; ?></p>
                         <form method="post">
                             <button class="btn btn-secondary rounded" type="submit" name="residential_plans">
                                 See Plans
@@ -118,7 +123,7 @@
                     <div class="card-side rounded-start" style="background-color: #e09f3e"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-building" style="color: #e09f3e"></i> Organizational plans</h5>
-                        <p>Active Organizational Plans: <?php echo "$organizational_plans_num"; ?></p>
+                        <p>Organizational Plans: <?php echo "$organizational_plans_num"; ?></p>
                         <form method="post">
                             <button class="btn btn-secondary rounded p-2" type="submit" name="organizational_plans">
                                         See Plans
@@ -146,7 +151,7 @@
                     <div class="card-side rounded-start" style="background-color: green"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-plus" style="color: green"></i> Connections Requests</h5>
-                        <p>Panding Connection Requests: <?php echo "$new_connections_num"; ?></p>
+                        <p>Pending Connection Requests: <?php echo "$new_connections_num"; ?></p>
                         <form method="post">
                             <button class="btn btn-secondary" type="submit" name="new_connections">See Requests</button>
                         </form>
@@ -160,7 +165,7 @@
                     <div class="card-side rounded-start" style="background-color: #ffb703"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-circle-up" style="color: #ffb703"></i> Update Requests</h5>
-                        <p>Panding Update Requests: <?php echo "$update_connections_num"; ?></p>
+                        <p>Pending Update Requests: <?php echo "$update_connections_num"; ?></p>
                         <form method="post">
                             <button class="btn btn-secondary" type="submit" name="update_coneections">See Requests</button>
                         </form>
@@ -174,7 +179,7 @@
                     <div class="card-side rounded-start" style="background-color: red"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-trash-can" style="color: red"></i> Delete Requests</h5>
-                        <p>Panding Delete Requests: <?php echo "$delete_connections_num"; ?></p>
+                        <p>Pending Delete Requests: <?php echo "$delete_connections_num"; ?></p>
                         <form method="post">
                             <button class="btn btn-secondary" type="submit" name="delete_connections">See Requests</button>
                         </form>
@@ -188,7 +193,7 @@
                     <div class="card-side rounded-start" style="background-color: #606c38"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-users-gear" style="color: #606c38"></i> Manage Employee</h5>
-                        <p> Active Employees: <?php echo "$employee_num"; ?></p>
+                        <p>Employees: <?php echo "$employee_num"; ?></p>
                         <a class="btn btn-secondary rounded p-2" href="employee.php">Employee</a>
                     </div>
                 </div>
@@ -200,8 +205,8 @@
                     <div class="card-side rounded-start" style="background-color: #9d8189"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-list-check" style="color: #9d8189"></i> Tasks</h5>
-                        <p>On-Going Task: 30</p>
-                        <a class="btn btn-secondary rounded p-2" href="employee.php">Employee</a>
+                        <p>On-Going Task: <?php echo "$task_num"; ?></p>
+                        <a class="btn btn-secondary rounded p-2" href="task_reports.php">Task list</a>
                     </div>
                 </div>
             </div>
@@ -212,7 +217,7 @@
                     <div class="card-side rounded-start" style="background-color: #000000"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-not-equal" style="color: #000000"></i> Complaints</h5>
-                        <p>Panding Complaints: 30</p>
+                        <p>Pending Complaints: 30</p>
                         <a class="btn btn-secondary rounded p-2" href="complaints.php">Complaints</a>
                     </div>
                 </div>
@@ -224,7 +229,7 @@
                     <div class="card-side rounded-start" style="background-color: #e63946"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-money-check-dollar" style="color: #e63946"></i> Payment Reports</h5>
-                        <p>Panding Payment: 30</p>
+                        <p>Pending Payment: 30</p>
                         <a class="btn btn-secondary rounded p-2" href="paymentreport.php">Reports</a>
                     </div>
                 </div>
@@ -414,6 +419,8 @@
             echo "<script> window.location.href='requests.php';</script>";
             die();
         }
+        //Clear Session Variable
+        include '_unset_seasion_variable.php';
     ?>
 
 </body>

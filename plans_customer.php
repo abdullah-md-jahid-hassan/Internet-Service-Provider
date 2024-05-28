@@ -60,10 +60,10 @@
 
     <?php
         // Showing result
-
+        
         // connect to the database
         require '_database_connect.php';
-
+        
         //sql logic for the Search And Defalt
         if(isset($key) && isset($word)){
             if($key=="all" && $word==""){
@@ -80,62 +80,66 @@
                 $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `realip` LIKE '$word'";
             }
         } else {$show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";}
-
+        
         //Query
         $run_show_plan = mysqli_query($connect, $show_plans_sql);
         $total_plans = mysqli_num_rows($run_show_plan);
-
+        
         //total result define
         if(isset($_SESSION['plan_id'])){$result = $total_plans-1;}
         else {$result = $total_plans;}
-
+        
         echo"
-    <div class='container mt-4'>
+        <div class='container mt-4'>
         <h7 class='num_of_res text-light btn btn-dark pt-2'>Total Result: $result</h7>
-    </div>";
-
+        </div>";
+        
         // Fatching Data form database
         if($total_plans>0){
             echo"
-        <!-- Plans -->
-        <div class='row row-cols-auto justify-content-center'>";
+            <!-- Plans -->
+            <div class='row row-cols-auto justify-content-center mb-5'>";
             for($i=0; $i<$total_plans; $i++){
                 $plan = mysqli_fetch_assoc($run_show_plan);
-
+                
                 //Escaping privious plan for plan update
                 if(isset($_SESSION['plan_id']) && $plan['id']==$_SESSION['plan_id']){continue;}
-
+                
                 echo "
-            <!-- Print Each Plan -->
-            <div class='row-auto bg-dark text-light p-4 rounded m-2' style='width: 400px'>
+                <!-- Print Each Plan -->
+                <div class='row-auto bg-dark text-light p-4 rounded m-2' style='width: 400px'>
                 <h3 class='font-weight-bolder'>$plan[name]</h3>
                 <p class='fs-5 mt-2'>
-                    <b>Speed: </b>$plan[speed]<br>
-                    <b>Real-IP: </b>$plan[realip]<br>
-                    <b>Price: </b>$plan[price]<br>
+                <b>Speed: </b>$plan[speed]<br>
+                <b>Real-IP: </b>$plan[realip]<br>
+                <b>Price: </b>$plan[price]<br>
                 </p>
                 <form method='post'>
-                    <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
-                    <button type='submit' class='btn btn-success' name='action'>";
+                <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
+                <button type='submit' class='btn btn-success' name='action'>";
                 if(isset($_SESSION['action']) && $_SESSION['action']=="update"){
                     echo "
-                        <i class='fa-solid fa-rotate'></i> Choose</button>
+                    <i class='fa-solid fa-rotate'></i> Choose</button>
                     </form>
-                </div>";
+                    </div>";
                 } else {
                     echo "
                     <i class='fa-solid fa-plus'></i> Request For New Connection</button>
                     </form>
-                </div>";
+                    </div>";
                 }
-
+                
             }
             echo "
             </div>";
-
         }
-        
-        
+    ?>
+    
+    <!-- Footer -->
+    <?php include '_footer_common.php';?>
+    
+    
+    <?php
         // if button clicked
         if(isset($_POST['action'])) {
             if($_SESSION['action']=="update"){

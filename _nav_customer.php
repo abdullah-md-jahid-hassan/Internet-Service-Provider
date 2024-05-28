@@ -1,5 +1,5 @@
     <!-- Navbar Satrat -->
-    <nav class="navbar navbar-expand-md bg-dark sticky-top rounded" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-md bg-dark sticky-top" data-bs-theme="dark">
         <div class="container-fluid d-flex justify-content-between">
 
             <!-- Toggler button -->
@@ -12,7 +12,7 @@
 
             <!-- Nav Icons -->
             <div class="nav-icon">
-                <a class="navbar-brand px-3" href="customer_notification.php" title="Notification"><i class="fa-regular fa-bell nav-icon"></i></a>
+                <!-- <a class="navbar-brand px-3" href="customer_notification.php" title="Notification"><i class="fa-regular fa-bell nav-icon"></i></a> -->
                 <a class="navbar-brand px-3" href="admin_info.php" title="Profile"><i class="fa-regular fa-user nav-icon"></i></a>
                 <a class="navbar-brand px-3" href="logout.php" title="Logout"><i class="fa-solid fa-right-from-bracket nav-icon"></i></a>
             </div>
@@ -64,10 +64,12 @@
         //Plans Rederection PHP
         if(isset($_POST['residential_plans'])){
             $_SESSION['plan_type'] = "residential_plans";
+            if(isset($_SESSION['plan_id'])) unset($_SESSION['plan_id']);
             echo "<script> window.location.href='plans_customer.php';</script>";
             die();
         } else if(isset($_POST['organizational_plans'])){
             $_SESSION['plan_type'] = "organizational_plans";
+            if(isset($_SESSION['plan_id'])) unset($_SESSION['plan_id']);
             echo "<script> window.location.href='plans_customer.php';</script>";
             die();
         }

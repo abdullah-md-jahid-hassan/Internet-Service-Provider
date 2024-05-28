@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="carousel.css">
     <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="carousel.css">
     <!-- Links End -->
 
 
 </head>
 <body>
-    <!-- Carousel -->
-    <?php include '_carousel.php'; ?>
+<img src="images/ispban.jpg" class="d-block w-100" alt="Welcome">
 
     <!-- Login And Registration button  -->
     <div class="container index-btn ">

@@ -75,7 +75,8 @@
             // Display error message if login is invalid
             if($inval_mass != "") {echo '<p class="py-3">' . $inval_mass . '</p>';}
         ?>
-        <form autocomplete="on" action="login.php" method="post">
+        <!--  autocomplete="on" -->
+        <form action="login.php" method="post">
             <h2>Login</h2>
             <div class="user-input">
                 <input type="email" name="userid" required>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comone page for Admin</title>
+    <title>Request Details</title>
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
 
@@ -150,17 +150,15 @@
 
     <?php
 
-        //if Customer Details button Clicked
+        //if upddate button Clicked
         if(isset($_POST['update'])){
-            $_SESSION['action'] = "update";
-            $_SESSION['plan_type'] = $connection['type'];
-            $_SESSION['plan_id'] = $plan['id'];
+            $_SESSION['connections_id_details'] =$connection['id'];
             //Rederection to the connection page
-            echo "<script> window.location.href='plans_admin.php';</script>";
+            echo "<script> window.location.href='assign_task.php';</script>";
             die();
         }
 
-        //Accept or reject request
+        //Reject request
         else if (isset($_POST['reject'])){
             // connect to the database
             require '_database_connect.php';
@@ -179,6 +177,22 @@
 
             //Rederection to the connection page
             echo "<script> window.location.href='requests.php';</script>";
+            die();
+        }
+
+        //accept Connection request
+        else if (isset($_POST['connection'])){
+            $_SESSION['connections_id_details'] =$connection['id'];
+            //Rederection to the connection page
+            echo "<script> window.location.href='assign_task.php';</script>";
+            die();
+        }
+
+        //Delete button cliked
+        else if (isset($_POST['delete'])){
+            $_SESSION['connections_id_details'] =$connection['id'];
+            //Rederection to the connection page
+            echo "<script> window.location.href='assign_task.php';</script>";
             die();
         }
     ?>

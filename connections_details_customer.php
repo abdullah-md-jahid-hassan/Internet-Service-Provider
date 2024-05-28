@@ -47,7 +47,7 @@
         mysqli_close($connect);
     ?>
 
-    <div class="container">
+    <div class="container mb-5">
         <div class="row row-cols-auto justify-content-center">
 
             <div class="row-auto card bg-dark text-light py-3 rounded m-2">
@@ -91,6 +91,9 @@
         </div>
         <a class="btn btn-info" href="dash_customer.php"><i class="fa-solid fa-delete-left"></i> Back</a>
     </div>
+    
+    <!-- Footer -->
+    <?php include '_footer_common.php';?>
 
 
     <?php

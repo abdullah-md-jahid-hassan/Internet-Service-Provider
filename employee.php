@@ -16,26 +16,75 @@
 <body>
 
     <?php
-        //Login check
+        // Login check
         require '_logincheck_admin.php';
 
-        // Seasion variable clear
-        require '_unset_seasion_variable.php';
-
-        //Defining Page Type
+        // Defining Page Type
         $page_type = "employee";
         $page_name = "employee";
 
-        //Variable
+        // Variable
         $key = "all";
         $word = "";
+        
+        // If assign task button clicked
+        if(isset($_POST['assign_task'])) {
+            // Connect to the database
+            require '_database_connect.php';
+            // Close the database connection
+            mysqli_close($connect);
 
-        //Navbar
+            // Session variable clear
+            require '_unset_seasion_variable.php';
+
+            // Seasion Variable for assign task to employee employee
+            $_SESSION['employee_id_task'] = $_POST['employee_id'];
+
+            //redirect to the asign task page
+            echo "<script> window.location.href='assign_task.php';</script>";
+            die();
+        }
+
+        // If detail button clicked
+        if(isset($_POST['details'])) {
+            // Connect to the database
+            require '_database_connect.php';
+            // Close the database connection
+            mysqli_close($connect);
+
+            // Seasion Variable for employee dtails
+            $_SESSION['employee_id_details'] = $_POST['employee_id'];
+
+            // Generate the JavaScript code to open the new tab
+            echo "<script>
+                var newTab = window.open('employee_details_admin.php', '_blank');
+                newTab.onload = function() {
+                    window.location.href = window.location.href.split('?')[0];
+                };
+            </script>";
+
+            // Prevent form resubmission on reload
+            echo "<script>history.pushState({}, '', '');</script>";
+        }    
+
+        // If searched
+        if(isset($_GET['search'])){
+            $key = $_GET['key'];
+            $word = $_GET['word'];
+        }
+
+        // If Re-Set
+        if(isset($_GET['reset'])){
+            $key = "all";
+            $word = "";
+        }
+
+        // Navbar
         require '_nav_admin.php';
     ?>
 
+    <!-- Search Bar -->
     <div class="container my-2">
-        <!-- Search Bar -->
         <form method="get">
             <div class="input-group">
                 <!-- Recruit Button -->
@@ -53,19 +102,18 @@
                     <option value="e-id">Employee-ID</option>
                 </select>
                 <input type="text" class="form-control" name="word" placeholder="Search">
-                <button class="btn btn-danger btn-outline-light" name="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></i> Search</button>  
-                <button class="btn btn-success btn-outline-light" name="reset" type="submit"><i class="fa-solid fa-rotate"></i></i> Re-set</button>  
+                <button class="btn btn-danger btn-outline-light" name="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>  
+                <button class="btn btn-success btn-outline-light" name="reset" type="submit"><i class="fa-solid fa-rotate"></i> Re-set</button>  
             </div>
         </form>
     </div>
 
     <?php
         // Showing result
-
-        // connect to the database
+        // Connect to the database
         require '_database_connect.php';
 
-        //sql
+        // SQL
         if(isset($key) && isset($word)){
             if($key=="all" && $word==""){
                 $show_employee_sql = "SELECT * FROM `employee`";
@@ -84,21 +132,21 @@
             } else {$show_employee_sql = "SELECT * FROM `employee`";}
         }
 
-        //Query
+        // Query
         $run_show_employee = mysqli_query($connect, $show_employee_sql);
         $total_employee = mysqli_num_rows($run_show_employee);
                 
         // Close the database connection
         mysqli_close($connect);
 
-        // Showing connections list
+        // Showing Employee list
         echo "
             <div class='container overflow-auto mt-4'>
                 <div class='num_of_res text-light btn btn-dark m-2'>
                     <h7 class='pt-2'>Total Result: $total_employee</h7>
                 </div>";
         if($total_employee>0){
-            //Show the Employee List
+            // Show the Employee List
             echo "
                 <table class='table table-info table-striped table-hover m-2 p-2 text-center'>
                     <thead>
@@ -115,11 +163,17 @@
                     <tbody>
             ";
             for($i=0; $i<$total_employee; $i++){
-                // connect to the database
+                // Connect to the database
                 require '_database_connect.php';
                 // Get row
 
                 $employee = mysqli_fetch_assoc($run_show_employee);
+
+                //get task number
+                $get_task_number_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$employee['id']}'";
+                $get_task_number = mysqli_query($connect, $get_task_number_sql);
+                $task_number = mysqli_num_rows($run_show_employee);
+
                 
                 // Close the database connection
                 mysqli_close($connect);
@@ -131,12 +185,14 @@
                             <td>$employee[post]</td>
                             <td>$employee[phone]</td>
                             <td>$employee[email]</td>
-                            <td>task</td>
+                            <td>$task_number</td>
                             <td>
                                 <form method='post'>
-                                    <input class='visually-hidden' type='text' name='employee_id' value='$employee[id]'</input>
-                                    <button class='btn btn-danger mb-1' type='submit' name='assign_task' style='width: 111px'>Assign Task</button>
-                                    <button class='btn btn-success' type='submit' name='details' style='width: 111px'>Details</button>
+                                    <input class='visually-hidden' type='text' name='employee_id' value='$employee[id]'>
+
+                                    <button class='btn btn-danger mb-1' type='submit' name='assign_task' style='width: 114px'>Assign Task</button>
+
+                                    <button class='btn btn-success' type='submit' name='details' style='width: 114px'>Details</button>
                                 </form>
                             </td>
                         </tr>
@@ -148,38 +204,8 @@
             ";
         }
         echo"</div>";
-        
-        // if recruit button clicked
-        if(isset($_GET['recruit'])) {
-            // Rederection for recruit Page
-            echo "<script> window.location.href='employee_recruit.php';</script>";
-            // Close the database connection
-            mysqli_close($connect);
-            die();
-        }
 
-        //if searched
-        if(isset($_GET['search'])){
-            $key = $_GET['key'];
-            $word = $_GET['word'];
-        }
-
-        //If Re-Set
-        if(isset($_GET['reset'])){
-            $key = "all";
-            $word = "";
-        }
-
-        // if recruit button clicked
-        if(isset($_GET['recruit'])) {
-            // Rederection for recruit Page
-            echo "<script> window.location.href='employee_recruit.php';</script>";
-            // Close the database connection
-            mysqli_close($connect);
-            die();
-        }
-
-        // connect to the database
+        // Connect to the database
         require '_database_connect.php';
         // Close the database connection
         mysqli_close($connect);

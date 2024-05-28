@@ -167,10 +167,10 @@
                     $photo_folder = "images/employee/profile_pic_file";
 
                     //File location
-                    $nid_file_location =$nid_folder . "/" . $employee_id . "_nid";
-                    $certificate_file_location =$certificate_folder . "/" . $employee_id . "_certificate";
-                    $resume_file_location =$resume_folder . "/" . $employee_id . "_resume";
-                    $photo_file_location =$photo_folder . "/" . $employee_id . "_photo";
+                    $nid_file_location =$nid_folder . "/" . $employee_id . "_nid.pdf";
+                    $certificate_file_location =$certificate_folder . "/" . $employee_id . "_certificate.pdf";
+                    $resume_file_location =$resume_folder . "/" . $employee_id . "_resume.pdf";
+                    $photo_file_location =$photo_folder . "/" . $employee_id . "_photo." . $photo_file_type;
 
                     //temporary file name to store file
                     $nid_tamp_name = $_FILES["nid-file"]["tmp_name"];
@@ -264,10 +264,10 @@
                 <label for="nid" class="form-label">Post</label>
                 <select class="search-select form-control" name="post">
                     <option value="" <?php if(isset($post) && $post=="") echo "selected"; else if(isset($post)) echo ""; else echo "selected"; ?>>Select Post</option>
-                    <option value="manager" <?php if(isset($post) && $post=="manager") echo "selected"; ?>>Manager</option>
-                    <option value="ass_manager" <?php if(isset($post) && $post=="ass_manager") echo "selected"; ?>>Assitant Manager</option>
-                    <option value="sarver_oparator" <?php if(isset($post) && $post=="sarver_oparator") echo "selected"; ?>>Sarver Oparator</option>
-                    <option value="line_man" <?php if(isset($post) && $post=="line_man") echo "selected"; ?>>Line Man</option>
+                    <option value="Manager" <?php if(isset($post) && $post=="Manager") echo "selected"; ?>>Manager</option>
+                    <option value="Assistant Manager" <?php if(isset($post) && $post=="Assistant Manager") echo "selected"; ?>>Assitant Manager</option>
+                    <option value="Sarver Oparator" <?php if(isset($post) && $post=="Sarver Oparator") echo "selected"; ?>>Sarver Oparator</option>
+                    <option value="Line Man" <?php if(isset($post) && $post=="Line Man") echo "selected"; ?>>Line Man</option>
                 </select>
             </div>
             <div class="mb-3">

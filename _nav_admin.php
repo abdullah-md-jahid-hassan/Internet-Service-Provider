@@ -143,10 +143,16 @@
     <?php
         //Plans Rederection PHP
         if(isset($_POST['residential_plans'])){
+            //Clear extra Seasion variable
+            require '_clear_session_variable.php';
+
             $_SESSION['plan_type'] = "residential_plans";
             echo "<script> window.location.href='plans_admin.php';</script>";
             die();
         } else if(isset($_POST['organizational_plans'])){
+            //Clear extra Seasion variable
+            require '_clear_session_variable.php';
+
             $_SESSION['plan_type'] = "organizational_plans";
             echo "<script> window.location.href='plans_admin.php';</script>";
             die();

@@ -32,6 +32,9 @@
         //Navbar
         require '_nav_customer.php';
 
+        //Carousel
+        include '_carousel.php';
+
         //if searched
         if(isset($_GET['search'])){
             $key = $_GET['key'];
@@ -46,6 +49,8 @@
 
         //Seeing Details
         if(isset($_POST['details'])){
+            //Clear Session Variable
+            include '_clear_session_ariable.php';
             $_SESSION['connections_id_details'] = $_POST['con_id'];
             echo "<script> window.location.href='connections_details_customer.php';</script>";
             die();
@@ -164,9 +169,10 @@
         // Close the database connection
         mysqli_close($connect);
     
+        //Footer
+        include '_footer_common.php';
+        //Clear Session Variable
+        include '_clear_session_ariable.php';
     ?>
-
-    <!-- Footer -->
-    <?php include '_footer_common.php';?>
 </body>
 </html>

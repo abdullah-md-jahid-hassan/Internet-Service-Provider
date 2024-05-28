@@ -110,7 +110,7 @@
 
     <!-- registration Box -->
     <div class="registration-box mb-5">
-        <form autocomplete="on"  action="registration.php" method="post">
+        <form action="registration.php" method="post">
             <h2>Registration</h2>
             <div class="user-input">
                 <input type="text" id="full_name" name="name" <?php if ($hold_value == true) { echo 'value="' . $name . '"'; } ?> required>
