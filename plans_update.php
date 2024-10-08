@@ -23,13 +23,13 @@
         $error = "";
 
         //Taking Seasion Data.
-        if(isset($_SESSION['plan_type']) && isset($_SESSION['plan_id'])){
+        if(isset($_SESSION['plan_type']) && isset($_SESSION['plan_id_update'])){
             //Taking Seasion data
             $plan_type = $_SESSION['plan_type'];
-            $plan_id = $_SESSION['plan_id'];
+            $plan_id = $_SESSION['plan_id_update'];
         }else {
-            //Rederect to the Admin Home
-            echo "<script> window.location.href='plans_admin_residential.php';</script>";
+            //Rederect to plan page
+            echo "<script> window.location.href='plans_admin.php';</script>";
             die();
         }
 
@@ -53,7 +53,7 @@
         $get_plan_data = mysqli_query($connect, $get_plan_data_sql);
         if(!$get_plan_data){
             //Rederect to the Admin Home
-            echo "<script> window.location.href='plans_admin_residential.php';</script>";
+            echo "<script> window.location.href='plans_admin.php';</script>";
             die();
         }
         $get_result = mysqli_num_rows($get_plan_data);
@@ -80,25 +80,22 @@
             $name = $_POST['plan_name'];
             $speed = $_POST['plan_speed'];
             $price = $_POST['plan_price'];
-            $readip = $_POST['plan_realip'];
+            $realip = $_POST['plan_realip'];
 
             // SQL
-            $update_plan_sql = "UPDATE `{$plan_type}` SET `name` = '$name', `speed` = '$speed', `price` = '$price', `realip` = '$readip' WHERE `{$plan_type}`.`id` = '{$plan_id}';";
+            $update_plan_sql = "UPDATE `{$plan_type}` SET `name` = '$name', `speed` = '$speed', `price` = '$price', `realip` = '$realip' WHERE `{$plan_type}`.`id` = '{$plan_id}';";
 
             // Insert Data Into Database
             $update_plan = mysqli_query($connect, $update_plan_sql);
 
             if($update_plan) {
                 // Success, redirect
-                if($plan_type == "residential_plans"){
-                    mysqli_close($connect);
-                    echo "<script> window.location.href='plans_admin.php';</script>";
-                    die();
-                } else if ($plan_type == "organizational_plans"){
-                    mysqli_close($connect);
-                    echo "<script> window.location.href='plans_admin.php';</script>";
-                    die();
-                }
+
+                // Close the database connection
+                mysqli_close($connect);
+
+                echo "<script> window.location.href='plans_admin.php';</script>";
+                die();
             } else {
                 $error = "Failed To Create Plan! Please Try Again.";
             }

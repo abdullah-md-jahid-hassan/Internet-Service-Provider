@@ -98,7 +98,10 @@
 ?>
 
     <!-- Top Banner -->
-    <div class="container text-center p-5">
+    <!-- image -->
+    <img src="images\banar\welcome_to_the_famaly.gif" class="d-block w-100 mb-5" alt="Welcome">
+    <!-- Or -->
+    <!-- <div class="container text-center p-5">
         <h1 class="page-title p-3">
             Welcome To The Family
             <span class="span-top"></span>
@@ -106,7 +109,7 @@
             <span class="span-bottom"></span>
             <span class="span-left"></span>
         </h1>
-    </div>
+    </div> -->
 
     <!-- registration Box -->
     <div class="registration-box mb-5">

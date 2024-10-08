@@ -161,10 +161,10 @@
                     $employee_id = $employee_id["id"];
 
                     //Move File to the folder
-                    $nid_folder = "images/employee/nid_file";
-                    $certificate_folder = "images/employee/certificate_file";
-                    $resume_folder = "images/employee/resume_file";
-                    $photo_folder = "images/employee/profile_pic_file";
+                    $nid_folder = "files/employee/nid_file";
+                    $certificate_folder = "files/employee/certificate_file";
+                    $resume_folder = "files/employee/resume_file";
+                    $photo_folder = "files/employee/profile_pic_file";
 
                     //File location
                     $nid_file_location =$nid_folder . "/" . $employee_id . "_nid.pdf";

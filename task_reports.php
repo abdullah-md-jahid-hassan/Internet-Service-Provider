@@ -65,7 +65,10 @@
         <!-- Search bar with filter -->
         <form method="get">
             <div class="input-group">
-                <button class="btn btn-success btn-outline-light" name="reset" type="submit"><i class="fa-solid fa-rotate"></i></i> Re-set</button>  
+                <!-- assign_task Button -->
+                <button type="submit" class="btn btn-success" name="assign_task">
+                    <i class="fa-solid fa-plus"></i> Assign Task
+                </button>
                 <select class="search-select" name="key" style="width: 20%;">
                     <option value="all" selected>Search By</option>
                     <option value="title">Title</option>
@@ -73,7 +76,9 @@
                     <option value="status">Status</option>
                 </select>
                 <input type="text" class="form-control" name="word" placeholder="Search">
-                <button class="btn btn-danger btn-outline-light" name="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></i> Search</button>  
+                <button class="btn btn-danger btn-outline-light" name="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></i> Search</button> 
+                <button class="btn btn-success btn-outline-light" name="reset" type="submit"><i class="fa-solid fa-rotate"></i></i> Re-set</button>  
+ 
             </div>
         </form>
     </div>
@@ -81,6 +86,12 @@
 
 
     <?php
+        // if Assign task button clicked
+        if(isset($_GET['assign_task'])) {
+            // Rederection for assign_task Page
+            echo "<script> window.location.href='assign_task.php';</script>";
+            die();
+        }
 
         //Sarcbar function
         if(isset($key) && isset($word)){

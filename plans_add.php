@@ -69,7 +69,7 @@
 
     <!-- Add Plan form -->
     <div class="container rounded bg-black my-5 p-4 text-light" style="width: 480px;">
-        <h3 class="border p-2 text-center">Give detail of the New <?php if($plan_type=="residential_plans"){echo 'Residential';} else if ($plan_type == "organizational_plans"){echo 'Organizational';}?> Plan</h3>
+        <h3 class="border p-2 text-center">Give detail of the New <?php if($_SESSION['plan_type']=="residential_plans"){echo 'Residential';} else if ($_SESSION['plan_type'] == "organizational_plans"){echo 'Organizational';}?> Plan</h3>
         <form action="plans_add.php" method="post">
             <div class="mb-3">
                 <label for="plan_name" class="form-label">Plan Name</label>

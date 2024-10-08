@@ -58,8 +58,14 @@
         }
     ?>
 
+    
+
+
     <!-- Top Banner -->
-    <div class="container text-center p-5 top_banner">
+     <!-- image -->
+    <img src="images\banar\welcome_back.gif" class="d-block w-100 mb-5" alt="Welcome">
+    <!-- Or -->
+    <!-- <div class="container text-center p-5 top_banner">
         <h1 class="page-title p-3">
             Welcome Back
             <span class="span-top"></span>
@@ -67,7 +73,7 @@
             <span class="span-bottom"></span>
             <span class="span-left"></span>
         </h1>
-    </div>
+    </div> -->
 
     <!-- Login Box -->
     <div class="login-box mb-5">

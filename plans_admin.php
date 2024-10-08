@@ -123,7 +123,7 @@
                             <p class='fs-5 mt-2'>
                             <b>Speed: </b>$plan[speed]<br>
                             <b>Real-IP: </b>$plan[realip]<br>
-                            <b>Price: </b>$plan[price]<br>
+                            <b>Price: </b>$plan[price] TK<br>
                         </p>
                         <form method='post'>
                             <input type='text' class='visually-hidden' name='plan_id' value='$plan[id]'>
@@ -150,6 +150,9 @@
             
             // if button clicked
             if(isset($_POST['action'])) {
+                //Set action in seasion
+                $_SESSION['action'] = $_POST['action'];
+
                 // connect to the database
                 require '_database_connect.php';
 
@@ -167,7 +170,7 @@
                     die();
                 } else {
                     // seting Seasion Value for Update Page
-                    $_SESSION['plan_id'] = $_POST['plan_id'];
+                    $_SESSION['plan_id_update'] = $_POST['plan_id'];
                     echo "<script> window.location.href='plans_update.php';</script>";
                     // Close the database connection
                     mysqli_close($connect);

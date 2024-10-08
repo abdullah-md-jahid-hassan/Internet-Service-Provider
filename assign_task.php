@@ -184,7 +184,8 @@
 
         <div class="mb-3">
             <label for="task_title" class="form-label">Task Title</label>
-            <input type="text" class="form-control" id="task_title" name="task_title" <?php if(isset($_SESSION['connections_id_details'])){
+            <input type="text" class="form-control" id="task_title" name="task_title" <?php
+            if(isset($_SESSION['connections_id_details'])){
                 echo "value='";
                 if($connection['state']=="Connection Pending"){
                     echo "New connection in ";

@@ -88,9 +88,9 @@
         <form method="get">
             <div class="input-group">
                 <!-- Recruit Button -->
-                <button type="submit" class="btn btn-success" name="recruit">
+                <a href="employee_recruit.php" class="btn btn-success">
                     <i class="fa-solid fa-plus"></i> Recruit
-                </button>
+                </a>
                 
                 <!-- Search bar with filter -->
                 <select class="search-select" name="key" style="width: 20%;">
@@ -172,7 +172,7 @@
                 //get task number
                 $get_task_number_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$employee['id']}'";
                 $get_task_number = mysqli_query($connect, $get_task_number_sql);
-                $task_number = mysqli_num_rows($run_show_employee);
+                $task_number = mysqli_num_rows($get_task_number);
 
                 
                 // Close the database connection
