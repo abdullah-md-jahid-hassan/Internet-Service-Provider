@@ -67,7 +67,7 @@
             <div class="input-group">
                 <!-- assign_task Button -->
                 <button type="submit" class="btn btn-success" name="assign_task">
-                    <i class="fa-solid fa-plus"></i> Assign Task
+                    <i class="fa-solid fa-plus"></i> Assign Task    
                 </button>
                 <select class="search-select" name="key" style="width: 20%;">
                     <option value="all" selected>Search By</option>

@@ -146,9 +146,20 @@
                     // connect to the database
                     require '_database_connect.php';
 
+                    //get chossen employee info
                     $choosen_employee_sql = "SELECT * FROM `employee` WHERE `id` = '$_SESSION[employee_id_task]'";
                     $run_choosen_employee = mysqli_query($connect, $choosen_employee_sql);
                     $choosen_employee = mysqli_fetch_assoc($run_choosen_employee);
+
+                    //get the pending task
+                    $pending_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$choosen_employee['id']}' AND `state` = 'pending'";
+                    $find_task = mysqli_query($connect, $pending_task_sql);
+                    $pending_task_num_ch = mysqli_num_rows($find_task);
+                    
+                    //get the late task
+                    $late_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$choosen_employee['id']}' AND `state` LIKE 'late%'";
+                    $find_task = mysqli_query($connect, $late_task_sql);
+                    $late_task_num_ch = mysqli_num_rows($find_task);
 
                     echo "<div class='container bg-light rounded text-black p-2'>
                         <div class='row'>
@@ -165,10 +176,10 @@
                             <b>Phone:</b> $choosen_employee[phone]
                             </div>
                             <div class='col align-self-center'>
-                                <b>Assigned task:</b> 10
+                                <b>Pending task:</b> $pending_task_num_ch
                             </div>
                             <div class='col align-self-center'>
-                                <b>Expiard task:</b> 02
+                                <b>Late task:</b> $late_task_num_ch
                             </div>
                             <div class='col align-self-center'>
                             <button type='button' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#employee_list'>Change</button>
@@ -277,7 +288,7 @@
                                         <th>Actions</th>
                                         <th>Phone</th>
                                         <th>Pending Task</th>
-                                        <th>Expiard</th>
+                                        <th>Late Task</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -285,10 +296,20 @@
                         for($i=0; $i<$total_employee; $i++){
                             // connect to the database
                             require '_database_connect.php';
-                            // Get row
-
-                            $employee = mysqli_fetch_assoc($run_show_employee);
                             
+                            // Get each employee row
+                            $employee = mysqli_fetch_assoc($run_show_employee);
+
+                            //get the pending task
+                            $pending_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$employee['id']}' AND `state` = 'pending'";
+                            $find_task = mysqli_query($connect, $pending_task_sql);
+                            $pending_task_num = mysqli_num_rows($find_task);
+                            
+                            //get the late task
+                            $late_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$employee['id']}' AND `state` LIKE 'late%'";
+                            $find_task = mysqli_query($connect, $late_task_sql);
+                            $late_task_num = mysqli_num_rows($find_task);
+
                             // Close the database connection
                             mysqli_close($connect);
                             
@@ -307,8 +328,8 @@
                                             </form>
                                         </td>
                                         <td>$employee[phone]</td>
-                                        <td>task</td>
-                                        <td>ex-task</td>
+                                        <td>$pending_task_num</td>
+                                        <td>$late_task_num</td>
                                     </tr>
                             ";
                         }
@@ -328,12 +349,12 @@
 </div>
 
 <!-- Script to open modal by default -->
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", function(){
         var myModal = new bootstrap.Modal(document.getElementById('employee_list'));
         myModal.show();
     });
-</script>
+</script> -->
 
 </body>
 </html>
