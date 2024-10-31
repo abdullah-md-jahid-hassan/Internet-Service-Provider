@@ -55,15 +55,16 @@
 
     // If Assigned button clicked
     if(isset($_POST['assign'])) {
-        $titel = $_POST['task_title'];
+        $name = $_POST['task_name'];
         $em_id = $_SESSION['employee_id_task'];
         $ref = $_SESSION['connections_id_details'];
         $details = $_POST['task_details'];
-        $date = $_POST['task_date'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
         $address = $_POST['task_address'];
 
         //insart task
-        $task_insertion_sql = "INSERT INTO `task` (`title`, `status`, `address`, `employee_id`, `task_ref`, `details`, `last_date`) VALUES ('$titel', 'Pending', '$address', '$em_id', '$ref', '$details', '$date');";
+        $task_insertion_sql = "INSERT INTO `task` (`name`, `state`, `address`, `employee_id`, `task_ref`, `details`, `start`, `end`) VALUES ('$name', 'Pending', '$address', '$em_id', '$ref', '$details', '$start_date', '$end_date');";
         // connect to the database
         require '_database_connect.php';
         $run_task_insertion = mysqli_query($connect, $task_insertion_sql);
@@ -71,10 +72,13 @@
         mysqli_close($connect);
 
         if($run_task_insertion){
-
+            unset($_SESSION['employee_id_task']);
             //rederect to the previous page
-            
-            echo "<script> window.location.href='requests.php';</script>";
+            if(isset($_SESSION['connections_id_details'])){
+                unset($_SESSION['connections_id_details']);
+                echo "<script> window.location.href='requests.php';</script>";
+            }
+            else echo "<script> window.location.href='task_reports.php';</script>";
             die();
         }
 
@@ -134,6 +138,8 @@
 
 <div class="container assign_task_body rounded my-3 py-2">
     <form method="post" class="text-light">
+
+        <!-- Assigned employee -->
         <div class="mb-3">
             <label for="task_details" class="form-label">Assigned Emmployee</label><br>
             <?php
@@ -187,15 +193,13 @@
                         </div>
                     </div>";
                 }
-            ?>
-
-            
+            ?> 
         </div>
 
-
+        <!-- Task tital -->
         <div class="mb-3">
-            <label for="task_title" class="form-label">Task Title</label>
-            <input type="text" class="form-control" id="task_title" name="task_title" <?php
+            <label for="task_name" class="form-label">Task Title</label>
+            <input type="text" class="form-control" id="task_name" name="task_name" <?php
             if(isset($_SESSION['connections_id_details'])){
                 echo "value='";
                 if($connection['state']=="Connection Pending"){
@@ -211,6 +215,7 @@
             }?>>
         </div>
 
+        <!-- Task Addrass -->
         <div class="mb-3">
             <label for="task_address" class="form-label">Task Address</label>
             <input type="text" class="form-control" id="task_address" name="task_address" <?php if(isset($_SESSION['connections_id_details'])){echo "value='"."$connection[address]"."'";} else {
@@ -218,9 +223,19 @@
             }?>>
         </div>
 
+        <!-- Task Start -->
         <div class="mb-3">
-            <label for="task_date" class="form-label">Task Date</label>
-            <input type="date" class="form-control" id="task_date" name="task_date" <?php if(isset($_SESSION['connections_id_details'])){
+            <label for="start_date" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="start_date" name="start_date" <?php
+            if(isset($_SESSION['connections_id_details'])){
+                echo "value='" . date('Y-m-d') . "'";
+            }?>>
+        </div>
+
+        <!-- Task End -->
+        <div class="mb-3">
+            <label for="end_date" class="form-label">Last Date</label>
+            <input type="date" class="form-control" id="end_date" name="end_date" <?php if(isset($_SESSION['connections_id_details'])){
                 echo "value='";
                 if($connection['state']=="Connection Pending"){
                     echo "$connection[starting_date]"."'";
@@ -232,11 +247,13 @@
             }?>>
         </div>
 
+        <!-- task detais -->
         <div class="mb-3">
             <label for="task_details" class="form-label">Task Details</label>
             <input type="text" class="form-control" id="task_details" name="task_details" placeholder="Enter the details Here">
         </div>
-
+        
+        <!-- Assign Button -->
         <button type="submit" class="btn btn-success" name="assign"><i class="fa-solid fa-scroll"></i> Assign</button>
     </form>
 </div>

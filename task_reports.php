@@ -59,8 +59,6 @@
         
     ?>
 
-
-
     <div class="container my-3">
         <!-- Search bar with filter -->
         <form method="get">
@@ -83,8 +81,6 @@
         </form>
     </div>
 
-
-
     <?php
         // if Assign task button clicked
         if(isset($_GET['assign_task'])) {
@@ -98,13 +94,13 @@
             if($key=="all" && $word==""){
                 $find_task_sql = "SELECT * FROM `task`";
             } else if($key=="all" && $word!=""){
-                $find_task_sql = "SELECT * FROM `task` WHERE CONCAT(title, address, status) LIKE '%$word%'";
+                $find_task_sql = "SELECT * FROM `task` WHERE CONCAT(name, address, state) LIKE '%$word%'";
             } else if($key=="title" && $word!=""){
-                $find_task_sql = "SELECT * FROM `task` WHERE `title` LIKE '%$word%'";
+                $find_task_sql = "SELECT * FROM `task` WHERE `name` LIKE '%$word%'";
             } else if($key=="address" && $word!=""){
                 $find_task_sql = "SELECT * FROM `task` WHERE `address` LIKE '%$word%'";
             } else if($key=="status" && $word!=""){
-                $find_task_sql = "SELECT * FROM `task` WHERE `status` LIKE '%$word%'";
+                $find_task_sql = "SELECT * FROM `task` WHERE `state` LIKE '%$word%'";
             }
         } else {$find_task_sql = "SELECT * FROM `task`";}
 
@@ -136,16 +132,11 @@
                 for($i=0; $i<$total_task; $i++){
                     $task = mysqli_fetch_assoc($find_task);
 
-                    // Find the Employee number
-                    //$find_task_employee_sql = "SELECT * FROM `employee` where `id` = '{$task['employee_id']}'";
-                    //$find_task_employee = mysqli_query($connect, $find_task_employee_sql);
-                    //$task_employee = mysqli_num_rows($find_task_employee);
-
                     echo"<tr>
-                            <td>$task[title]</td>
+                            <td>$task[name]</td>
                             <td>$task[address]</td>
-                            <td>$task[status]</td>
-                            <td>$task[last_date]</td>
+                            <td>$task[state]</td>
+                            <td>$task[end]</td>
                             <td>
                                 <form method='post'>
                                     <input class='visually-hidden' type='text' name='em_id' value='$task[employee_id]'</input>
