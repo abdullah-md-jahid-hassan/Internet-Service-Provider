@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 31, 2024 at 11:00 AM
+-- Generation Time: Jan 16, 2025 at 05:06 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -70,7 +70,9 @@ CREATE TABLE `connections` (
   `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `customer_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `plan_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `state` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `state` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `starting_date` date NOT NULL,
+  `submission_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -100,7 +102,9 @@ CREATE TABLE `customer` (
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `phone` bigint DEFAULT NULL,
   `address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nid` int NOT NULL,
+  `gender` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -138,15 +142,16 @@ CREATE TABLE `employee` (
   `nid_file` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `certificate_file` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `resume_file` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `photo_file` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `photo_file` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `position` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`id`, `name`, `post`, `phone`, `email`, `password`, `address`, `gender`, `salary`, `nid`, `nid_file`, `certificate_file`, `resume_file`, `photo_file`) VALUES
-('em24092820023400c5a', 'Abdullah Md Jahid Hassan', 'Manager', 1756254873, 'abdullahmdjahidhassan@gmail.com', 'em1', 'Uttara, Dhaka', 'male', 50000, 1234567890, 'files/employee/nid_file/em24092820023400c5a_nid.pdf', 'files/employee/certificate_file/em24092820023400c5a_certificate.pdf', 'files/employee/resume_file/em24092820023400c5a_resume.pdf', 'files/employee/profile_pic_file/em24092820023400c5a_photo.jpg');
+INSERT INTO `employee` (`id`, `name`, `post`, `phone`, `email`, `password`, `address`, `gender`, `salary`, `nid`, `nid_file`, `certificate_file`, `resume_file`, `photo_file`, `position`) VALUES
+('em24092820023400c5a', 'Abdullah Md Jahid Hassan', 'Manager', 1756254873, 'abdullahmdjahidhassan@gmail.com', 'em1', 'Uttara, Dhaka', 'male', 50000, 1234567890, 'files/employee/nid_file/em24092820023400c5a_nid.pdf', 'files/employee/certificate_file/em24092820023400c5a_certificate.pdf', 'files/employee/resume_file/em24092820023400c5a_resume.pdf', 'files/employee/profile_pic_file/em24092820023400c5a_photo.jpg', '');
 
 --
 -- Triggers `employee`
