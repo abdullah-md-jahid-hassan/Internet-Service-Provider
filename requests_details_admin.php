@@ -75,7 +75,7 @@
                 <div class="card-footer">
                     <form method="post">
                         <?php
-                            if ($connection['state']=="Connection Pending"){
+                            if ($connection['state']=="Pending"){
                                 echo "<button class='btn btn-success' type='submit' name='connection'><i class='fa-solid fa-plus'></i> Accept Connection</button>
 
                                 <button class='btn btn-danger' type='submit' name='reject'><i class='fa-solid fa-xmark'></i> Reject Request</button>";
@@ -164,7 +164,7 @@
             require '_database_connect.php';
 
             // Reject And Get Back to privious state
-            if ($connection['state']=="Connection Pending"){
+            if ($connection['state']=="Pending"){
                 $reject_sql = "DELETE FROM `connections` WHERE `id` = '{$connection['id']}'";
             }else{
                 $reject_sql = "UPDATE `connections` SET `state` = 'Active' WHERE `id` = '{$connection['id']}'";

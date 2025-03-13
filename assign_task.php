@@ -202,9 +202,9 @@
             <input type="text" class="form-control" id="task_name" name="task_name" <?php
             if(isset($_SESSION['connections_id_details'])){
                 echo "value='";
-                if($connection['state']=="Connection Pending"){
+                if($connection['state']=="Pending"){
                     echo "New connection in ";
-                }else if (strpbrk($connection['state'], '0123456789')) {
+                }else if (preg_match('/^[or]/', $connection['state'])) {
                     echo "Update connection in ";
                 } else if($connection['state']=="Delete Request Pending"){
                     echo "Disconnect connection in ";
@@ -237,7 +237,7 @@
             <label for="end_date" class="form-label">Last Date</label>
             <input type="date" class="form-control" id="end_date" name="end_date" <?php if(isset($_SESSION['connections_id_details'])){
                 echo "value='";
-                if($connection['state']=="Connection Pending"){
+                if($connection['state']=="Pending"){
                     echo "$connection[starting_date]"."'";
                 }else if (strpbrk($connection['state'], '0123456789')) {
                     echo "$connection[submission_date]"."'";

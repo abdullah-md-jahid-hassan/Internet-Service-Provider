@@ -21,7 +21,7 @@
         $page_type = "requests";
         if($_SESSION['show'] == "new_connections"){
             $page_name = "new connections";
-            $state = "Connection Pending";
+            $state = "Pending";
         }else if($_SESSION['show'] == "update_coneections"){
             $page_name = "update coneections";
             $state = "Update Request Pending";
@@ -79,7 +79,7 @@
         require '_database_connect.php';
 
         //Data fatching And Sarcbar function
-        if($state == "Connection Pending"  || $state == "Delete Request Pending"){
+        if($state == "Pending"  || $state == "Delete Request Pending"){
             $find_connections_sql = "SELECT * FROM `connections` WHERE `state` = '{$state}' ";
             if(isset($key) && isset($word)){
                 if($key=="all" && $word!=""){
@@ -93,16 +93,16 @@
                 }
             }
         }else if($state == "Update Request Pending"){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Connection Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active'";
+            $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active'";
             if(isset($key) && isset($word)){
                 if($key=="all" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Connection Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND CONCAT(name, address) LIKE '%$word%'";
+                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND CONCAT(name, address) LIKE '%$word%'";
                 } else if($key=="name" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Connection Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `name` LIKE '%$word%'";
+                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `name` LIKE '%$word%'";
                 } else if($key=="address" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Connection Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `address` LIKE '%$word%'";
+                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `address` LIKE '%$word%'";
                 } else if($key=="type" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Connection Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `type` LIKE '%$word%'";
+                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `type` LIKE '%$word%'";
                 }
             }
         }

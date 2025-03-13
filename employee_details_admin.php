@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee <Details></Details></title>
+    <title>Employee Details</title>
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
 
-    <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="customer_details.css">
     <!-- Link End -->
 
@@ -77,7 +76,17 @@
 
         // Find the task number
         $find_task = mysqli_query($connect, $find_task_sql);
-        $total_task = mysqli_num_rows($find_task);
+        $total_task_to_show = mysqli_num_rows($find_task);
+
+        // Find Task Ratio
+        $total_task =  mysqli_num_rows(mysqli_query($connect, "SELECT * FROM `task` WHERE `employee_id` = '{$employee_id}'"));
+
+        $completed_task = mysqli_num_rows(mysqli_query($connect, "SELECT * FROM `task` WHERE `employee_id` = '{$employee_id}' AND `state` = 'completed'"));
+
+        $task_ratio = ($total_task > 0) ? round(($completed_task / $total_task) * 100, 2) : 0;
+
+        // Close the database connection
+        mysqli_close($connect);
     ?>
 
     <div class="container">
@@ -106,7 +115,7 @@
     <!-- task Section -->
     <div class='container'>
         <div>
-            <h5 class='p-2 bg-info rounded'>Total Assigned Task: <?php echo $total_task;?></h5>
+            <h5 class='p-2 bg-info rounded'>Total Assigned Task: <?php echo $total_task_to_show;?></h5>
         </div>
 
         <div class="container">
@@ -133,11 +142,11 @@
 
         <?php
             // Showing task list
-            if($total_task>0){
+            if($total_task_to_show>0){
                 echo "
                 <div class='container overflow-x-scroll'>
                     <div class='num_of_res text-light btn btn-dark m-1'>
-                        <h7 class='pt-2'>Total Result: $total_task</h7>
+                        <h7 class='pt-2'>Total Result: $total_task_to_show</h7>
                     </div>
                     <table class='table table-info table-striped table-hover m-1 p-2 text-center'>
                         <thead>
@@ -149,7 +158,7 @@
                             </tr>
                         </thead>
                         <tbody>";
-                    for($i=0; $i<$total_task; $i++){
+                    for($i=0; $i<$total_task_to_show; $i++){
                         $task = mysqli_fetch_assoc($find_task);
 
                         echo"<tr>
@@ -164,61 +173,63 @@
                     </table>
                 </div>";
             }
+        ?>
+
+        <!-- Charts -->
+        <div class="row justify-content-center mt-5">
+            <!-- Doughnut-PI chart for plans -->
+            <div class="col-lg-6 col-sm-12 my-3">
+                <div class="bg-light rounded p-3" style="width: 100%;">
+                    <h5 class=" text-center"><b>Task Report</b></h5>
+                    <h6 class=" text-center">
+                        <b>Total: <?php echo"$total_task"?><br>
+                        Sacsess Ratio: <?php echo"$task_ratio"?>%</b>
+                    </h6>
+                    <canvas id="doughnut_pi_plans"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Comon js File For charts by chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Data forDoughnut-PI chart for plans
+        <?php
+            // connect to the database
+            require '_database_connect.php';
+
+            $late_task = mysqli_num_rows(mysqli_query($connect, "SELECT * FROM `task` WHERE `employee_id` = '{$employee_id}' AND `state` = 'late'"));
+
+            $pending_task = $total_task - $completed_task - $late_task;
 
             // Close the database connection
             mysqli_close($connect);
         ?>
-    </div>
 
-    <!-- Paymeent History section -->
-    <div class='container <?php if($total_payement>0){echo "overflow-x-scroll";}?>'>
-        <div>
-            <h5 class='p-2 bg-info rounded'>Total Active Connections: <?php echo $total_task;?></h5>
-        </div>
-
-    <?php
-        // Showing Customer list
-        if($total_task>0){
-            echo "
-            <table class='table table-info table-striped table-hover mx-2 p-2 text-center'>
-            <thead>
-                <tr>
-                    <th>Connection name</th>
-                    <th>Address</th>
-                    <th>Plan Type</th>
-                    <th>Plan Name</th>
-                    <th>Speed</th>
-                    <th>Monthly Bill</th>
-                </tr>
-            </thead>
-            <tbody>";
-            for($i=0; $i<$total_task; $i++){
-                //getting customer info
-                $employee = mysqli_fetch_assoc($find_customer);
-
-                //Getting connection info
-                $connection = mysqli_fetch_assoc($find_connection);
-
-                // getting plan name
-                $plan_sql = "SELECT * FROM `{$connection['type']}` WHERE `id` = '{$connection['plan_id']}'";
-                $get_plan = mysqli_query($connect, $plan_sql);
-                $plan = mysqli_fetch_assoc($get_plan);
-
-                echo"
-                <tr>
-                    <td>$connection[name]</td>
-                    <td>$connection[address]</td>
-                    <td>$connection[type]</td>
-                    <td>$plan[name]</td>
-                    <td>$plan[speed]</td>
-                    <td>$plan[price]</td>
-                </tr>";
+        // Doughnut-PI chart for plans
+        const d_pai = document.getElementById('doughnut_pi_plans');
+        new Chart(d_pai, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Late', 'Pending'],
+                datasets: [
+                    {
+                        data: [<?= $completed_task ?>, <?= $late_task ?>, <?= $pending_task ?>],
+                        backgroundColor: [
+                            'rgb(0, 255, 0)',
+                            'rgb(255, 0, 0)',
+                            'rgb(0, 0, 255)'
+                        ],
+                        hoverOffset: 15
+                    }
+                ]
             }
-            echo "
-            </tbody>
-        </table>";
-        }
-    ?>
-    </div>
+        });
+    </script>
+    
 </body>
 </html>

@@ -45,7 +45,8 @@
     <!-- NavBar End -->
 
     <?php
-        //Requests Rederections
+        
+        // If Button on card or nav taks buttons clicked clicked
         if(isset($_POST['pending_tasks'])){
             $_SESSION['task_type'] = "Pending";
             echo "<script> window.location.href='employee_tasks.php';</script>";
@@ -55,7 +56,7 @@
             echo "<script> window.location.href='employee_tasks.php';</script>";
             die();
         }else if(isset($_POST['expired_tasks'])){
-            $_SESSION['task_type'] = "Expired";
+            $_SESSION['task_type'] = "Late";
             echo "<script> window.location.href='employee_tasks.php';</script>";
             die();
         }

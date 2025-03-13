@@ -48,7 +48,6 @@
                     <option value="all" selected>Search By</option>
                     <option value="title">Title</option>
                     <option value="address">Address</option>
-                    <option value="status">Status</option>
                 </select>
                 <input type="text" class="form-control" name="word" placeholder="Search">
                 <button class="btn btn-danger btn-outline-light" name="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></i> Search</button>  
@@ -59,7 +58,7 @@
 
 
     <?php
-        if (isset($_SESSION['task_type'])) $match = " AND  `status` = '{$_SESSION['task_type']}'"; else {
+        if (isset($_SESSION['task_type'])) $match = " AND  `state` = '{$_SESSION['task_type']}'"; else {
             echo "<script> window.location.href='dash_employee.php';</script>";
             die();
         }
@@ -67,17 +66,15 @@
         //Sarcbar function
         if(isset($key) && isset($word)){
             if($key=="all" && $word==""){
-                $find_task_sql = "SELECT * FROM `task` WHERE `status` = '{$_SESSION['task_type']}'";
+                $find_task_sql = "SELECT * FROM `task` WHERE `id` = '{$_SESSION['id']}' AND `state` = '{$_SESSION['task_type']}'";
             } else if($key=="all" && $word!=""){
-                $find_task_sql = "SELECT * FROM `task` WHERE CONCAT(title, address, status) LIKE '%$word%'".$match;
+                $find_task_sql = "SELECT * FROM `task` WHERE CONCAT(title, address, state) LIKE '%$word%'".$match;
             } else if($key=="title" && $word!=""){
                 $find_task_sql = "SELECT * FROM `task` WHERE `title` LIKE '%$word%'".$match;
             } else if($key=="address" && $word!=""){
                 $find_task_sql = "SELECT * FROM `task` WHERE `address` LIKE '%$word%'".$match;
-            } else if($key=="status" && $word!=""){
-                $find_task_sql = "SELECT * FROM `task` WHERE `status` LIKE '%$word%'".$match;
             }
-        } else {$find_task_sql = "SELECT * FROM `task` WHERE `status` = '{$_SESSION['task_type']}'";}
+        } else {$find_task_sql = "SELECT * FROM `task` WHERE `state` = '{$_SESSION['task_type']}'";}
 
         // connect to the database
         require '_database_connect.php';
@@ -99,39 +96,28 @@
                             <th>Titel</th>
                             <th>Address</th>
                             <th>Customer Number</th>
-                            <th>Status</th>
-                            <th>Last Date</th>
-                            <th>Employee Details</th>
-                        </tr>
+                            <th>State</th>
+                            <th>Last Date</th>";
+                            if ($_SESSION['task_type'] == "Pending"){
+                                echo "<th>Action</th>";
+                            }
+                        echo "</tr>
                     </thead>
                     <tbody>";
                 for($i=0; $i<$total_task; $i++){
                     $task = mysqli_fetch_assoc($find_task);
 
-                    // Find the Employee number
-                    //$find_task_employee_sql = "SELECT * FROM `employee` where `id` = '{$task['employee_id']}'";
-                    //$find_task_employee = mysqli_query($connect, $find_task_employee_sql);
-                    //$task_employee = mysqli_num_rows($find_task_employee);
-
                     echo"<tr>
-                            <td>$task[title]</td>
+                            <td>$task[name]</td>
                             <td>$task[address]</td>
                             <td>$task[address]</td>
-                            <td>$task[status]</td>
-                            <td>$task[last_date]</td>
+                            <td>$task[state]</td>
+                            <td>$task[end]</td>
                             <td>
                                 <form method='post'>
                                     <input class='visually-hidden' type='text' name='t_id' value='$task[id]'</input>";
-                                    switch ($_SESSION['task_type']){
-                                        case "Pending":
-                                            echo "<button type='submit' name='details' class='btn btn-danger'>Job Done</button>";
-                                            break;
-                                        case "Completed":
-                                            echo "<button class='btn btn-success'>Complited</button>";
-                                            break;
-                                        case "Expired":
-                                            echo "<button type='submit' name='details' class='btn btn-darks'>Lately Done</button>";
-                                            break;
+                                    if ($_SESSION['task_type'] == "Pending"){
+                                        echo "<button type='submit' name='details' class='btn btn-danger'>Job Done</button>";
                                     }
                                     
                                 echo "</form>
@@ -144,7 +130,8 @@
             </div>";
         }
         
-        
+        // Close the database connection
+        mysqli_close($connect);
 
         // If detail button clicked
         if(isset($_POST['details'])) {
@@ -185,9 +172,9 @@
                     echo "Error checking connection state: " . mysqli_error($connect);
                 }
             }
-            //update task status
-            $up_task_status_sql = "UPDATE `task` SET `status` = 'Completed' WHERE `task`.`id` = '{$_POST['t_id']}'";
-            $up_task_status = mysqli_query($connect, $up_task_status_sql);
+            //update task state
+            $up_task_state_sql = "UPDATE `task` SET `state` = 'Completed' WHERE `task`.`id` = '{$_POST['t_id']}'";
+            $up_task_state = mysqli_query($connect, $up_task_state_sql);
             // Close the database connection
             mysqli_close($connect);
         }

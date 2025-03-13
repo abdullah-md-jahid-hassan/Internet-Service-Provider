@@ -8,12 +8,12 @@
             </button>
 
             <!-- Page Name -->
-            <a class="navbar-brand text-uppercase" href="about.php"><?php echo $page_name;?></a>
+            <a class="navbar-brand text-uppercase" href="dash_customer.php"><?php echo $page_name;?></a>
 
             <!-- Nav Icons -->
             <div class="nav-icon">
                 <!-- <a class="navbar-brand px-3" href="customer_notification.php" title="Notification"><i class="fa-regular fa-bell nav-icon"></i></a> -->
-                <a class="navbar-brand px-3" href="admin_info.php" title="Profile"><i class="fa-regular fa-user nav-icon"></i></a>
+                <a class="navbar-brand px-3" href="customer_info.php" title="Profile"><i class="fa-regular fa-user nav-icon"></i></a>
                 <a class="navbar-brand px-3" href="logout.php" title="Logout"><i class="fa-solid fa-right-from-bracket nav-icon"></i></a>
             </div>
 

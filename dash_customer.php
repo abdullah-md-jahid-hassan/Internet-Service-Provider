@@ -8,10 +8,7 @@
 
     <?php include '_link_common.php'; ?>
 
-    <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="carousel.css">
-    <link rel="stylesheet" href="dash_customer.css">
-    <link rel="stylesheet" href="footer.css">
     <!-- Link End--> 
 </head>
 
@@ -61,6 +58,55 @@
 
 
     <div class="container my-3">
+        <div class="row justify-content-center my-5">
+
+            <!-- Connections -->
+            <div class="col-auto p-2">
+                <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
+                    <div class="card-side rounded-start" style="background-color: rgb(86, 86, 221)"></div>
+                    <div class="card-text">
+                        <h5><i class="fa-solid fa-wifi" style="color:rgb(86, 86, 221)"></i> Connections</h5>
+                        <p>Residential: <?php echo "h"; ?></p>
+                        <p>Organizational: <?php echo "k"; ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bill and Payments -->
+            <div class="col-auto p-2">
+                <div class="card-box card-1 bg-light rounded d-flex align-items-center">
+                    <div class="card-side rounded-start" style="background-color: green"></div>
+                    <div class="card-text">
+                        <h5><i class="fa-solid fa-money-check-dollar" style="color:green"></i> Bill and Payments</h5>
+
+                        <?php
+                            if (true){
+                                echo '<button class="btn btn-success rounded p-2">Pay</button>';
+                            }
+                            else{
+                                echo '<p>Current deu: <?php echo "h"; ?></p>';
+                            }
+                        ?><br>
+
+                        <button class="btn btn-success rounded mt-2">Payment_details</button>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complains -->
+            <div class="col-auto p-2">
+                <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
+                    <div class="card-side rounded-start" style="background-color: black"></div>
+                    <div class="card-text">
+                        <h5><i class="fa-solid fa-paper-plane"></i> Complains</h5>
+                        <p>Unsolved Complain: <?php echo "rr"; ?></p>
+                        <button class="btn btn-secondary rounded p-2" name="complaines">Complain list</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Search bar with filter -->
         <form method="get">
             <div class="input-group">
@@ -103,7 +149,7 @@
         // Showing connections list
         if($total_connections>0){
             echo "
-            <div class='container overflow-x-auto my-4'>
+            <div class='container overflow-x-auto mb-5'>
                 <div class='num_of_res text-light btn btn-dark m-2'>
                     <h7 class='pt-2'>Total Result: $total_connections</h7>
                 </div>
@@ -130,8 +176,8 @@
                     $plan = mysqli_fetch_assoc($get_plan);
 
                     //To show Update State Not Requested Plan ID
-                    if($connections['state']!="Active" && $connections['state']!="Delete Request Pending" && $connections['state']!="Connection Pending"){
-                        $connections['state'] = "Update Request Pending";
+                    if (str_starts_with($connections['state'], 'o') || str_starts_with($connections['state'], 'r')) {
+                        $connections['state'] = "Update request pending";
                     }
 
                     //Search Filter for Speed and Price

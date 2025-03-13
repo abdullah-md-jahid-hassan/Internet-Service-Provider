@@ -51,17 +51,17 @@
     $residential_plans_num = mysqli_num_rows($find_residential_plans);
 
     // Get number of Connections
-    $find_connections_sql = "SELECT * FROM `connections`";
+    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending'";
     $find_connections = mysqli_query($connect, $find_connections_sql);
     $connections_num = mysqli_num_rows($find_connections);
 
     // Get New connectoon requests
-    $find_new_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Connection Pending'";
+    $find_new_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Pending'";
     $find_new_connections = mysqli_query($connect, $find_new_connections_sql);
     $new_connections_num = mysqli_num_rows($find_new_connections);
 
     // GeT UPDATE requests
-    $find_update_connections_sql = "SELECT * FROM `connections`  WHERE `state` LIKE '%2%'";
+    $find_update_connections_sql = "SELECT * FROM `connections` WHERE `state` LIKE 'o%' OR `state` LIKE 'r%'";
     $find_update_connections = mysqli_query($connect, $find_update_connections_sql);
     $update_connections_num = mysqli_num_rows($find_update_connections);
 
@@ -328,7 +328,18 @@
             }
         });
 
+        // Data forDoughnut-PI chart for plans
+        <?php
+            // connect to the database
+            require '_database_connect.php';
 
+            // $find_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Pending'";
+            // $find_connections = mysqli_query($connect, $find_connections_sql);
+            // $connections_num = mysqli_num_rows($find_connections);
+
+            // Close the database connection
+            mysqli_close($connect);
+        ?>
         // Doughnut-PI chart for plans
         const d_pai = document.getElementById('doughnut_pi_plans');
         new Chart(d_pai, {
@@ -347,11 +358,9 @@
                     },
                     {
                         label: 'Customers',
-                        data: [80, 0, 0],
+                        data: [80],
                         backgroundColor: [
-                            'rgb(0, 255, 255)',
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)'
+                            'rgb(0, 255, 255)'
                         ],
                         hoverOffset: 20,
                         borderWidth: 0

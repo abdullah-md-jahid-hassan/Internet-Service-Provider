@@ -6,10 +6,6 @@
     <title>Employee Dashboard</title>
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
-
-    <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="navbar.css">
-    <link rel="stylesheet" href="dash_admin.css">
     <!-- Link End -->
 
 </head>
@@ -28,67 +24,116 @@
     require '_database_connect.php';
 
     // Get number of pending task
-    $find_pending_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `status` = 'Pending'";
+    $find_pending_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `state` = 'Pending'";
     $find_pending_task = mysqli_query($connect, $find_pending_task_sql);
-    $pending_task_num = mysqli_num_rows($find_pending_task);
+    $pending_task = mysqli_num_rows($find_pending_task);
 
     // Get number of conplited task
-    $find_completed_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `status` = 'Completed'";
+    $find_completed_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `state` = 'Completed'";
     $find_completed_task = mysqli_query($connect, $find_completed_task_sql);
-    $completed_task_num = mysqli_num_rows($find_completed_task);
+    $completed_task = mysqli_num_rows($find_completed_task);
 
     // Get number of Expiard task
-    $find_expired_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `status` = 'Expired'";
+    $find_expired_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `state` = 'late'";
     $find_expired_task = mysqli_query($connect, $find_expired_task_sql);
-    $expired_task_num = mysqli_num_rows($find_expired_task);
+    $late_task = mysqli_num_rows($find_expired_task);
+
+    // Close the database connection
+    mysqli_close($connect);
 ?>
 
 <div class="container">
     <div class="row justify-content-center my-5">
 
-
-        <!-- Task -->
+        <!-- Pending Task -->
         <div class="col-auto p-2">
             <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                 <div class="card-side rounded-start" style="background-color: red"></div>
                 <div class="card-text">
                     <h5><i class="fa-solid fa-list-check" style="color: #9d8189"></i>Pending Tasks</h5>
-                    <p>On-Going Task: <?php echo "$pending_task_num"; ?></p>
+                    <p>On-Going Task: <?php echo "$pending_task"; ?></p>
                     <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="pending_tasks">Pending Task list</button></form>
                 </div>
             </div>
         </div>
 
-        <!-- Task -->
+        <!-- Completed Task -->
         <div class="col-auto p-2">
             <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                 <div class="card-side rounded-start" style="background-color: green"></div>
                 <div class="card-text">
                     <h5><i class="fa-solid fa-check"></i> Completed Tasks</h5>
-                    <p>Completed Task: <?php echo "$completed_task_num"; ?></p>
-                    <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="pending_tasks">Completed Task list</button></form>
+                    <p>Completed Task: <?php echo "$completed_task"; ?></p>
+                    <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="completed_tasks">Completed Task list</button></form>
                 </div>
             </div>
         </div>
 
-        <!-- Task -->
+        <!-- Expiered Task -->
         <div class="col-auto p-2">
             <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                 <div class="card-side rounded-start" style="background-color: black"></div>
                 <div class="card-text">
                     <h5><i class="fa-solid fa-xmark"></i> Expired Tasks</h5>
-                    <p>Expired Task: <?php echo "$expired_task_num"; ?></p>
-                    <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="pending_tasks">Expired Task list</button></form>
+                    <p>Expired Task: <?php echo "$late_task"; ?></p>
+                    <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="expired_tasks">Expired Task list</button></form>
                 </div>
             </div>
         </div>
 
+        
+        <?php
+            // Charts
+
+            // Data or chart
+            $total_task = $completed_task + $late_task + $pending_task;
+
+            $task_ratio = ($total_task > 0) ? round(($completed_task / $total_task) * 100, 2) : 0;
+        ?>
+        <!-- Doughnut-PI chart for plans -->
+        <div class="col-lg-6 col-sm-12 my-3">
+            <div class="bg-light rounded p-3" style="width: 100%;">
+                <h5 class=" text-center"><b>Task Report</b></h5>
+                <h6 class=" text-center">
+                    <b>Total: <?php echo"$total_task"?><br>
+                    Sacsess Ratio: <?php echo"$task_ratio"?>%</b>
+                </h6>
+                <canvas id="doughnut_pi_plans"></canvas>
+            </div>
+        </div>
+
+        <!-- Comon js File For charts by chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            // Doughnut-PI chart for plans
+            const d_pai = document.getElementById('doughnut_pi_plans');
+            new Chart(d_pai, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed', 'Late', 'Pending'],
+                    datasets: [
+                        {
+                            data: [<?= $completed_task ?>, <?= $late_task ?>, <?= $pending_task ?>],
+                            backgroundColor: [
+                                'rgb(0, 255, 0)',
+                                'rgb(255, 0, 0)',
+                                'rgb(0, 0, 255)'
+                            ],
+                            hoverOffset: 15
+                        }
+                    ]
+                }
+            });
+        </script>
 
     </div>
+
+
 </div>
 
-
-
 <?php require '_footer_common.php';?>
+
+
 </body>
 </html>
