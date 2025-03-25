@@ -3,3 +3,7 @@
     width: 300px;
     border-radius: 50%;
 }
+
+.table_container {
+    max-height: 400px;
+}

@@ -9,4 +9,8 @@
     //Again Set the Session variable
     $_SESSION['id'] = $session_id;
     $_SESSION['user'] = $session_user;
+
+    //Unset temporary variable
+    unset($session_id);
+    unset($session_user);
 ?>

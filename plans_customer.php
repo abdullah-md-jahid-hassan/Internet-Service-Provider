@@ -14,9 +14,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_customer.php';
-        
         //Defining Page
         $page_type = "new_cnonnection";
         if($_SESSION['plan_type'] == "residential_plans"){
@@ -67,19 +64,19 @@
         //sql logic for the Search And Defalt
         if(isset($key) && isset($word)){
             if($key=="all" && $word==""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";
+                $show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}'";
             } else if($key=="all" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE CONCAT(name, speed, price, realip) LIKE '%$word%'";
+                $show_plans_sql = "SELECT * FROM  `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND CONCAT(name, speed, price, realip) LIKE '%$word%'";
             } else if($key=="name" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `name` LIKE '%$word%'";
+                $show_plans_sql = "SELECT * FROM  `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `name` LIKE '%$word%'";
             } else if($key=="speed" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `speed` LIKE '$word'";
+                $show_plans_sql = "SELECT * FROM  `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `speed` LIKE '$word'";
             } else if($key=="price" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `price` LIKE '$word'";
+                $show_plans_sql = "SELECT * FROM  `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `price` LIKE '$word'";
             } else if($key=="realip" && $word!=""){
-                $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `realip` LIKE '$word'";
+                $show_plans_sql = "SELECT * FROM  `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `realip` LIKE '$word'";
             }
-        } else {$show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";}
+        } else {$show_plans_sql = "SELECT * FROM  `plans` WHERE `type` = '{$_SESSION['plan_type']}'";}
         
         //Query
         $run_show_plan = mysqli_query($connect, $show_plans_sql);
@@ -94,7 +91,7 @@
         <h7 class='num_of_res text-light btn btn-dark pt-2'>Total Result: $result</h7>
         </div>";
         
-        // Fatching Data form database
+        // Fetching Data form database
         if($total_plans>0){
             echo"
             <!-- Plans -->
@@ -102,7 +99,7 @@
             for($i=0; $i<$total_plans; $i++){
                 $plan = mysqli_fetch_assoc($run_show_plan);
                 
-                //Escaping privious plan for plan update
+                //Escaping previous plan for plan update
                 if(isset($_SESSION['plan_id']) && $plan['id']==$_SESSION['plan_id']){continue;}
                 
                 echo "
@@ -144,10 +141,13 @@
         if(isset($_POST['action'])) {
             if($_SESSION['action']=="update"){
                 //Update the connection database
-                $plan_update_sql = "UPDATE `connections` SET `state` = '{$_POST['plan_id']}' WHERE `id` = '{$_SESSION['connections_id_details']}'";
+                $plan_update_sql = "UPDATE `connections` SET `state` = 'Update pending', `req_plan` = '{$_POST['plan_id']}' WHERE `id` = '{$_SESSION['connections_id_details']}'";
                 $plan_update = mysqli_query($connect, $plan_update_sql);
                 // Close the database connection
                 mysqli_close($connect);
+
+                //unset $_SESSION['action']
+                unset($_SESSION['action']);
                 //Redirect to the connection details
                 echo "<script> window.location.href='connections_details_customer.php';</script>";
                 die();

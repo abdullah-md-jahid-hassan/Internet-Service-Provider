@@ -15,9 +15,6 @@
 </head>
 <body>
 <?php
-    //Login check
-    require '_logincheck_admin.php';
-        
     //Defining Page
     $page_type = "manage_employee";
     $page_name = "Assign Task";
@@ -38,7 +35,7 @@
         // Close the database connection
         mysqli_close($connect);
 
-        // Seasion Variable for employee dtails
+        // Season Variable for employee details
         $_SESSION['employee_id_details'] = $_POST['employee_id'];
 
         // Generate the JavaScript code to open the new tab
@@ -52,35 +49,68 @@
         // Prevent form resubmission on reload
         echo "<script>history.pushState({}, '', '');</script>";
     }
+    
+    //Get Connection info
+    if (isset($_SESSION['connections_id_details'])){
+        // Get Connection Info
+        // connect to the database
+        require '_database_connect.php';
+        $find_connection_sql = "SELECT * FROM `connections` WHERE `id` = '{$_SESSION['connections_id_details']}'";
+        $find_connection = mysqli_query($connect, $find_connection_sql);
+        $connection = mysqli_fetch_assoc($find_connection);
+        // Close the database connection
+        mysqli_close($connect);
+    }
 
     // If Assigned button clicked
     if(isset($_POST['assign'])) {
-        $name = $_POST['task_name'];
-        $em_id = $_SESSION['employee_id_task'];
-        $ref = $_SESSION['connections_id_details'];
-        $details = $_POST['task_details'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
-        $address = $_POST['task_address'];
+        if (isset($_SESSION['employee_id_task'])){
+            $name = $_POST['task_name'];
+            $em_id = $_SESSION['employee_id_task'];
+            $ref = $_SESSION['connections_id_details'];
+            $details = $_POST['task_details'];
+            $start_date = $_POST['start_date'];
+            $end_date = $_POST['end_date'];
+            $address = $_POST['task_address'];
 
-        //insart task
-        $task_insertion_sql = "INSERT INTO `task` (`name`, `state`, `address`, `employee_id`, `task_ref`, `details`, `start`, `end`) VALUES ('$name', 'Pending', '$address', '$em_id', '$ref', '$details', '$start_date', '$end_date');";
-        // connect to the database
-        require '_database_connect.php';
-        $run_task_insertion = mysqli_query($connect, $task_insertion_sql);
-        // Close the database connection
-        mysqli_close($connect);
+            //insert task
+            $task_insertion_sql = "INSERT INTO `task` (`name`, `state`, `address`, `employee_id`, `task_ref`, `details`, `start`, `end`) VALUES ('$name', 'Pending', '$address', '$em_id', '$ref', '$details', '$start_date', '$end_date');";
+            // connect to the database
+            require '_database_connect.php';
+            $run_task_insertion = mysqli_query($connect, $task_insertion_sql);
+            // Close the database connection
+            mysqli_close($connect);
 
-        if($run_task_insertion){
-            unset($_SESSION['employee_id_task']);
-            //rederect to the previous page
-            if(isset($_SESSION['connections_id_details'])){
-                unset($_SESSION['connections_id_details']);
-                echo "<script> window.location.href='requests.php';</script>";
+            if($run_task_insertion){
+                unset($_SESSION['employee_id_task']);
+
+
+                //Set a IN process state in connection state and redirect to the previous page
+                if(isset($_SESSION['connections_id_details'])){
+                    //Set the connection state based on previous state
+                    if($connection['state']=="Pending") $new_con_state = "Connection in process";
+                    elseif($connection['state']=="Update pending")  $new_con_state = "Update in process";
+                    elseif($connection['state']=="Disconnection pending")  $new_con_state = "Disconnection in process";
+                    else $new_con_state = "Active";
+
+                    //Insert state
+                    $update_connection_state_sql = "UPDATE `connections` SET `state` = '{$new_con_state}' WHERE `id` = '{$_SESSION['connections_id_details']}'";
+                    // connect to the database
+                    require '_database_connect.php';
+                    $update_connection_state = mysqli_query($connect, $update_connection_state_sql);
+                    // Close the database connection
+                    mysqli_close($connect);
+
+                    unset($_SESSION['connections_id_details']);
+                    echo "<script> window.location.href='requests.php';</script>";
+                }
+                else echo "<script> window.location.href='task_reports.php';</script>";
+                die();
             }
-            else echo "<script> window.location.href='task_reports.php';</script>";
-            die();
+        } else{
+            $no_employee = true;
         }
+        
 
     }
 
@@ -95,9 +125,6 @@
         $key = "all";
         $word = "";
     }
-
-    // connect to the database
-    require '_database_connect.php';
 
     //sql
     if(isset($key) && isset($word)){
@@ -118,16 +145,12 @@
         } else {$show_employee_sql = "SELECT * FROM `employee`";}
     }
 
+    // connect to the database
+    require '_database_connect.php';
+
     //Query
     $run_show_employee = mysqli_query($connect, $show_employee_sql);
     $total_employee = mysqli_num_rows($run_show_employee);
-
-    if (isset($_SESSION['connections_id_details'])){
-        // Get Connection Info
-        $find_connection_sql = "SELECT * FROM `connections` WHERE `id` = '{$_SESSION['connections_id_details']}'";
-        $find_connection = mysqli_query($connect, $find_connection_sql);
-        $connection = mysqli_fetch_assoc($find_connection);
-    }
 
     // Close the database connection
     mysqli_close($connect);
@@ -141,45 +164,49 @@
 
         <!-- Assigned employee -->
         <div class="mb-3">
-            <label for="task_details" class="form-label">Assigned Emmployee</label><br>
+            <label for="task_details" class="form-label">Assigned Employee</label><br>
             <?php
                 if(!isset($_SESSION['employee_id_task'])){
                     echo "
                     <button type='button' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#employee_list'>
                         Choose an employee
                     </button>";
+                    if(isset($no_employee)){
+                        echo "
+                    <br><p>Must need an employee</p>";
+                    }
                 } else {
                     // connect to the database
                     require '_database_connect.php';
 
-                    //get chossen employee info
-                    $choosen_employee_sql = "SELECT * FROM `employee` WHERE `id` = '$_SESSION[employee_id_task]'";
-                    $run_choosen_employee = mysqli_query($connect, $choosen_employee_sql);
-                    $choosen_employee = mysqli_fetch_assoc($run_choosen_employee);
+                    //get chosen employee info
+                    $chosen_employee_sql = "SELECT * FROM `employee` WHERE `id` = '$_SESSION[employee_id_task]'";
+                    $run_chosen_employee = mysqli_query($connect, $chosen_employee_sql);
+                    $chosen_employee = mysqli_fetch_assoc($run_chosen_employee);
 
                     //get the pending task
-                    $pending_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$choosen_employee['id']}' AND `state` = 'pending'";
+                    $pending_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$chosen_employee['id']}' AND `state` = 'pending'";
                     $find_task = mysqli_query($connect, $pending_task_sql);
                     $pending_task_num_ch = mysqli_num_rows($find_task);
                     
                     //get the late task
-                    $late_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$choosen_employee['id']}' AND `state` LIKE 'late%'";
+                    $late_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$chosen_employee['id']}' AND `state` = 'late'";
                     $find_task = mysqli_query($connect, $late_task_sql);
                     $late_task_num_ch = mysqli_num_rows($find_task);
 
                     echo "<div class='container bg-light rounded text-black p-2'>
                         <div class='row'>
                             <div class='col align-self-start'>
-                                <img src='$choosen_employee[photo_file]' class='rounded-circle' alt='Employee Photo' style='width: 50px'>
+                                <img src='$chosen_employee[photo_file]' class='rounded-circle' alt='Employee Photo' style='width: 50px'>
                             </div>
                             <div class='col align-self-center'>
-                                <b>Name:</b> $choosen_employee[name]
+                                <b>Name:</b> $chosen_employee[name]
                             </div>
                             <div class='col align-self-center'>
-                                <b>Post:</b> $choosen_employee[post]
+                                <b>Post:</b> $chosen_employee[post]
                             </div>
                             <div class='col align-self-center'>
-                            <b>Phone:</b> $choosen_employee[phone]
+                            <b>Phone:</b> $chosen_employee[phone]
                             </div>
                             <div class='col align-self-center'>
                                 <b>Pending task:</b> $pending_task_num_ch
@@ -196,17 +223,17 @@
             ?> 
         </div>
 
-        <!-- Task tital -->
+        <!-- Task title -->
         <div class="mb-3">
             <label for="task_name" class="form-label">Task Title</label>
-            <input type="text" class="form-control" id="task_name" name="task_name" <?php
+            <input required type="text" class="form-control" id="task_name" name="task_name" <?php
             if(isset($_SESSION['connections_id_details'])){
                 echo "value='";
                 if($connection['state']=="Pending"){
                     echo "New connection in ";
-                }else if (preg_match('/^[or]/', $connection['state'])) {
+                }else if ($connection['state']=="Update pending") {
                     echo "Update connection in ";
-                } else if($connection['state']=="Delete Request Pending"){
+                } else if($connection['state']=="Disconnection pending"){
                     echo "Disconnect connection in ";
                 }
                 echo"$connection[address]"."'";
@@ -215,10 +242,10 @@
             }?>>
         </div>
 
-        <!-- Task Addrass -->
+        <!-- Task Address -->
         <div class="mb-3">
             <label for="task_address" class="form-label">Task Address</label>
-            <input type="text" class="form-control" id="task_address" name="task_address" <?php if(isset($_SESSION['connections_id_details'])){echo "value='"."$connection[address]"."'";} else {
+            <input required type="text" class="form-control" id="task_address" name="task_address" <?php if(isset($_SESSION['connections_id_details'])){echo "value='"."$connection[address]"."'";} else {
                 echo "placeholder='Enter the address Here'";
             }?>>
         </div>
@@ -226,7 +253,7 @@
         <!-- Task Start -->
         <div class="mb-3">
             <label for="start_date" class="form-label">Start Date</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" <?php
+            <input required type="date" class="form-control" id="start_date" name="start_date" <?php
             if(isset($_SESSION['connections_id_details'])){
                 echo "value='" . date('Y-m-d') . "'";
             }?>>
@@ -235,22 +262,21 @@
         <!-- Task End -->
         <div class="mb-3">
             <label for="end_date" class="form-label">Last Date</label>
-            <input type="date" class="form-control" id="end_date" name="end_date" <?php if(isset($_SESSION['connections_id_details'])){
+            <input required type="date" class="form-control" id="end_date" name="end_date" <?php
+            if(isset($_SESSION['connections_id_details'])){
                 echo "value='";
                 if($connection['state']=="Pending"){
                     echo "$connection[starting_date]"."'";
-                }else if (strpbrk($connection['state'], '0123456789')) {
-                    echo "$connection[submission_date]"."'";
-                } else if($connection['state']=="Delete Request Pending"){
+                }else if ($connection['state']=="Update pending" || $connection['state']=="Disconnection pending") {
                     echo "$connection[submission_date]"."'";
                 }
             }?>>
         </div>
 
-        <!-- task detais -->
+        <!-- task details -->
         <div class="mb-3">
             <label for="task_details" class="form-label">Task Details</label>
-            <input type="text" class="form-control" id="task_details" name="task_details" placeholder="Enter the details Here">
+            <textarea style="height: 200px;" required type="text" class="form-control" id="task_details" name="task_details" placeholder="Enter the details Here"></textarea>
         </div>
         
         <!-- Assign Button -->
@@ -263,7 +289,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="employee-list">Chhose Employee</h1>
+                <h1 class="modal-title fs-5" id="employee-list">Choose Employee</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -289,10 +315,7 @@
                 <?php
                     // Showing Employee list
                     echo "
-                        <div class='container overflow-auto mt-4'>
-                            <div class='num_of_res text-light btn btn-dark m-2'>
-                                <h7 class='pt-2'>Total Result: $total_employee</h7>
-                            </div>";
+                        <div class='container overflow-auto mt-4'>";
                     if($total_employee>0){
                         //Show the Employee List
                         echo "
@@ -316,6 +339,10 @@
                             
                             // Get each employee row
                             $employee = mysqli_fetch_assoc($run_show_employee);
+                            
+                            //skip self and equal positions data
+                            if($employee['is_sup_admin'] && $_SESSION['user'] == "sup_admin") continue;
+                            elseif(($employee['is_admin'] || $employee['is_sup_admin']) && $_SESSION['user'] == "admin") continue;
 
                             //get the pending task
                             $pending_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$employee['id']}' AND `state` = 'pending'";

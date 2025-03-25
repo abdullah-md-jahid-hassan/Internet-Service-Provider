@@ -14,9 +14,6 @@
 </head>
 <body>
     <?php
-        // Login check
-        require '_logincheck_admin.php';
-
         //Gloval Variables
         $plan_type = $plan_id = "";
         $plan_name = $plan_speed = $plan_price = $plan_realip = "No Data Found";
@@ -49,7 +46,7 @@
         require '_database_connect.php';
 
         // Getting Privious Data Form Database
-        $get_plan_data_sql = "SELECT * FROM `{$plan_type}` WHERE `id` = '{$plan_id}'";
+        $get_plan_data_sql = "SELECT * FROM `plans` Where `type` = '{$plan_type}' AND `id` = '{$plan_id}'";
         $get_plan_data = mysqli_query($connect, $get_plan_data_sql);
         if(!$get_plan_data){
             //Rederect to the Admin Home
@@ -83,7 +80,7 @@
             $realip = $_POST['plan_realip'];
 
             // SQL
-            $update_plan_sql = "UPDATE `{$plan_type}` SET `name` = '$name', `speed` = '$speed', `price` = '$price', `realip` = '$realip' WHERE `{$plan_type}`.`id` = '{$plan_id}';";
+            $update_plan_sql = "UPDATE `plans` SET `name` = '$name', `speed` = '$speed', `price` = '$price', `realip` = '$realip' WHERE `id` = '{$plan_id}';";
 
             // Insert Data Into Database
             $update_plan = mysqli_query($connect, $update_plan_sql);

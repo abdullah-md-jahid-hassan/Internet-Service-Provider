@@ -3,21 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comone page for Admin</title>
+    <title>Customer Details</title>
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
-
-    <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="customer_details.css">
     <!-- Link End -->
 
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_admin.php';
-            
         //Defining Page
         $page_type = "customers_list";
         $page_name = "Customers Details";

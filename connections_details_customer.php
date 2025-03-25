@@ -15,9 +15,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_customer.php';
-            
         //Defining Page
         $page_type = "connections";
         $page_name = "Connection Details";
@@ -34,14 +31,9 @@
         $connection = mysqli_fetch_assoc($find_connection);
 
         //Get plan info
-        $plan_sql = "SELECT * FROM `{$connection['type']}` WHERE `id` = '{$connection['plan_id']}'";
+        $plan_sql = "SELECT * FROM `plans` WHERE `type` = '{$connection['type']}' AND `id` = '{$connection['plan_id']}'";
         $get_plan = mysqli_query($connect, $plan_sql);
         $plan = mysqli_fetch_assoc($get_plan);
-
-        //To show Update State Not Requested Plan ID
-        if($connection['state']!="Active" && $connection['state']!="Delete Request Pending" && $connection['state']!="Connection Pending"){
-            $connection['state'] = "Update Request Pending";
-        }
 
         // Close the database connection
         mysqli_close($connect);
@@ -57,7 +49,7 @@
                 <div class="card-body">
                     <b>Name: </b><?php echo $connection['name'] ?><br>
                     <b>Address: </b><?php echo $connection['address'] ?><br>
-                    <b>Statas: </b><?php echo $connection['state'] ?>
+                    <b>States: </b><?php echo $connection['state'] ?>
                 </div>
                 <div class="card-footer">
                     <form method="post">
@@ -103,10 +95,10 @@
             // connect to the database
             require '_database_connect.php';
 
-            if($connection['state']=="Connection Panding"){
+            if($connection['state']=="Connection Pending"){
                 $delete_sql = "DELETE FROM `connections` WHERE `id` = '{$connection['id']}'";
             }
-            else {$delete_sql = "UPDATE `connections` SET `state` = 'Delete Request Pending' WHERE `id` = '{$connection['id']}'";}
+            else {$delete_sql = "UPDATE `connections` SET `state` = 'Disconnection pending' WHERE `id` = '{$connection['id']}'";}
             
             $delete = mysqli_query($connect, $delete_sql);
 

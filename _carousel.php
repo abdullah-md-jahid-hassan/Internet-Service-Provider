@@ -9,6 +9,7 @@
         <!-- Img Slide -->
         <div class="carousel-inner">
 
+            <!-- Residential Services -->
             <div class="carousel-item carousel-slide active">
                 <img src="images/carousel/index_slide1.jpg" class="d-block w-100 carousel-slide-img" alt="Check Out Our Services">
                 <div class="carousel-caption text-uppercase top-0">
@@ -24,6 +25,7 @@
                 </div>
             </div>
 
+            <!-- Organizational Services -->
             <div class="carousel-item carousel-slide">
                 <img src="images/carousel/index_slide2.jpg" class="d-block w-100 carousel-slide-img" alt="Check Out Our Services">
                 <div class="carousel-caption text-uppercase top-0">
@@ -56,7 +58,7 @@
     <!-- Carousel Slide end -->
 
     <?php
-        //Plans Rederection PHP
+        //Plans Redetection PHP
         if(isset($_POST['residential_plans'])){
             $_SESSION['plan_type'] = "residential_plans";
             echo "<script> window.location.href='plans_admin.php';</script>";

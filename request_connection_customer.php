@@ -6,17 +6,11 @@
     <title>Add Plans</title>
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
-
-    <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="navbar.css">
     <!-- Link End -->
 
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_customer.php';
-            
         // Defining Page
         $page_type = "new_cnonnection";
         if($_SESSION['plan_type'] == "residential_plans"){
@@ -35,7 +29,7 @@
 
         //getting tthe plan details
         // SQL
-        $plan_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `id` = '{$_SESSION['plan_id_new']}'";
+        $plan_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `id` = '{$_SESSION['plan_id_new']}'";
         //Query
         $plan_query = mysqli_query($connect, $plan_sql);
         $total_plans = mysqli_num_rows($plan_query);

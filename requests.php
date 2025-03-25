@@ -14,20 +14,20 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_admin.php';
-            
         //Defining Page
         $page_type = "requests";
         if($_SESSION['show'] == "new_connections"){
             $page_name = "new connections";
             $state = "Pending";
-        }else if($_SESSION['show'] == "update_coneections"){
-            $page_name = "update coneections";
-            $state = "Update Request Pending";
-        }else if($_SESSION['show'] == "delete_connections"){
+        }else if($_SESSION['show'] == "update_connections"){
+            $page_name = "update connections";
+            $state = "Update Pending";
+        }else if($_SESSION['show'] == "disconnect_connections"){
             $page_name = "delete connections";
-            $state = "Delete Request Pending";
+            $state = "Disconnection Pending";
+        } else{
+            echo "<script> window.location.href='dash_admin.php';</script>";
+            die();
         }
 
         //variables
@@ -75,38 +75,22 @@
 
 
     <?php
-        // connect to the database
-        require '_database_connect.php';
-
-        //Data fatching And Sarcbar function
-        if($state == "Pending"  || $state == "Delete Request Pending"){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `state` = '{$state}' ";
-            if(isset($key) && isset($word)){
-                if($key=="all" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` = '{$state}' AND CONCAT(name, address) LIKE '%$word%'";
-                } else if($key=="name" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` = '{$state}' AND `name` LIKE '%$word%'";
-                } else if($key=="address" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` = '{$state}' AND `address` LIKE '%$word%'";
-                } else if($key=="type" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` = '{$state}' AND `type` LIKE '%$word%'";
-                }
-            }
-        }else if($state == "Update Request Pending"){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active'";
-            if(isset($key) && isset($word)){
-                if($key=="all" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND CONCAT(name, address) LIKE '%$word%'";
-                } else if($key=="name" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `name` LIKE '%$word%'";
-                } else if($key=="address" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `address` LIKE '%$word%'";
-                } else if($key=="type" && $word!=""){
-                    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending' AND `state` != 'Delete Request Pending' AND `state` != 'Active' AND `type` LIKE '%$word%'";
-                }
+        //Data fetching And Searchbar function
+        $find_connections_sql = "SELECT * FROM `connections` WHERE `state` = '{$state}'";
+        if(isset($key) && isset($word)){
+            if($key=="all" && $word!=""){
+                $find_connections_sql .= " AND CONCAT(name, address) LIKE '%$word%'";
+            } else if($key=="name" && $word!=""){
+                $find_connections_sql .= " AND `name` LIKE '%$word%'";
+            } else if($key=="address" && $word!=""){
+                $find_connections_sql .= " AND `address` LIKE '%$word%'";
+            } else if($key=="type" && $word!=""){
+                $find_connections_sql .= " AND `type` LIKE '%$word%'";
             }
         }
 
+        // connect to the database
+        require '_database_connect.php';
         //Query
         $find_connections = mysqli_query($connect, $find_connections_sql);
         $total_connections = mysqli_num_rows($find_connections);
@@ -134,8 +118,8 @@
                     // Get row
                     $connections = mysqli_fetch_assoc($find_connections);
 
-                    //Get plandetails
-                    $plan_sql = "SELECT * FROM `{$connections['type']}` WHERE `id` = '{$connections['plan_id']}'";
+                    //Get plan details
+                    $plan_sql = "SELECT * FROM `plans` WHERE `id` = '{$connections['plan_id']}'";
                     $get_plan = mysqli_query($connect, $plan_sql);
                     $plan = mysqli_fetch_assoc($get_plan);
 

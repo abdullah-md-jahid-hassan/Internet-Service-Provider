@@ -14,9 +14,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_admin.php';
-            
         //Defining Page
         $page_type = "connections";
         $page_name = "cunnections";
@@ -118,8 +115,8 @@
                     // Get row
                     $connections = mysqli_fetch_assoc($find_connections);
 
-                    //Get plandetails
-                    $plan_sql = "SELECT * FROM `{$connections['type']}` WHERE `id` = '{$connections['plan_id']}'";
+                    //Get plan details
+                    $plan_sql = "SELECT * FROM `plans` WHERE `type` = '{$connections['type']}' AND `id` = '{$connections['plan_id']}'";
                     $get_plan = mysqli_query($connect, $plan_sql);
                     $plan = mysqli_fetch_assoc($get_plan);
 

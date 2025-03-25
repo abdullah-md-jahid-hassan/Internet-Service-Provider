@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comone page for Admin</title>
+    <title>Customer Details</title>
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
 
@@ -15,9 +15,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_admin.php';
-            
         //Defining Page
         $page_type = "connections";
         $page_name = "Connection Details";
@@ -60,7 +57,7 @@
                 <div class="card-body">
                     <b>Name: </b><?php echo $connection['name'] ?><br>
                     <b>Address: </b><?php echo $connection['address'] ?><br>
-                    <b>Statas: </b><?php echo $connection['state'] ?>
+                    <b>Status: </b><?php echo $connection['state'] ?>
                 </div>
                 <div class="card-footer">
                     <form method="post">
@@ -117,14 +114,14 @@
             // connect to the database
             require '_database_connect.php';
             
-            $delete_sql = "UPDATE `connections` SET `state` = 'Delete Request Pending'  WHERE `id` = '{$_SESSION['connections_id_details']}'";
+            $delete_sql = "UPDATE `connections` SET `state` = 'Disconnection Pending'  WHERE `id` = '{$_SESSION['connections_id_details']}'";
             $delete = mysqli_query($connect, $delete_sql);
 
             // Close the database connection
             mysqli_close($connect);
 
             $_SESSION['connections_id_details'] =$connection['id'];
-            //Rederection to the connection page
+            //Redirection to the connection page
             echo "<script> window.location.href='assign_task.php';</script>";
             die();
         }

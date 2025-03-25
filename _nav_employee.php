@@ -1,3 +1,7 @@
+    <!-- Login check  -->
+    <?php require '_logincheck_employee.php'; ?>
+
+    
     <!-- Navbar Satrat -->
     <nav class="navbar navbar-expand-xxxl bg-dark sticky-top" data-bs-theme="dark">
         <div class="container-fluid d-flex justify-content-between">

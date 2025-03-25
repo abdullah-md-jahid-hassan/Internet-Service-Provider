@@ -14,9 +14,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_admin.php';
-            
         //Defining Page
         $page_type = "reports";
         $page_name = "Task List";
@@ -43,7 +40,7 @@
             // Close the database connection
             mysqli_close($connect);
 
-            // Seasion Variable for employee dtails
+            // Season Variable for employee details
             $_SESSION['employee_id_details'] = $_POST['em_id'];
     
             // Generate the JavaScript code to open the new tab
@@ -84,12 +81,12 @@
     <?php
         // if Assign task button clicked
         if(isset($_GET['assign_task'])) {
-            // Rederection for assign_task Page
+            // Redirection for assign_task Page
             echo "<script> window.location.href='assign_task.php';</script>";
             die();
         }
 
-        //Sarcbar function
+        //Searchbar function
         if(isset($key) && isset($word)){
             if($key=="all" && $word==""){
                 $find_task_sql = "SELECT * FROM `task`";

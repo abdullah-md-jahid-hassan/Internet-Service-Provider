@@ -11,9 +11,6 @@
 </head>
 <body>
 <?php
-    //Login check
-    require '_logincheck_employee.php';
-            
     //Defining Page
     $page_name = "Home";
 

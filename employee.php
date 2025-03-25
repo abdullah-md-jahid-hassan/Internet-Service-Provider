@@ -16,9 +16,6 @@
 <body>
 
     <?php
-        // Login check
-        require '_logincheck_admin.php';
-
         // Defining Page Type
         $page_type = "employee";
         $page_name = "employee";
@@ -141,10 +138,7 @@
 
         // Showing Employee list
         echo "
-            <div class='container overflow-auto mt-4'>
-                <div class='num_of_res text-light btn btn-dark m-2'>
-                    <h7 class='pt-2'>Total Result: $total_employee</h7>
-                </div>";
+            <div class='container overflow-auto mt-4'>";
         if($total_employee>0){
             // Show the Employee List
             echo "
@@ -168,6 +162,10 @@
                 // Get row
 
                 $employee = mysqli_fetch_assoc($run_show_employee);
+
+                //skip self and equal positions data
+                if($employee['is_sup_admin'] && $_SESSION['user'] == "sup_admin") continue;
+                elseif(($employee['is_admin'] || $employee['is_sup_admin']) && $_SESSION['user'] == "admin") continue;
 
                 //get task number
                 $get_task_number_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$employee['id']}'";

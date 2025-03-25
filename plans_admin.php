@@ -14,9 +14,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_admin.php';
-        
         //Defining Page
         $page_type = "plans";
         if($_SESSION['plan_type'] == "residential_plans"){
@@ -80,19 +77,19 @@
             //sql
             if(isset($key) && isset($word)){
                 if($key=="all" && $word==""){
-                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";
+                    $show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}'";
                 } else if($key=="all" && $word!=""){
-                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE CONCAT(name, speed, price, realip) LIKE '%$word%'";
+                    $show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND CONCAT(name, speed, price, realip) LIKE '%$word%'";
                 } else if($key=="name" && $word!=""){
-                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `name` LIKE '%$word%'";
+                    $show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `name` LIKE '%$word%'";
                 } else if($key=="speed" && $word!=""){
-                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `speed` LIKE '$word'";
+                    $show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `speed` LIKE '$word'";
                 } else if($key=="price" && $word!=""){
-                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `price` LIKE '$word'";
+                    $show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `price` LIKE '$word'";
                 } else if($key=="realip" && $word!=""){
-                    $show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}` WHERE `realip` LIKE '$word'";
+                    $show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `realip` LIKE '$word'";
                 }
-            } else {$show_plans_sql = "SELECT * FROM `{$_SESSION['plan_type']}`";}
+            } else {$show_plans_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}'";}
 
             //Query
             $run_show_plan = mysqli_query($connect, $show_plans_sql);

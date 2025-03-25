@@ -1,4 +1,7 @@
-    <!-- Navbar Satrat -->
+    <!-- Login check  -->
+     <?php require '_logincheck_customer.php'; ?>
+    
+    <!-- Navbar Start -->
     <nav class="navbar navbar-expand-md bg-dark sticky-top" data-bs-theme="dark">
         <div class="container-fluid d-flex justify-content-between">
 
@@ -61,7 +64,7 @@
     <!-- NavBar End -->
 
     <?php
-        //Plans Rederection PHP
+        //Plans Redirection PHP
         if(isset($_POST['residential_plans'])){
             $_SESSION['plan_type'] = "residential_plans";
             if(isset($_SESSION['plan_id'])) unset($_SESSION['plan_id']);

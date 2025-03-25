@@ -1,10 +1,12 @@
 <?php
-        session_start();
-        if(!isset($_SESSION['user']) || $_SESSION['user'] != "customer")
-        {
-            session_unset();
-            session_destroy();
-            header("location: login.php");
-            die();
-        }
-    ?>
+    // Check if session is not set OR user is not a customer
+    if (!isset($_SESSION['user']) || $_SESSION['user'] != "customer") {
+        // Clear and destroy session
+        session_unset();
+        session_destroy();
+        
+        // Redirect to login page
+        header("location: login.php");
+        die();
+    }
+?>

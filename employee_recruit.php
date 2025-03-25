@@ -12,9 +12,6 @@
 </head>
 <body>
     <?php
-        // Login check
-        require '_logincheck_admin.php';
-            
         //Defining Page Type
         $page_type = "employee";
         $page_name = "recruit employee";
@@ -46,12 +43,13 @@
             $post = $_POST["post"];
             $salary = $_POST["salary"];
             $nid_number= $_POST["nid-number"];
-            $temp_pass= $_POST["temp-pass"];
+            $temp_pass = $_POST["temp-pass"];
+            $is_admin = $_POST["is_admin"];
 
-            //chack duplicate phone number
-            $phone_chack_sql = "SELECT * FROM `employee` WHERE `phone` = '$phone'";
-            $phone_chack = mysqli_query($connect, $phone_chack_sql);
-            $num_phone = mysqli_num_rows($phone_chack);
+            //check duplicate phone number
+            $phone_check_sql = "SELECT * FROM `employee` WHERE `phone` = '$phone'";
+            $phone_check = mysqli_query($connect, $phone_check_sql);
+            $num_phone = mysqli_num_rows($phone_check);
             if ($num_phone>0){
                 $phone_error = "The phone number already exist";
                 $data_submit_error = true;
@@ -149,12 +147,12 @@
             if (!$data_submit_error){
                 //employee in data base
                 //Info insart SQL
-                $info_sql = "INSERT INTO `employee` (`name`, `post`, `salary`, `address`, `nid`, `email`, `phone`, `gender`, `password`) VALUES ('{$name}', '{$post}', '{$salary}', '{$address}', '{$nid_number}', '{$email}', '{$phone}', '{$gender}', '{$temp_pass}')";
+                $info_sql = "INSERT INTO `employee` (`name`, `post`, `salary`, `address`, `nid`, `email`, `phone`, `gender`, `password`, `is_admin`) VALUES ('{$name}', '{$post}', '{$salary}', '{$address}', '{$nid_number}', '{$email}', '{$phone}', '{$gender}', '{$temp_pass}', '{$is_admin}')";
                 $info_insart = mysqli_query($connect, $info_sql);
 
                 //If insart complite get the employee id, move the files, insart file locations
                 if($info_insart){
-                    //getemployee id
+                    //get employee id
                     $get_employee_id_sql = "SELECT `id` FROM `employee` WHERE `phone` = '{$phone}' AND `email` = '{$email}' AND `nid` = '{$nid_number}'";
                     $get_employee_id = mysqli_query($connect, $get_employee_id_sql);
                     $employee_id = mysqli_fetch_assoc($get_employee_id);
@@ -192,7 +190,8 @@
                         $data_submit_error = true;
                     }
                     if(!move_uploaded_file($photo_tamp_name, $photo_file_location)){
-                        $photo_file_error = "Faild To Uplode The File";                $data_submit_error = true;
+                        $photo_file_error = "Faild To Uplode The File";
+                        $data_submit_error = true;
                     }
 
                     //Insart Fil Locations
@@ -227,24 +226,33 @@
     <div class="container rounded bg-black my-3 p-4 text-light form_con" style="width: 480px;">
         <h3 class="border p-2 text-center mb-4">Give detail of the New Employee</h3>
         <form method="post" enctype="multipart/form-data">
+            <!-- Name -->
             <div class="mb-3">
                 <label for="e-name" class="form-label">Employee Name</label>
                 <input type="text" name="name" <?php if(isset($name)) echo "value='$name'"; ?> class="form-control" id="name" placeholder="Employee Name Here" required>
             </div>
+            
+            <!-- Address -->
             <div class="mb-3">
                 <label for="Address" class="form-label">Address</label>
                 <input type="text" class="form-control" id="Address" name="address" <?php if(isset($address)) echo "value='$address'"; ?> placeholder="Address" required>
             </div>
+            
+            <!-- Phone -->
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone Number</label>
                 <input type="number" class="form-control" id="phone" name="phone" <?php if(isset($phone)) echo "value='$phone'"; ?> placeholder="Phone Number" required>
                 <p class="text-danger"><?php echo $phone_error;?></p>
             </div>
+            
+            <!-- Email -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email Address</label>
                 <input type="email" class="form-control" id="email" name="email" <?php if(isset($email)) echo "value='$email'"; ?> placeholder="Email Address" required>
                 <p class="text-danger"><?php echo $email_error;?></p>
             </div>
+
+            <!-- Gender -->
             <div class="mb-3">
                 <label class="form-label">Gender</label><br>
                 <div class="form-check form-switch form-check-inline">
@@ -260,6 +268,8 @@
                     <label class="form-check-label form-label" for="Female">Other</label>
                 </div>
             </div>
+
+            <!-- Post -->
             <div class="mb-3">
                 <label for="nid" class="form-label">Post</label>
                 <select class="search-select form-control" name="post">
@@ -270,6 +280,8 @@
                     <option value="Line Man" <?php if(isset($post) && $post=="Line Man") echo "selected"; ?>>Line Man</option>
                 </select>
             </div>
+
+            <!-- Salary -->
             <div class="mb-3">
                 <label for="nid" class="form-label">Salary/Month</label>
                 <div class="input-group">
@@ -277,35 +289,70 @@
                     <label class="input-group-text">Tk/Month</label>
                 </div>
             </div>
+
+            <!-- NID number -->
             <div class="mb-3">
                 <label for="nid" class="form-label">NID Number</label>
                 <input type="number" name="nid-number" class="form-control" id="nid-number" <?php if(isset($nid_number)) echo "value='$nid_number'"; ?> placeholder="NID" required>
                 <p class="text-danger"><?php echo $nid_number_error;?></p>
             </div>
+
+            <!-- Nid File -->
             <div class="mb-3">
-                <label for="nid-file" class="form-label">NID File</label>
+                <label for="nid-file" class="form-label">NID File (PDF file only)</label>
                 <input type="file" name="nid-file" class="form-control" id="nid-file" required>
                 <p class="text-danger"><?php echo $nid_file_error;?></p>
             </div>
+
+            <!-- Certificate File -->
             <div class="mb-3">
-                <label for="certificate-file" class="form-label">Certificate File</label>
+                <label for="certificate-file" class="form-label">Certificate File (PDF file only)</label>
                 <input type="file" name="certificate-file" class="form-control" id="certificate-file" required>
                 <p class="text-danger"><?php echo $certificate_file_error;?></p>
             </div>
+
+            <!-- Resume/CV File -->
             <div class="mb-3">
-                <label for="resume-file" class="form-label">Resume File</label>
+                <label for="resume-file" class="form-label">Resume/CV File (PDF file only)</label>
                 <input type="file" name="resume-file" class="form-control" id="resume-file" required>
                 <p class="text-danger"><?php echo $resume_file_error;?></p>
             </div>
+
+            <!-- Photo File -->
             <div class="mb-3">
-                <label for="photo-file" class="form-label">Photo</label>
+                <label for="photo-file" class="form-label">Photo (JPG/PNG file only)</label>
                 <input type="file" name="photo-file" class="form-control" id="photo-file" required>
                 <p class="text-danger"><?php echo $photo_file_error;?></p>
             </div>
+
+            <!-- Password -->
             <div class="mb-3">
                 <label for="temp-pass" class="form-label">Temporary Password</label>
                 <input type="text" name="temp-pass" class="form-control" id="temp-pass" <?php if(isset($temp_pass)) echo "value='$temp_pass'"; ?> placeholder="Temporary Password" required>
             </div>
+
+            <!-- Is Admin -->
+            <div class="mb-3">
+                <?php
+                    if ($_SESSION['user'] == "sup_admin"){
+                        echo '<label class="form-label">Is Admin</label><br>';
+                    }
+                ?>
+                <div class="form-check form-switch">
+                    <!-- Hidden input to ensure 0 is sent when unchecked -->
+                    <input type="hidden" name="is_admin" value="0">
+                    <?php
+                        if ($_SESSION['user'] == "sup_admin"){
+                            echo '<input class="form-check-input" type="checkbox" name="is_admin" value="1" id="is_admin">';
+                        }
+                    ?>
+                    
+                </div>
+            </div>
+
+
+
+            <!-- Recruit/Cancel button -->
             <div class="input-group">
                 <button type="submit" class="btn btn-success" name="recruit"><i class="fa-solid fa-plus"></i> Recruit</button>
                 <a href="employee.php" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i> Cancel</a>

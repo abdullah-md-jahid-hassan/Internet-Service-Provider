@@ -14,9 +14,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_employee.php';
-            
         //Defining Page
         $page_name = $_SESSION['task_type']." Tasks";
 
@@ -117,7 +114,7 @@
                                 <form method='post'>
                                     <input class='visually-hidden' type='text' name='t_id' value='$task[id]'</input>";
                                     if ($_SESSION['task_type'] == "Pending"){
-                                        echo "<button type='submit' name='details' class='btn btn-danger'>Job Done</button>";
+                                        echo "<button type='submit' name='job_done' class='btn btn-danger'>Job Done</button>";
                                     }
                                     
                                 echo "</form>
@@ -133,52 +130,105 @@
         // Close the database connection
         mysqli_close($connect);
 
-        // If detail button clicked
-        if(isset($_POST['details'])) {
+        // If Job done button clicked
+        if (isset($_POST['job_done'])) {
             // Connect to the database
             require '_database_connect.php';
 
-            //Get update task info
-            $up_task_info_sql = "SELECT * FROM `task` WHERE `id` = '{$_POST['t_id']}'";
-            $up_task_info = mysqli_query($connect, $up_task_info_sql);
-            $up_task = mysqli_fetch_assoc($up_task_info);
+            // Sanitize input
+            $t_id = mysqli_real_escape_string($connect, $_POST['t_id']);
 
-            if (strpbrk($up_task['task_ref'], '0123456789')) {
-                // Check request type
-                $check_state_sql = "SELECT * FROM `connections` WHERE `id` = '{$up_task['task_ref']}'";
-                $check_state = mysqli_query($connect, $check_state_sql);
+            // Get all needed info
+            $insertion_info_sql = "
+                SELECT 
+                    connections.id AS con_id, 
+                    connections.state AS con_state, 
+                    connections.starting_date AS s_date, 
+                    connections.customer_id AS cus_id, 
+                    plans.price AS price 
+                FROM task 
+                JOIN connections ON task.task_ref = connections.id 
+                JOIN plans ON connections.plan_id = plans.id 
+                WHERE task.id = '{$t_id}'
+            ";
+
+            $insertion_info = mysqli_query($connect, $insertion_info_sql);
             
-                // Ensure the query was successful
-                if ($check_state) {
-                    $state = mysqli_fetch_assoc($check_state);
-            
-                    // Determine the appropriate SQL query based on the state
-                    if ($state['state'] == "Delete Request Pending") {
-                        $up_connection_sql = "DELETE FROM `connections` WHERE `connections`.`id` = '{$up_task['task_ref']}'";
-                    } else {
-                        $up_connection_sql = "UPDATE `connections` SET `state` = 'Active' WHERE `connections`.`id` = '{$up_task['task_ref']}'";
-                    }
-            
-                    // Execute the update or delete query
-                    $up_connec_state = mysqli_query($connect, $up_connection_sql);
-            
-                    // Check if the update/delete was successful
-                    if (!$up_connec_state) {
-                        // Handle the error if the query failed
-                        echo "Error updating connection state: " . mysqli_error($connect);
-                    }
-                } else {
-                    // Handle the error if the initial query failed
-                    echo "Error checking connection state: " . mysqli_error($connect);
+            if (!$insertion_info) {
+                die("Query Failed: " . mysqli_error($connect));
+            }
+
+            $insertion = mysqli_fetch_assoc($insertion_info);
+
+            // Check if task is expire
+            if (strtotime($insertion['s_date']) < strtotime(date('Y-m-d'))) {
+                $insertion['s_date'] = date('Y-m-d');
+                $late = true;
+            } else {
+                $late = false;
+            }
+
+            $update_connection_sql = "";
+            $cur_payment_sql = "";
+
+            // Update connection based on task reference
+            if ($insertion['con_state'] == "Connection in process") {
+                $update_connection_sql = "
+                    UPDATE `connections` 
+                    SET `state` = 'Active', `starting_date` = '{$insertion['s_date']}' 
+                    WHERE `id` = '{$insertion['con_id']}'
+                ";
+
+                // Current month payment + service charge
+                $insertion['price'] .= 500;         //Service charge added
+                $cur_payment_sql = "
+                    INSERT INTO `payment` (`connection_id`, `amount`) 
+                    VALUES ('{$insertion['con_id']}', '{$insertion['price']}')
+                ";
+
+            } elseif ($insertion['con_state'] == "Update in process") {
+                $update_connection_sql = "
+                    UPDATE `connections` 
+                    SET `state` = 'Active', `req_plan` = '' 
+                    WHERE `id` = '{$insertion['con_id']}'
+                ";
+
+            } elseif ($insertion['con_state'] == "Disconnection in process") {
+                $update_connection_sql = "
+                    DELETE FROM `connections` 
+                    WHERE `id` = '{$insertion['con_id']}'
+                ";
+            }
+
+            // Execute update query
+            if (!empty($update_connection_sql)) {
+                if (!mysqli_query($connect, $update_connection_sql)) {
+                    die("Update Query Failed: " . mysqli_error($connect));
                 }
             }
-            //update task state
-            $up_task_state_sql = "UPDATE `task` SET `state` = 'Completed' WHERE `task`.`id` = '{$_POST['t_id']}'";
-            $up_task_state = mysqli_query($connect, $up_task_state_sql);
+
+            // Insert payment if applicable
+            if (!empty($cur_payment_sql)) {
+                if (!mysqli_query($connect, $cur_payment_sql)) {
+                    die("Payment Insertion Failed: " . mysqli_error($connect));
+                }
+            }
+
+            // Update task state
+            $t_state = $late ? "Late" : "Completed";
+            $up_task_state_sql = "UPDATE `task` SET `state` = '{$t_state}' WHERE `id` = '$t_id'";
+
+            if (!mysqli_query($connect, $up_task_state_sql)) {
+                die("Task State Update Failed: " . mysqli_error($connect));
+            }
+
             // Close the database connection
             mysqli_close($connect);
+
+            echo "<script> window.location.href='employee_tasks.php';</script>";
+            die();
         }
-    
+
     ?>
 
 </body>

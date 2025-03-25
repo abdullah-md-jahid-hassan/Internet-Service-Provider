@@ -13,9 +13,6 @@
 </head>
 <body>
     <?php
-        //Login check
-        require '_logincheck_admin.php';
-        
         $employee_id = "";
         if (isset($_SESSION["employee_id_details"])) {
             $employee_id = $_SESSION["employee_id_details"];

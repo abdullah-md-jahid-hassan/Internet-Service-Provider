@@ -14,9 +14,6 @@
 </head>
 <body>
     <?php
-        // Login check
-        require '_logincheck_admin.php';
-            
         // Defining Page
         $page_type = "plan";
         if($_SESSION['plan_type'] == "residential_plans"){
@@ -42,7 +39,7 @@
             $readip = $_POST['plan_realip'];
 
             // SQL
-            $add_plan_sql = "INSERT INTO `{$_SESSION['plan_type']}` (`name`, `speed`, `price`, `realip`) VALUES ('$name', '$speed', '$price', '$readip')";
+            $add_plan_sql = "INSERT INTO `plans` (`type`, `name`, `speed`, `price`, `realip`) VALUES ('{$_SESSION['plan_type']}', '$name', '$speed', '$price', '$readip')";
 
             // Insert Data Into Database
             $insert_plan = mysqli_query($connect, $add_plan_sql);

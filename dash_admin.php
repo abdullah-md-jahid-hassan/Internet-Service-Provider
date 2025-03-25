@@ -19,10 +19,7 @@
 <body>
 
 <?php
-    //Login check
-    require '_logincheck_admin.php';
-
-    // Seasion variable clear
+    // Season variable clear
     require '_unset_seasion_variable.php';
 
     //Defining Page Type
@@ -41,12 +38,12 @@
     $customer_num = mysqli_num_rows($find_customer);
 
     // Get number of Organizational Plans
-    $find_organizational_plans_sql = "SELECT * FROM `organizational_plans`";
+    $find_organizational_plans_sql = "SELECT * FROM `plans` WHERE `type` = 'organizational_plans'";
     $find_organizational_plans = mysqli_query($connect, $find_organizational_plans_sql);
     $organizational_plans_num = mysqli_num_rows($find_organizational_plans);
 
     // Get number of Residential Plans
-    $find_residential_plans_sql = "SELECT * FROM `residential_plans`";
+    $find_residential_plans_sql = "SELECT * FROM `plans` WHERE `type` = 'residential_plans'";
     $find_residential_plans = mysqli_query($connect, $find_residential_plans_sql);
     $residential_plans_num = mysqli_num_rows($find_residential_plans);
 
@@ -61,14 +58,14 @@
     $new_connections_num = mysqli_num_rows($find_new_connections);
 
     // GeT UPDATE requests
-    $find_update_connections_sql = "SELECT * FROM `connections` WHERE `state` LIKE 'o%' OR `state` LIKE 'r%'";
+    $find_update_connections_sql = "SELECT * FROM `connections` WHERE `state` = 'Update pending'";
     $find_update_connections = mysqli_query($connect, $find_update_connections_sql);
     $update_connections_num = mysqli_num_rows($find_update_connections);
 
     // Get DELETE requests
-    $find_delete_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Delete Request Pending'";
-    $find_delete_connections = mysqli_query($connect, $find_delete_connections_sql);
-    $delete_connections_num = mysqli_num_rows($find_delete_connections);
+    $find_disconnect_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Disconnection pending'";
+    $find_disconnect_connections = mysqli_query($connect, $find_disconnect_connections_sql);
+    $disconnect_connections_num = mysqli_num_rows($find_disconnect_connections);
 
     // Get number of employee
     $find_employee_sql = "SELECT * FROM `employee`";
@@ -76,7 +73,7 @@
     $employee_num = mysqli_num_rows($find_employee);
 
     // Get number of task
-    $find_task_sql = "SELECT * FROM `task`";
+    $find_task_sql = "SELECT * FROM `task` WHERE `state` != 'Completed'";
     $find_task = mysqli_query($connect, $find_task_sql);
     $task_num = mysqli_num_rows($find_task);
 
@@ -167,7 +164,7 @@
                         <h5><i class="fa-solid fa-circle-up" style="color: #ffb703"></i> Update Requests</h5>
                         <p>Pending Update Requests: <?php echo "$update_connections_num"; ?></p>
                         <form method="post">
-                            <button class="btn btn-secondary" type="submit" name="update_coneections">See Requests</button>
+                            <button class="btn btn-secondary" type="submit" name="update_connections">See Requests</button>
                         </form>
                     </div>
                 </div>
@@ -178,10 +175,10 @@
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: red"></div>
                     <div class="card-text">
-                        <h5><i class="fa-solid fa-trash-can" style="color: red"></i> Delete Requests</h5>
-                        <p>Pending Delete Requests: <?php echo "$delete_connections_num"; ?></p>
+                        <h5><i class="fa-solid fa-trash-can" style="color: red"></i> Disconnection Requests</h5>
+                        <p>Disconnection Requests: <?php echo "$disconnect_connections_num"; ?></p>
                         <form method="post">
-                            <button class="btn btn-secondary" type="submit" name="delete_connections">See Requests</button>
+                            <button class="btn btn-secondary" type="submit" name="disconnect_connections">See Requests</button>
                         </form>
                     </div>
                 </div>
@@ -205,7 +202,7 @@
                     <div class="card-side rounded-start" style="background-color: #9d8189"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-list-check" style="color: #9d8189"></i> Tasks</h5>
-                        <p>On-Going Task: <?php echo "$task_num"; ?></p>
+                        <p>Pending Task: <?php echo "$task_num"; ?></p>
                         <a class="btn btn-secondary rounded p-2" href="task_reports.php">Task list</a>
                     </div>
                 </div>
@@ -223,7 +220,7 @@
                 </div>
             </div>
 
-            <!-- Payment -->
+            <!-- Payment Reports -->
             <div class="col-auto p-2">
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #e63946"></div>
@@ -247,6 +244,23 @@
                 </div>
             </div>
 
+            <!-- Supper admin control -->
+            <?php
+                        if ($_SESSION['user'] == "sup_admin"){
+                            echo '
+                            <div class="col-auto p-2">
+                                <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
+                                    <div class="card-side rounded-start" style="background-color:rgb(245, 9, 9)"></div>
+                                    <div class="card-text">
+                                        <h5><i class="fa-solid fa-user-tie" style="color: rgb(245, 9, 9)"></i> Supper Admin Control</h5>
+                                        <a class="btn btn-secondary rounded p-2" href="supper_admin_control.php">Supper Panel</a>
+                                    </div>
+                                </div>
+                            </div>';
+                        }
+            ?>
+            
+
         </div>
 
         
@@ -265,7 +279,7 @@
             <div class="col-lg-4 col-sm-12 my-3">
                 <div class="bg-light rounded p-3" style="width: 100%;">
                     <h5 class=" text-center"><b>Connection Catagory Ratio</b></h5>
-                    <h6 class=" text-center"><b>Total Connections: 110</b></h6>
+                    <h6 class=" text-center"><b>Total Connections: <?php echo $organizational_plans_num + $residential_plans_num; ?></b></h6>
                     <canvas id="doughnut_pi_plans"></canvas>
                 </div>
             </div>
@@ -328,42 +342,21 @@
             }
         });
 
-        // Data forDoughnut-PI chart for plans
-        <?php
-            // connect to the database
-            require '_database_connect.php';
 
-            // $find_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Pending'";
-            // $find_connections = mysqli_query($connect, $find_connections_sql);
-            // $connections_num = mysqli_num_rows($find_connections);
-
-            // Close the database connection
-            mysqli_close($connect);
-        ?>
         // Doughnut-PI chart for plans
         const d_pai = document.getElementById('doughnut_pi_plans');
         new Chart(d_pai, {
             type: 'doughnut',
             data: {
-                labels: ['Total Connections', 'Residential Plan', 'Organizational plan'],
+                labels: ['Residential Plan', 'Organizational plan'],
                 datasets: [
                     {
-                        data: [0, 20, 60],
+                        data: [<?php echo $residential_plans_num; ?>, <?php echo $organizational_plans_num; ?>],
                         backgroundColor: [
-                            'rgb(0, 255, 255)',
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)'
                         ],
                         hoverOffset: 20
-                    },
-                    {
-                        label: 'Customers',
-                        data: [80],
-                        backgroundColor: [
-                            'rgb(0, 255, 255)'
-                        ],
-                        hoverOffset: 20,
-                        borderWidth: 0
                     }
                 ]
             }
@@ -414,20 +407,6 @@
     </script>
 
     <?php
-        //Requests Rederections
-        if(isset($_POST['new_connections'])){
-            $_SESSION['show'] = "new_connections";
-            echo "<script> window.location.href='requests.php';</script>";
-            die();
-        }else if(isset($_POST['update_coneections'])){
-            $_SESSION['show'] = "update_coneections";
-            echo "<script> window.location.href='requests.php';</script>";
-            die();
-        }else if(isset($_POST['delete_connections'])){
-            $_SESSION['show'] = "delete_connections";
-            echo "<script> window.location.href='requests.php';</script>";
-            die();
-        }
         //Clear Session Variable
         include '_unset_seasion_variable.php';
     ?>

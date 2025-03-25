@@ -1,5 +1,8 @@
+    <!-- Login check  -->
+    <?php require '_logincheck_admin.php'; ?>
 
-    <!-- Navbar Satrat -->
+    
+    <!-- Navbar Start -->
     <nav class="navbar bg-dark sticky-top" data-bs-theme="dark">
         <div class="container-fluid d-flex justify-content-between">
 
@@ -37,7 +40,8 @@
                     else if($page_type == "reports"){ echo '<i class="fa-regular fa-flag"></i> Reports'; }
                     else if($page_type == "manage_employee"){ echo '<i class="fa-solid fa-users-gear"></i> Manage Employee'; }
                     else if($page_type == "complains"){ echo '<i class="fa-solid fa-not-equal"></i> Complaints'; }
-                    else if($page_type == "customer_output_control"){ echo '<i class="fa-solid fa-gauge"></i> Dashboard'; }
+                    else if($page_type == "customer_output_control"){ echo '<i class="fa-solid fa-gauge"></i> Customer View Control'; }
+                    else if($page_type == "Supper Panel"){ echo '<i class="fa-solid fa-gauge"></i> Supper Panel'; }
                 ?>
             </h3>
             <button type="button" class="btn btn-dark position-absolute top-0 end-0 m-2 text-light" data-bs-dismiss="offcanvas" title="Close"><i class="fa-solid fa-angles-left"></i> </button>
@@ -48,14 +52,17 @@
         
             <div class="offcanvas-options fs-5">
                 <ul class="list-unstyled">
+                    <!-- Dashboard -->
                     <li>
                         <a class="dropdown-item rounded p-2 <?php if($page_type == "home"){echo "op-ac";}?>" href="dash_admin.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
                     </li>
 
+                    <!-- Customers -->
                     <li>
                         <a class="dropdown-item rounded p-2  <?php if($page_type == "customers_list"){echo "op-ac";}?>" href="customer_list.php"><i class="fa-solid fa-people-line"></i> Customers</a>
                     </li>
 
+                    <!-- Request -->
                     <li class="dropdown">
                         <span class="dropdown-toggle dropdown-item rounded p-2 <?php if($page_type == "requests"){echo "op-ac";}?>" id="requests" data-bs-toggle="dropdown">
                             <i class="fa-regular fa-hand"></i> Requests
@@ -67,17 +74,18 @@
                                     <i class="fa-solid fa-plus"></i> New Connections
                                 </button></li>
                                 <li><button class="dropdown-item rounded p-2" type="
-                                submit" name="update_coneections">
+                                submit" name="update_connections">
                                     <i class="fa-solid fa-circle-up"></i> Update Requests
                                 </button></li>
                                 <li><button class="dropdown-item rounded p-2" type="
-                                submit" name="delete_connections">
+                                submit" name="disconnect_connections">
                                     <i class="fa-solid fa-trash-can"></i> Delete Requests
                                 </button></li>
                             </ul>
                         </form>
                     </li>
 
+                    <!-- plans -->
                     <li class="dropdown">
                         <a class="dropdown-toggle dropdown-item rounded p-2 <?php if($page_type == "plans"){echo "op-ac";}?>" id="plans" data-bs-toggle="dropdown"><i class="fa-solid fa-clipboard-list"></i> Plans</a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="plans">
@@ -92,10 +100,12 @@
                         </ul>
                     </li>
 
+                    <!-- Connections -->
                     <li>
                         <a class="dropdown-item rounded p-2 <?php if($page_type == "connections"){echo "op-ac";}?>" href="connections_admin.php"><i class="fa-solid fa-circle-nodes"></i> Connections</a>
                     </li>
 
+                    <!-- Reports -->
                     <li class="dropdown">
                         <a class="dropdown-toggle dropdown-item rounded p-2 <?php if($page_type == "reports"){echo "op-ac";}?>" id="reports" data-bs-toggle="dropdown">
                             <i class="fa-regular fa-flag"></i> Reports
@@ -112,14 +122,17 @@
                         </ul>
                     </li>
 
+                    <!-- Manage Employees -->
                     <li>
                         <a class="dropdown-item rounded p-2 <?php if($page_type == "manage_employee"){echo "op-ac";}?>" href="employee.php"><i class="fa-solid fa-users-gear"></i> Manage Employee</a>
                     </li>
 
+                    <!-- Complaints -->
                     <li>
                         <a class="dropdown-item rounded p-2  <?php if($page_type == "complaints"){echo "op-ac";}?>" href="customer_complaints.php"><i class="fa-solid fa-not-equal"></i> Complaints</a>
                     </li>
 
+                    <!-- Customer view Control -->
                     <li class="dropdown">
                         <a class="dropdown-toggle dropdown-item rounded p-2 disabled <?php if($page_type == "cu_out_con"){echo "op-ac";}?>" id="customer" data-bs-toggle="dropdown"><i class="fa-solid fa-clipboard-list"></i> Customer view Control</a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="customer">
@@ -133,6 +146,17 @@
                             </button></form></li>
                         </ul>
                     </li>
+
+                    <!-- Supper Admin Control -->
+                     <?php
+                        if ($_SESSION['user'] == "sup_admin"){
+                            echo '<li>
+                                    <a class="dropdown-item rounded p-2  '; if($page_type == "Supper Panel"){echo "op-ac";} echo '" href="supper_admin_control.php"><i class="fa-solid fa-user-tie"></i> Supper Admin Control</a>
+                                </li>';
+                        }
+                        
+                     ?>
+
                 </ul>
             </div>
         </div>
@@ -158,17 +182,17 @@
             die();
         }
 
-        //Requests Rederections
+        //Requests Redirection
         else if(isset($_POST['new_connections'])){
             $_SESSION['show'] = "new_connections";
             echo "<script> window.location.href='requests.php';</script>";
             die();
-        }else if(isset($_POST['update_coneections'])){
-            $_SESSION['show'] = "update_coneections";
+        }else if(isset($_POST['update_connections'])){
+            $_SESSION['show'] = "update_connections";
             echo "<script> window.location.href='requests.php';</script>";
             die();
-        }else if(isset($_POST['delete_connections'])){
-            $_SESSION['show'] = "delete_connections";
+        }else if(isset($_POST['disconnect_connections'])){
+            $_SESSION['show'] = "disconnect_connections";
             echo "<script> window.location.href='requests.php';</script>";
             die();
         }
