@@ -45,11 +45,11 @@
         // connect to the database
         require '_database_connect.php';
 
-        // Getting Privious Data Form Database
+        // Getting Previous Data Form Database
         $get_plan_data_sql = "SELECT * FROM `plans` Where `type` = '{$plan_type}' AND `id` = '{$plan_id}'";
         $get_plan_data = mysqli_query($connect, $get_plan_data_sql);
         if(!$get_plan_data){
-            //Rederect to the Admin Home
+            //Redirect to the Admin Home
             echo "<script> window.location.href='plans_admin.php';</script>";
             die();
         }

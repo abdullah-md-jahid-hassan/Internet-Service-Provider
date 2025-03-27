@@ -34,8 +34,5 @@
         </a>
     </div>
 
-    <!-- Footer -->
-    <?php require '_footer_common.php';?>
-
 </body>
 </html>

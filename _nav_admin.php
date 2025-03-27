@@ -47,7 +47,7 @@
             <button type="button" class="btn btn-dark position-absolute top-0 end-0 m-2 text-light" data-bs-dismiss="offcanvas" title="Close"><i class="fa-solid fa-angles-left"></i> </button>
         </div>
         
-        <!-- slide bar boddy -->
+        <!-- slide bar body -->
         <div class="offcanvas-body ms-2">
         
             <div class="offcanvas-options fs-5">
@@ -134,16 +134,16 @@
 
                     <!-- Customer view Control -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle dropdown-item rounded p-2 disabled <?php if($page_type == "cu_out_con"){echo "op-ac";}?>" id="customer" data-bs-toggle="dropdown"><i class="fa-solid fa-clipboard-list"></i> Customer view Control</a>
+                        <a class="dropdown-toggle dropdown-item rounded p-2 <?php if($page_type == "customer_output_control"){echo "op-ac";}?>" id="customer" data-bs-toggle="dropdown"><i class="fa-solid fa-clipboard-list"></i> Customer view Control</a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="customer">
-                            <li><form method="post"><button class="dropdown-item rounded p-2" type="submit" name="residential_plans">
+                            <li><a class="dropdown-item rounded p-2" href='footer_view_control.php'>
                                 <i class="fa-solid fa-house-laptop"></i> 
-                                Navbar Control
-                            </button></form></li>
-                            <li><form method="post"><button class="dropdown-item rounded p-2" type="submit" name="organizational_plans">
+                                Edit Footer
+                            </a></li>
+                            <li><a class="dropdown-item rounded p-2" href='#'>
                                 <i class="fa-solid fa-building"></i> 
-                                Carosoule Control
-                            </button></form></li>
+                                Edit Carosoule
+                            </a></li>
                         </ul>
                     </li>
 

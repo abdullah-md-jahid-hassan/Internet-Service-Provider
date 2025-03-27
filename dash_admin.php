@@ -232,35 +232,32 @@
                 </div>
             </div>
 
-            <!-- Customer view control -->
+            <!-- footer view control -->
             <div class="col-auto p-2">
                 <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                     <div class="card-side rounded-start" style="background-color: #8ac926"></div>
                     <div class="card-text">
                         <h5><i class="fa-regular fa-eye" style="color: #8ac926"></i> Customer View Control</h5>
-                        <p>On-Going Task: 30</p>
-                        <a class="btn btn-secondary rounded p-2" href="Cus_view_control.php">Edite</a>
+                        <a class="btn btn-secondary rounded p-2" href="footer_view_control.php">Edit</a>
                     </div>
                 </div>
             </div>
 
             <!-- Supper admin control -->
             <?php
-                        if ($_SESSION['user'] == "sup_admin"){
-                            echo '
-                            <div class="col-auto p-2">
-                                <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
-                                    <div class="card-side rounded-start" style="background-color:rgb(245, 9, 9)"></div>
-                                    <div class="card-text">
-                                        <h5><i class="fa-solid fa-user-tie" style="color: rgb(245, 9, 9)"></i> Supper Admin Control</h5>
-                                        <a class="btn btn-secondary rounded p-2" href="supper_admin_control.php">Supper Panel</a>
-                                    </div>
-                                </div>
-                            </div>';
-                        }
+                if ($_SESSION['user'] == "sup_admin"){
+                    echo '
+                    <div class="col-auto p-2">
+                        <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
+                            <div class="card-side rounded-start" style="background-color:rgb(245, 9, 9)"></div>
+                            <div class="card-text">
+                                <h5><i class="fa-solid fa-user-tie" style="color: rgb(245, 9, 9)"></i> Supper Admin Control</h5>
+                                <a class="btn btn-secondary rounded p-2" href="supper_admin_control.php">Supper Panel</a>
+                            </div>
+                        </div>
+                    </div>';
+                }
             ?>
-            
-
         </div>
 
         

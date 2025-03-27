@@ -7,8 +7,6 @@
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
 
-    <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="customer_details.css">
     <!-- Link End -->
 
@@ -47,16 +45,16 @@
         $pay_info = $pay_info_result->fetch_assoc();
 
         // Getting bill Info
-        $bill_info_sql = "SELECT 
-            connections.name AS name,
-            connections.type AS type,
-            DATE_FORMAT(bill.due_date, '%M, %Y') AS month,
-            bill.amount AS amount,
-            bill.state AS state
-        FROM payments
-        JOIN bill ON payments.id = bill.payment_id
-        JOIN connections ON bill.connection_id = connections.id
-        WHERE payments.tran_id = ? AND connections.customer_id = ?";
+        $bill_info_sql = "SELECT DISTINCT
+    connections.name AS name,
+    connections.type AS type,
+    DATE_FORMAT(bill.due_date, '%M, %Y') AS month,
+    bill.amount AS amount,
+    bill.state AS state
+    FROM payments
+    JOIN bill ON payments.id = bill.payment_id
+    JOIN connections ON bill.connection_id = connections.id
+    WHERE payments.tran_id = ? AND connections.customer_id = ?";
         $stmt = $connect->prepare($bill_info_sql);
         $stmt->bind_param('ss', $tran_id, $customer_id);
         $stmt->execute();
@@ -67,8 +65,29 @@
     ?>
 
     <div class="container">
+        <!-- PDF buttons -->
+        <div class='mt-4 mx-2 d-flex justify-content-end align-items-end'>
+            <form class='mx-1' action='payment_recept_view_download.php' method='POST'>
+                <input type='hidden' name='tran_id' value='<?php echo $tran_id;?>'>
+                <input type='hidden' name='py_re_action' value='view'>
+                <button class='btn btn-warning' type='submit' name='view'>
+                    <i class="fa-solid fa-eye"></i> 
+                    View recept
+                </button>
+            </form>
+
+            <form class='mx-1' action='payment_recept_view_download.php' method='POST'>
+                <input type='hidden' name='tran_id' value='<?php echo $tran_id;?>'>
+                <input type='hidden' name='py_re_action' value='download'>
+                <button class='btn btn-danger' type='submit' name='download'>
+                    <i class="fa-solid fa-download"></i> 
+                    Download recept
+                </button>
+            </form>
+        </div>
+
         <!-- Payment info -->
-        <div class='container my-4' id = 'bill_history'>
+        <div class='container mb-4'>
             <div class='p-2 bg-success rounded-top text-white d-flex justify-content-between align-items-center'>
                 <div>
                     <h5>Payment Amount: <?php echo $pay_info['amount']; ?> BDT</h5>
