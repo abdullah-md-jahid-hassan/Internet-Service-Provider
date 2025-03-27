@@ -18,7 +18,7 @@ $info_sql = "SELECT
     FROM connections 
     JOIN bill ON connections.id = bill.connection_id 
     JOIN customer ON connections.customer_id = customer.id
-    WHERE connections.customer_id = '{$customer_id}' AND bill.state = 'Unpaid'";
+    WHERE connections.customer_id = '{$customer_id}' AND bill.state != 'Paid'";
 
 if($pay!='all'){
     $info_sql .= " AND bill.id = '$pay'";
@@ -45,7 +45,7 @@ if(mysqli_query($connect, $insert_other_sql)){
     $py_id_to_bill_sql = "UPDATE bill 
     JOIN connections ON connections.id = bill.connection_id 
     SET bill.payment_id = '{$pay_id['py_id']}' 
-    WHERE connections.customer_id = '{$customer_id}' AND bill.state = 'Unpaid'";    
+    WHERE connections.customer_id = '{$customer_id}' AND bill.state != 'Paid'";    
 
     if($pay!='all'){
         $py_id_to_bill_sql .= " AND bill.id = '$pay'";

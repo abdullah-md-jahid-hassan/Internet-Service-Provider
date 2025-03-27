@@ -49,7 +49,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link  <?php if($page_type == "payment"){echo "op-ac";}?>" href="pament.php">Payment</a>
+                        <a class="nav-link  <?php if($page_type == "payment"){echo "op-ac";}?>" href="customer_info.php?#bill_history">Payment</a>
                     </li>
 
                     <li class="nav-item">

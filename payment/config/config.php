@@ -17,10 +17,10 @@ if (!defined('STORE_PASSWORD')) {
 }
 
 return [
-    'success_url' => 'payment/success.php', // your success url
-    'failed_url' => 'payment/fail.php', // your fail url
-    'cancel_url' => 'payment/cancel.php', //your cancel url
-    'ipn_url' => 'payment/ipn.php', // your ipn url
+    'success_url' => 'payment/pg_redirection/success.php', // your success url
+    'failed_url' => 'payment/pg_redirection/fail.php', // your fail url
+    'cancel_url' => 'payment/pg_redirection/cancel.php', //your cancel url
+    'ipn_url' => 'payment/pg_redirection/ipn.php', // your ipn url
 
 
     'projectPath' => PROJECT_PATH,

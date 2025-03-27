@@ -390,12 +390,12 @@ class SslCommerzNotification extends AbstractSslCommerz
     {
         $this->data['cus_name'] = $info['cus_name']; // string (50)	Mandatory - Your customer name to address the customer in payment receipt email
         $this->data['cus_email'] = $info['cus_email']; // string (50)	Mandatory - Valid email address of your customer to send payment receipt from SSLCommerz end
-        $this->data['cus_add1'] = $info['cus_add1']; // string (50)	Mandatory - Address of your customer. Not mandatory but useful if provided
-        $this->data['cus_add2'] = $info['cus_add2']; // string (50)	Address line 2 of your customer. Not mandatory but useful if provided
-        $this->data['cus_city'] = $info['cus_city']; // string (50)	Mandatory - City of your customer. Not mandatory but useful if provided
+        $this->data['cus_add1'] = "Not Needed"; // string (50)	Mandatory - Address of your customer. Not mandatory but useful if provided
+        $this->data['cus_add2'] = "Not Needed"; // string (50)	Address line 2 of your customer. Not mandatory but useful if provided
+        $this->data['cus_city'] = "Not Needed"; // string (50)	Mandatory - City of your customer. Not mandatory but useful if provided
         $this->data['cus_state'] = (isset($info['cus_state'])) ? $info['cus_state'] : null; // string (50)	State of your customer. Not mandatory but useful if provided
-        $this->data['cus_postcode'] = $info['cus_postcode']; // string (30)	Mandatory - Postcode of your customer. Not mandatory but useful if provided
-        $this->data['cus_country'] = $info['cus_country']; // string (50)	Mandatory - Country of your customer. Not mandatory but useful if provided
+        $this->data['cus_postcode'] = "Not Needed"; // string (30)	Mandatory - Postcode of your customer. Not mandatory but useful if provided
+        $this->data['cus_country'] = "Not Needed"; // string (50)	Mandatory - Country of your customer. Not mandatory but useful if provided
         $this->data['cus_phone'] = $info['cus_phone']; // string (20)	Mandatory - The phone/mobile number of your customer to contact if any issue arises
         $this->data['cus_fax'] = (isset($info['cus_fax'])) ? $info['cus_fax'] : null; // string (20)	Fax number of your customer. Not mandatory but useful if provided
 
@@ -405,7 +405,7 @@ class SslCommerzNotification extends AbstractSslCommerz
     public function setShipmentInfo(array $info)
     {
 
-        $this->data['shipping_method'] = $info['shipping_method']; // string (50)	Mandatory - Shipping method of the order. Example: YES or NO or Courier
+        $this->data['shipping_method'] = "NO"; // string (50)	Mandatory - Shipping method of the order. Example: YES or NO or Courier
         $this->data['num_of_item'] = $info['num_of_item']; // integer (1)	Mandatory - No of product will be shipped. Example: 1 or 2 or etc
         $this->data['ship_name'] = $info['ship_name']; // string (50)	Mandatory, if shipping_method is YES - Shipping Address of your order. Not mandatory but useful if provided
         $this->data['ship_add1'] = $info['ship_add1']; // string (50)	Mandatory, if shipping_method is YES - Additional Shipping Address of your order. Not mandatory but useful if provided

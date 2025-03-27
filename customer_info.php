@@ -34,24 +34,23 @@
 
         // Getting Bill Info
         $con_pay_sql = "SELECT 
-            connections.name AS name,
-            connections.type AS type,
-            DATE_FORMAT(bill.due_date, '%M, %Y') AS month,
-            bill.pay_date AS pay_date,
-            bill.amount AS amount,
-            bill.state AS state,
-            bill.due_date AS due_date,
-            bill.pay_date AS pay_date,
-            bill.id AS bill_id
-            FROM connections 
-            JOIN bill ON connections.id = bill.connection_id 
-            WHERE connections.customer_id = '{$customer_id}'
-            ORDER BY 
-                CASE 
-                    WHEN bill.state = 'unpaid' THEN 0 
-                    ELSE 1 
-                END, 
-                bill.due_date DESC"; // Sort unpaid first, then newest first
+        connections.name AS name,
+        connections.type AS type,
+        DATE_FORMAT(bill.due_date, '%M, %Y') AS month,
+        bill.amount AS amount,
+        bill.state AS state,
+        bill.due_date AS due_date,
+        bill.id AS bill_id 
+        FROM connections 
+        JOIN bill ON connections.id = bill.connection_id 
+        WHERE connections.customer_id = '{$customer_id}'
+        ORDER BY 
+            CASE 
+                WHEN bill.state = 'Late' THEN 0 
+                WHEN bill.state = 'Unpaid' THEN 1
+                ELSE 2
+            END,
+            bill.due_date DESC";
 
         $find_con_pay = mysqli_query($connect, $con_pay_sql);
 
@@ -93,62 +92,90 @@
 
         <!-- Bill History section -->
         <div class='container my-4' id = 'bill_history'>
-            <div class='p-2 bg-info rounded-top text-white d-flex justify-content-between'>
+            <div class='p-2 bg-success rounded-top text-white d-flex justify-content-between align-items-center'>
                 <?php if (mysqli_num_rows($find_con_pay) == 0): ?>
                     <p class='text-center text-muted'>No Bill History Found</p>
                 <?php else: ?>
-                    <h5 class='my-2'>Total Due Bill: <?php echo number_format($total_due, 2); ?> BDT</h5>
+                    <div class='my-2'>
+                        <h5>Payment Amount: <?php echo number_format($total_due, 2); ?> BDT</h5>
+                        <p>N.T: Late fees are added if any bill is Late</p>
+                    </div>
                     <form id="payForm" action="pay.php" method="POST">
                         <input type="hidden" name="pay" value="all">
                         <button type='submit' class="btn btn-primary p-2 "><b><i class='fa-solid fa-hand-holding-dollar fa-beat'></i> Pay All</b></button>
-                    </form>
-
-                    
+                    </form> 
             </div>
-                <div class='overflow-x-auto overflow-y-auto'  style='max-height: 400px;'>
 
-                    <table class='table table-info table-striped table-hover text-center'>
-                        <thead>
+            <!-- Table -->
+            <div class='overflow-x-auto overflow-y-auto'  style='max-height: 400px;'>
+                <table class='table table-info table-striped table-hover text-center'>
+                    <thead>
+                        <tr>
+                            <th>Connection Name</th>
+                            <th>Type</th>
+                            <th>Bill Month</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Last Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($find_con_pay)): ?>
                             <tr>
-                                <th>Connection Name</th>
-                                <th>Type</th>
-                                <th>Bill Month</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Last Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($find_con_pay)): ?>
-                                <tr>
-                                    <td><?php echo $row['name']; ?></td>
-                                    <td>
-                                        <?php 
-                                            echo ($row['type'] == 'organizational_plans') ? 'Organizational' : 'Residential'; 
-                                        ?>
-                                    </td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td>
+                                    <?php 
+                                        echo ($row['type'] == 'organizational_plans') ? 'Organizational' : 'Residential'; 
+                                    ?>
+                                </td>
 
-                                    <td><?php echo $row['month']; ?></td>
-                                    <td><?php echo $row['amount']; ?></td>
-                                    <td><?php echo $row['state']; ?></td>
-                                    <td><?php echo $row['due_date']; ?></td>
-                                    <td>
-                                        <?php if ($row['state'] == 'Unpaid'): ?>
-                                            
-                                            <form id="payForm" action="pay.php" method="POST">
-                                                <input type="hidden" name="pay" value="<?php echo $row['bill_id'] ?>">
-                                                <button type='submit' class="btn btn-warning p-2"><b><i class='fa-solid fa-hand-holding-dollar fa-beat'></i> Pay now</b></button>
-                                            </form>
-                                        <?php else: ?>
-                                            <span class='text-success'>Paid on <?php echo $row['state'] ; ?></span>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
-                </div>
+                                <td><?php echo $row['month']; ?></td>
+                                <td><?php echo $row['amount']; ?></td>
+                                <td><?php echo $row['state']; ?></td>
+                                <td><?php echo $row['due_date']; ?></td>
+                                <td>
+                                    <?php if ($row['state'] == 'Paid'): 
+                                        //Get transaction id
+                                        // connect to the database
+                                        require '_database_connect.php';
+                                        if ($row['state']=="Paid"){
+                                            $tran_id_sql = "SELECT 
+                                                payments.tran_id As tran_id
+                                                FROM payments 
+                                                JOIN bill ON payments.id = bill.payment_id 
+                                                WHERE bill.id = '{$row['bill_id']}'";
+                                            $tran_id_result = mysqli_query($connect, $tran_id_sql);
+                                            $tran_id = mysqli_fetch_assoc($tran_id_result);
+                                            // Close the database connection
+                                            mysqli_close($connect);
+                                        }
+                                    ?>
+                                        <a class='btn btn-success' href = 'payment_recept.php?tran_id=<?php echo $tran_id['tran_id']; ?>'>
+                                            <i class="fa-solid fa-scroll fa-flip" style="--fa-flip-x: 1; --fa-flip-y: 0;"></i>
+                                                Details
+                                        </a>
+                                    <?php else: ?>
+                                        <form id="payForm" action="pay.php" method="POST">
+                                            <input type="hidden" name="pay" value="<?php echo $row['bill_id'] ?>">
+                                            <button 
+                                                type='submit' 
+                                                class="btn p-2
+                                                <?php 
+                                                        if($row['state'] == 'Late') echo 'btn-danger';
+                                                        else  echo 'btn-warning';
+                                                    ?> 
+                                                ">
+                                                <b><i class='fa-solid fa-hand-holding-dollar fa-beat'></i> Pay now</b>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
             <?php endif; ?>
         </div>
 
