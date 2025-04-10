@@ -46,15 +46,15 @@
 
         // Getting bill Info
         $bill_info_sql = "SELECT DISTINCT
-    connections.name AS name,
-    connections.type AS type,
-    DATE_FORMAT(bill.due_date, '%M, %Y') AS month,
-    bill.amount AS amount,
-    bill.state AS state
-    FROM payments
-    JOIN bill ON payments.id = bill.payment_id
-    JOIN connections ON bill.connection_id = connections.id
-    WHERE payments.tran_id = ? AND connections.customer_id = ?";
+            connections.name AS name,
+            connections.type AS type,
+            DATE_FORMAT(bill.due_date, '%M, %Y') AS month,
+            bill.amount AS amount,
+            bill.state AS state
+            FROM payments
+            JOIN bill ON payments.id = bill.payment_id
+            JOIN connections ON bill.connection_id = connections.id
+            WHERE payments.tran_id = ? AND connections.customer_id = ?";
         $stmt = $connect->prepare($bill_info_sql);
         $stmt->bind_param('ss', $tran_id, $customer_id);
         $stmt->execute();
@@ -67,18 +67,16 @@
     <div class="container">
         <!-- PDF buttons -->
         <div class='mt-4 mx-2 d-flex justify-content-end align-items-end'>
-            <form class='mx-1' action='payment_recept_view_download.php' method='POST'>
+            <form class='mx-1' action='payment_recept_view_download.php' method='POST' target='_blank'>
                 <input type='hidden' name='tran_id' value='<?php echo $tran_id;?>'>
-                <input type='hidden' name='py_re_action' value='view'>
+                
+                <!-- View button -->
                 <button class='btn btn-warning' type='submit' name='view'>
                     <i class="fa-solid fa-eye"></i> 
                     View recept
                 </button>
-            </form>
 
-            <form class='mx-1' action='payment_recept_view_download.php' method='POST'>
-                <input type='hidden' name='tran_id' value='<?php echo $tran_id;?>'>
-                <input type='hidden' name='py_re_action' value='download'>
+                <!-- Download button -->
                 <button class='btn btn-danger' type='submit' name='download'>
                     <i class="fa-solid fa-download"></i> 
                     Download recept

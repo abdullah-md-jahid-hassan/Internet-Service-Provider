@@ -14,7 +14,9 @@ $info_sql = "SELECT
     customer.name AS cu_name,
     customer.email AS cu_email,
     customer.phone AS cu_phone,
-    SUM(bill.amount) AS total_due  
+    customer.address AS cu_address,
+    SUM(bill.amount) AS total_due,
+    COUNT(bill.id) AS bill_count 
     FROM connections 
     JOIN bill ON connections.id = bill.connection_id 
     JOIN customer ON connections.customer_id = customer.id
@@ -72,6 +74,10 @@ $post_data['cus_phone'] = $info['cu_phone'];  // Fetch from DB
 $post_data['product_name'] = "Internet Bill";
 $post_data['product_category'] = "ISP";
 $post_data['product_profile'] = "general";
+$post_data['num_of_item'] = $info['bill_count'];
+$post_data['ship_name'] = $info['cu_name'];
+$post_data['ship_add1'] = $info['cu_address'];
+$post_data['ship_city'] = $info['cu_address'];
 
 // Start payment
 $sslcommerz = new SslCommerzNotification();

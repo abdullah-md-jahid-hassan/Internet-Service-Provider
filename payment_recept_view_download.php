@@ -5,17 +5,25 @@ date_default_timezone_set('Asia/Dhaka');
 // Import View and download recept functions
 require_once 'function\pdf_view_download.php';
 
-if (!isset($_POST['tran_id']) || empty($_POST['tran_id']) || !isset($_POST['py_re_action']) || empty($_POST['py_re_action'])) {
-    if (isset($_SESSION['user'])  && $_SESSION['user']=='customer'){
-        echo '<script> window.location.replace("customer_info.php?#bill_history");</script>';
-    } elseif (isset($_SESSION['user'])  && ($_SESSION['user']=='admin'  || $_SESSION['user']=='sup_admin')){
-        echo '<script> window.location.replace("dash_admin.php");</script>';
+//Get data form $_POST
+if (isset($_POST['view'])) {
+    $action = 'view';
+} elseif (isset($_POST['download'])) {
+    $action = 'download';
+}else {
+    if (isset($_SESSION['user'])  && 
+    isset($_SESSION['user'])){
+        if ($_SESSION['user']=='customer'){
+            echo '<script> window.location.replace("customer_info.php?#bill_history");</script>';
+        } elseif ($_SESSION['user']=='admin'  || $_SESSION['user']=='sup_admin'){
+            echo '<script> window.location.replace("dash_admin.php");</script>';
+        } else {
+            echo '<script> window.location.replace("logout.php");</script>';
+        }
+        die();
     }
-    die();
 }
-
 $tran_id = $_POST['tran_id'];
-$action = $_POST['py_re_action'];
 
 //Current date and month
 $current_dt_ti = new DateTime();

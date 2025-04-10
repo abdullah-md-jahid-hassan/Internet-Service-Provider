@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment</title>
-    <!-- Links Start -->
-    <?php include '../../_link_common.php'; ?>
 </head>
 <body>
 <div class="container">
@@ -76,7 +74,7 @@ $stmt = $connect->prepare("UPDATE payments
 
 // Bind parameters (18 parameters = 18 's' characters)
 $stmt->bind_param(
-    'ssssssssssssssssss', // 18 's' for 18 parameters
+    'ssssssssssssssssss',
     $tran_id, $val_id, $card_type, $store_amount, $bank_tran_id, $tran_status, 
     $tran_date, $card_issuer, $card_brand, $card_sub_brand, $card_issuer_country, 
     $card_issuer_country_code, $store_id, $verify_sign, $verify_sign_sha2, 
@@ -102,7 +100,7 @@ if ($stmt->execute()) {
     $_SESSION['id'] = "$cus_id[customer_id]";
     
     //redirection to the payment_recept with tran_id
-    header("Location: ../../payment_recept.php?tran_id=" . urlencode($tran_id));
+    echo '<script>window.location.replace("../../payment_recept.php?tran_id=' . urlencode($tran_id) . '");</script>';
     die();
 } else {
     echo "Error: " . $stmt->error;

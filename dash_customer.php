@@ -51,9 +51,34 @@
         echo "<script> window.location.href='connections_details_customer.php';</script>";
         die();
     }
-
+    
     // connect to the database
     require '_database_connect.php';
+
+    // Query to get the total due amount
+    $total_due_sql = "SELECT SUM(bill.amount) AS total_due FROM connections 
+    JOIN bill ON connections.id = bill.connection_id 
+    WHERE connections.customer_id = '{$customer_id}' AND bill.state = 'Unpaid'";
+    $total_due_result = mysqli_query($connect, $total_due_sql);
+    $total_due_row = mysqli_fetch_assoc($total_due_result);
+    $total_due = $total_due_row['total_due'] ?? 0; // Default to 0 if null
+
+    //Searchbar function
+    $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}'";
+    if(isset($key) && isset($word)){
+        if($key=="all" && $word!=""){
+            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND CONCAT(name, address) LIKE '%$word%'";
+        } else if($key=="name" && $word!=""){
+            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND `name` LIKE '%$word%'";
+        } else if($key=="address" && $word!=""){
+            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND `address` LIKE '%$word%'";
+        } else if($key=="type" && $word!=""){
+            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND `type` LIKE '%$word%'";
+        }
+    }
+    //Query
+    $find_connections = mysqli_query($connect, $find_connections_sql);
+    $total_connections = mysqli_num_rows($find_connections);
 
     // Query to get the total due amount
     $total_due_sql = "SELECT SUM(bill.amount) AS total_due FROM connections 
@@ -92,13 +117,13 @@
                 <div class="card-text">
                     <h5><i class="fa-solid fa-money-check-dollar" style="color:green"></i> Bills And Payment</h5>
 
-                    <?php if (true): ?>
+                    <?php if ($total_due > 0): ?>
                         <form id="payForm" action="pay.php" method="POST">
                             <input type="hidden" name="pay" value="all">
                             <button type="submit" class="btn btn-danger p-2"><b><i class='fa-solid fa-hand-holding-dollar fa-beat'></i> Pay <?php echo $total_due; ?></b></button>
                         </form>
                     <?php else: ?>
-                        <p><i class="fa-solid fa-thumbs-up"></i>No due<?php echo "h"; ?></p>
+                        <p><i class="fa-solid fa-thumbs-up"></i> No due</p>
                     <?php endif; ?>
 
                     <a class="btn btn-success rounded mt-1" href="customer_info.php#bill_history">Bill details</a>
@@ -141,23 +166,6 @@
 <?php
     // connect to the database
     require '_database_connect.php';
-
-    //Searchbar function
-    $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}'";
-    if(isset($key) && isset($word)){
-        if($key=="all" && $word!=""){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND CONCAT(name, address) LIKE '%$word%'";
-        } else if($key=="name" && $word!=""){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND `name` LIKE '%$word%'";
-        } else if($key=="address" && $word!=""){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND `address` LIKE '%$word%'";
-        } else if($key=="type" && $word!=""){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND `type` LIKE '%$word%'";
-        }
-    }
-    //Query
-    $find_connections = mysqli_query($connect, $find_connections_sql);
-    $total_connections = mysqli_num_rows($find_connections);
 
     // Showing connections list
     if($total_connections>0){
@@ -219,7 +227,7 @@
             </table>
         </div>";;
     }
-    
+
     // Close the database connection
     mysqli_close($connect);
 
@@ -227,7 +235,7 @@
     include '_footer_common.php';
 
     // Season variable clear
-    require '_unset_seasion_variable.php';
+    require '_unset_season_variable.php';
 ?>
 </body>
 </html>
