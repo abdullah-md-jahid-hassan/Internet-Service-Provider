@@ -20,7 +20,7 @@
 
 <?php
     // Season variable clear
-    require '_unset_seasion_variable.php';
+    require '_unset_session_variable.php';
 
     //Defining Page Type
     $page_type = "dashboard";
@@ -52,7 +52,7 @@
     $find_connections = mysqli_query($connect, $find_connections_sql);
     $connections_num = mysqli_num_rows($find_connections);
 
-    // Get New connectoon requests
+    // Get New connection requests
     $find_new_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Pending'";
     $find_new_connections = mysqli_query($connect, $find_new_connections_sql);
     $new_connections_num = mysqli_num_rows($find_new_connections);
@@ -76,6 +76,11 @@
     $find_task_sql = "SELECT * FROM `task` WHERE `state` != 'Completed'";
     $find_task = mysqli_query($connect, $find_task_sql);
     $task_num = mysqli_num_rows($find_task);
+
+    // Fetch complaints from the database
+    $complaint_sql = "SELECT * FROM complaint WHERE 1";
+    $find_complains = mysqli_query($connect, $complaint_sql);
+    $complaint_num = mysqli_num_rows($find_complains);
 
     // Close the database connection
     mysqli_close($connect);
@@ -214,7 +219,7 @@
                     <div class="card-side rounded-start" style="background-color: #000000"></div>
                     <div class="card-text">
                         <h5><i class="fa-solid fa-not-equal" style="color: #000000"></i> Complaints</h5>
-                        <p>Pending Complaints: 30</p>
+                        <p>Pending Complaints: <?php echo $complaint_num; ?></p>
                         <a class="btn btn-secondary rounded p-2" href="complaints.php">Complaints</a>
                     </div>
                 </div>
@@ -405,7 +410,7 @@
 
     <?php
         //Clear Session Variable
-        include '_unset_seasion_variable.php';
+        include '_unset_season_variable.php';
     ?>
 
 </body>

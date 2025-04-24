@@ -28,6 +28,8 @@ function definePDF($html) {
 
 
 
+
+
 /**
  * Function downloadPDF()
  * Generate and force download of a PDF document

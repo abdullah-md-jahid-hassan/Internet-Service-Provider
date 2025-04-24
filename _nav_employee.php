@@ -2,7 +2,7 @@
     <?php require '_logincheck_employee.php'; ?>
 
     
-    <!-- Navbar Satrat -->
+    <!-- Navbar Start -->
     <nav class="navbar navbar-expand-xxxl bg-dark sticky-top" data-bs-theme="dark">
         <div class="container-fluid d-flex justify-content-between">
 
@@ -24,45 +24,25 @@
             <!-- Navbar-links -->
             <div class="collapse navbar-collapse" id="nav-links">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <form method="post">
-                        <li class="nav-item">
-                            <a class="nav-link  <?php if($page_name == "Home"){echo "op-ac";}?>" aria-current="page" href="dash_employee.php">Home</a>
-                        </li>
-    
-                        <li class="nav-item">
-                            <button class="nav-link  <?php if($page_name == "Pending Tasks"){echo "op-ac";}?>" type="submit" name="pending_tasks">Pending Tasks</button>
-                        </li>
-    
-                        <li class="nav-item">
-                            <button class="nav-link  <?php if($page_name == "Completed Tasks"){echo "op-ac";}?>" type="submit" name="completed_tasks">Completed Tasks</button>
-                        </li>
-    
-                        <li class="nav-item">
-                            <button class="nav-link  <?php if($page_name == "Expired Tasks"){echo "op-ac";}?>" type="submit" name="expired_tasks">Expired Tasks</button>
-                        </li>
-                    </form>
+                    <li class="nav-item">
+                        <a class="nav-link  <?php if($page_name == "Home"){echo "op-ac";}?>" aria-current="page" href="dash_employee.php">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link  <?php if($page_name == "Pending Tasks"){echo "op-ac";}?>" href="employee_tasks.php?task_type=Pending">Pending Tasks</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link  <?php if($page_name == "Completed Tasks"){echo "op-ac";}?>" href="employee_tasks.php?task_type=Completed">Completed Tasks</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link  <?php if($page_name == "Expired Tasks"){echo "op-ac";}?>" href="employee_tasks.php?task_type=Late">Expired Tasks</a>
+                    </li>
                 </ul>
             </div>
 
         </div>
     </nav>
     <!-- NavBar End -->
-
-    <?php
-        
-        // If Button on card or nav taks buttons clicked clicked
-        if(isset($_POST['pending_tasks'])){
-            $_SESSION['task_type'] = "Pending";
-            echo "<script> window.location.href='employee_tasks.php';</script>";
-            die();
-        }else if(isset($_POST['completed_tasks'])){
-            $_SESSION['task_type'] = "Completed";
-            echo "<script> window.location.href='employee_tasks.php';</script>";
-            die();
-        }else if(isset($_POST['expired_tasks'])){
-            $_SESSION['task_type'] = "Late";
-            echo "<script> window.location.href='employee_tasks.php';</script>";
-            die();
-        }
-    ?>
 

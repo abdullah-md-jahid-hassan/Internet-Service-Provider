@@ -22,8 +22,7 @@
             die();
         }
         //Defining Page
-        $page_type = "manage_employee";
-        $page_name = "Employee Details";
+        $page_type = $page_name = "Employee Details";
         
         //Navbar
         require '_nav_admin.php';
@@ -56,7 +55,7 @@
         $find_employee = mysqli_query($connect, $find_employee_sql);
         $employee = mysqli_fetch_assoc($find_employee);
 
-        //Sarcbar function
+        //Searchbar function
         if(isset($key) && isset($word)){
             if($key=="all" && $word==""){
                 $find_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$employee_id}'";
@@ -104,6 +103,28 @@
                         <b>NID: </b><?php echo $employee['nid'];?><br>
                         <b>Salary: </b><?php echo $employee['salary'];?>
                     </p>
+                    
+                    <!-- NID button -->
+                    <div class='btn-group'>
+                        <a class='btn btn-info' href='<?php echo $employee['nid_file'];?>' target='_blank'><i class="fa-solid fa-eye"></i> NID</a>
+
+                        <a class='btn btn-warning' href='<?php echo $employee['nid_file'];?>' target='_blank' download><i class="fa-solid fa-download"></i></a>
+                    </div>
+
+                    <!-- CV button -->
+                    <div class='btn-group'>
+                        <a class='btn btn-info' href='<?php echo $employee['resume_file'];?>' target='_blank'><i class="fa-solid fa-eye"></i> CV</a>
+
+                        <a class='btn btn-warning' href='<?php echo $employee['resume_file'];?>' target='_blank' download><i class="fa-solid fa-download"></i></a>
+                    </div>
+
+                    <!-- Certificate button -->
+                    <div class='btn-group'>
+                        <a class='btn btn-info' href='<?php echo $employee['certificate_file'];?>' target='_blank'><i class="fa-solid fa-eye"></i> Certificate</a>
+
+                        <a class='btn btn-warning' href='<?php echo $employee['certificate_file'];?>' target='_blank' download><i class="fa-solid fa-download"></i></a>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -115,32 +136,32 @@
             <h5 class='p-2 bg-info rounded'>Total Assigned Task: <?php echo $total_task_to_show;?></h5>
         </div>
 
-        <div class="container">
-            <!-- Search bar with filter -->
-            <form method="get">
-                <div class="input-group">
-                    <!-- assign_task Button -->
-                    <button type="submit" class="btn btn-success" name="assign_task">
-                        <i class="fa-solid fa-plus"></i> Assign Task    
-                    </button>
-                    <select class="search-select" name="key" style="width: 20%;">
-                        <option value="all" selected>Search By</option>
-                        <option value="title">Title</option>
-                        <option value="address">Address</option>
-                        <option value="status">Status</option>
-                    </select>
-                    <input type="text" class="form-control" name="word" placeholder="Search">
-                    <button class="btn btn-danger btn-outline-light" name="search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></i> Search</button> 
-                    <button class="btn btn-success btn-outline-light" name="reset" type="submit"><i class="fa-solid fa-rotate"></i></i> Re-set</button>  
-
-                </div>
-            </form>
-        </div>
-
         <?php
             // Showing task list
             if($total_task_to_show>0){
                 echo "
+                <div class='container'>
+                    <!-- Search bar with filter -->
+                    <form method='get'>
+                        <div class='input-group'>
+                            <!-- assign_task Button -->
+                            <button type='submit' class='btn btn-success' name='assign_task'>
+                                <i class='fa-solid fa-plus'></i> Assign Task    
+                            </button>
+                            <select class='search-select' name='key' style='width: 20%;'>
+                                <option value='all' selected>Search By</option>
+                                <option value='title'>Title</option>
+                                <option value='address'>Address</option>
+                                <option value='status'>Status</option>
+                            </select>
+                            <input type='text' class='form-control' name='word' placeholder='Search'>
+                            <button class='btn btn-danger btn-outline-light' name='search' type='submit'><i class='fa-solid fa-magnifying-glass'></i></i> Search</button> 
+                            <button class='btn btn-success btn-outline-light' name='reset' type='submit'><i class='fa-solid fa-rotate'></i></i> Re-set</button>  
+
+                        </div>
+                    </form>
+                </div>
+
                 <div class='container overflow-x-scroll'>
                     <div class='num_of_res text-light btn btn-dark m-1'>
                         <h7 class='pt-2'>Total Result: $total_task_to_show</h7>

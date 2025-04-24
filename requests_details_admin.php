@@ -126,11 +126,7 @@
                     <b>Email: </b><?php echo $customer['email'] ?><br>
                 </div>
                 <div class="card-footer">
-                    <form method="post">
-                        <form method="post">
-                            <button class="btn btn-success" type="submit" name="customer_details">Customer Details</button>
-                        </form>
-                    </form>
+                    <a class="btn btn-success" href="customer_details.php?c_id=<?php echo $customer['id'] ?>">Customer Details</a>
                 </div>
             </div>
 

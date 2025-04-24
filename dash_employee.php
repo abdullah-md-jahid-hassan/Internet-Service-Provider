@@ -25,12 +25,12 @@
     $find_pending_task = mysqli_query($connect, $find_pending_task_sql);
     $pending_task = mysqli_num_rows($find_pending_task);
 
-    // Get number of conplited task
+    // Get number of complied task
     $find_completed_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `state` = 'Completed'";
     $find_completed_task = mysqli_query($connect, $find_completed_task_sql);
     $completed_task = mysqli_num_rows($find_completed_task);
 
-    // Get number of Expiard task
+    // Get number of Expired task
     $find_expired_task_sql = "SELECT * FROM `task` WHERE `employee_id` = '{$_SESSION['id']}' AND `state` = 'late'";
     $find_expired_task = mysqli_query($connect, $find_expired_task_sql);
     $late_task = mysqli_num_rows($find_expired_task);
@@ -46,10 +46,13 @@
         <div class="col-auto p-2">
             <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                 <div class="card-side rounded-start" style="background-color: red"></div>
+                
                 <div class="card-text">
                     <h5><i class="fa-solid fa-list-check" style="color: #9d8189"></i>Pending Tasks</h5>
+
                     <p>On-Going Task: <?php echo "$pending_task"; ?></p>
-                    <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="pending_tasks">Pending Task list</button></form>
+
+                    <a class="btn btn-secondary rounded p-2" href="employee_tasks.php?task_type=Pending">Pending Tasks</a>
                 </div>
             </div>
         </div>
@@ -58,22 +61,28 @@
         <div class="col-auto p-2">
             <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                 <div class="card-side rounded-start" style="background-color: green"></div>
+                
                 <div class="card-text">
                     <h5><i class="fa-solid fa-check"></i> Completed Tasks</h5>
+                    
                     <p>Completed Task: <?php echo "$completed_task"; ?></p>
-                    <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="completed_tasks">Completed Task list</button></form>
+                    
+                    <a class="btn btn-secondary rounded p-2" href="employee_tasks.php?task_type=Completed">Completed Tasks</a>
                 </div>
             </div>
         </div>
 
-        <!-- Expiered Task -->
+        <!-- Expired Task -->
         <div class="col-auto p-2">
             <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                 <div class="card-side rounded-start" style="background-color: black"></div>
+                
                 <div class="card-text">
                     <h5><i class="fa-solid fa-xmark"></i> Expired Tasks</h5>
+                    
                     <p>Expired Task: <?php echo "$late_task"; ?></p>
-                    <form method="post"><button class="btn btn-secondary rounded p-2" type="submit" name="expired_tasks">Expired Task list</button></form>
+                    
+                    <a class="btn btn-secondary rounded p-2" href="employee_tasks.php?task_type=Late">Expired Tasks</a>
                 </div>
             </div>
         </div>

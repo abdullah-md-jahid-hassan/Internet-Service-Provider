@@ -116,15 +116,14 @@
                 <button type='submit' class='btn btn-success' name='action'>";
                 if(isset($_SESSION['action']) && $_SESSION['action']=="update"){
                     echo "
-                    <i class='fa-solid fa-rotate'></i> Choose</button>
-                    </form>
-                    </div>";
+                    <i class='fa-solid fa-rotate'></i> Choose";
                 } else {
                     echo "
-                    <i class='fa-solid fa-plus'></i> Request For New Connection</button>
-                    </form>
-                    </div>";
+                    <i class='fa-solid fa-plus'></i> Request For New Connection";
                 }
+                echo "</button>
+                </form>
+                </div>";
                 
             }
             echo "
@@ -142,6 +141,9 @@
             if($_SESSION['action']=="update"){
                 //Update the connection database
                 $plan_update_sql = "UPDATE `connections` SET `state` = 'Update pending', `req_plan` = '{$_POST['plan_id']}' WHERE `id` = '{$_SESSION['connections_id_details']}'";
+                
+                // connect to the database
+                require '_database_connect.php';
                 $plan_update = mysqli_query($connect, $plan_update_sql);
                 // Close the database connection
                 mysqli_close($connect);
@@ -153,16 +155,12 @@
                 die();
             } else {
                 // if Request for connection
-                // seting Seasion Value for Updte Page
+                // sating Session Value for Update Page
                 $_SESSION['plan_id_new'] = $_POST['plan_id'];
-                // Close the database connection
-                mysqli_close($connect);
                 echo "<script> window.location.href='request_connection_customer.php';</script>";
                 die();
             }
         }
-        // Close the database connection
-        mysqli_close($connect);
     ?>
 </body>
 </html>

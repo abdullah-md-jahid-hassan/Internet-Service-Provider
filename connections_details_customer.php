@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comone page for Admin</title>
+    <title>Connection Details</title>
     <!-- Links Start -->
     <?php include '_link_common.php'; ?>
 
@@ -52,9 +52,13 @@
                     <b>States: </b><?php echo $connection['state'] ?>
                 </div>
                 <div class="card-footer">
-                    <form method="post">
-                        <button class="btn btn-danger" type="submit" name="delete"><i class="fa-solid fa-trash-can"></i> Delete Connection</button>
-                    </form>
+                    <?php 
+                        if($connection['state']!="Disconnection pending"): ?>
+                            <form method="post">
+                                <button class="btn btn-danger" type="submit" name="delete"><i class="fa-solid fa-trash-can"></i> Delete Connection</button>
+                            </form>
+                        <?php endif; ?>
+                    
                 </div>
             </div>
 
@@ -105,7 +109,7 @@
             // Close the database connection
             mysqli_close($connect);
 
-            //Rederection to the connection page
+            //Redetection to the connection page
             echo "<script> window.location.href='dash_customer.php';</script>";
             die();
         }
@@ -115,7 +119,7 @@
             $_SESSION['action'] = "update";
             $_SESSION['plan_type'] = $connection['type'];
             $_SESSION['plan_id'] = $plan['id'];
-            //Rederection to the connection page
+            //Redetection to the connection page
             echo "<script> window.location.href='plans_customer.php';</script>";
             die();
         }

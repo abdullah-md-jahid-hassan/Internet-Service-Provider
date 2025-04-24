@@ -1,3 +1,7 @@
+<?php
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,15 +25,15 @@
     //Navbar
     require '_nav_customer.php';
 
+    //Carousel
+    include '_carousel.php';
+
     // Sanitize session ID
     $customer_id = $_SESSION['id'];
 
     //variables
     $key = "all";
     $word = "";
-
-    //Carousel
-    include '_carousel.php';
 
     //if searched
     if(isset($_GET['search'])){
@@ -46,7 +50,7 @@
     //Seeing Details
     if(isset($_POST['details'])){
         // Season variable clear
-        require '_unset_seasion_variable.php';
+        require '_unset_session_variable.php';
         $_SESSION['connections_id_details'] = $_POST['con_id'];
         echo "<script> window.location.href='connections_details_customer.php';</script>";
         die();
@@ -80,6 +84,18 @@
     $find_connections = mysqli_query($connect, $find_connections_sql);
     $total_connections = mysqli_num_rows($find_connections);
 
+    //Get num of connections
+    $connection_num_sql = "SELECT 
+    SUM(CASE WHEN type = 'residential_plans' THEN 1 ELSE 0 END) AS res,
+    SUM(CASE WHEN type = 'organizational_plans' THEN 1 ELSE 0 END) AS org
+    FROM connections 
+    WHERE customer_id = '{$customer_id}'";
+    $find_connection_result = mysqli_query($connect, $connection_num_sql);
+    $connection_counts = mysqli_fetch_assoc($find_connection_result);
+    $residential_con_num = $connection_counts['res'] ? : 0;
+    $organizational_con_num = $connection_counts['org'] ? : 0;
+
+
     // Query to get the total due amount
     $total_due_sql = "SELECT SUM(bill.amount) AS total_due FROM connections 
     JOIN bill ON connections.id = bill.connection_id 
@@ -88,24 +104,25 @@
     $total_due_row = mysqli_fetch_assoc($total_due_result);
     $total_due = $total_due_row['total_due'] ?? 0; // Default to 0 if null
 
+    // Fetch complaints from the database
+    $complaint_sql = "SELECT * FROM complaint WHERE customer_id = '{$customer_id}'";
+    $find_complains = mysqli_query($connect, $complaint_sql);
+    $complaint_num = mysqli_num_rows($find_complains);
+
     // Close the database connection
     mysqli_close($connect);
-    
 ?>
-
-
 
 <div class="container my-3">
     <div class="row justify-content-center my-5">
-
         <!-- Connections -->
         <div class="col-auto p-2">
             <div class="card-box card-1 text-bg-light rounded d-flex align-items-center">
                 <div class="card-side rounded-start" style="background-color: rgb(86, 86, 221)"></div>
                 <div class="card-text">
                     <h5><i class="fa-solid fa-wifi" style="color:rgb(86, 86, 221)"></i> Connections</h5>
-                    <p>Residential: <?php echo "h"; ?></p>
-                    <p>Organizational: <?php echo "k"; ?></p>
+                    <p>Residential: <?php echo $residential_con_num; ?></p>
+                    <p>Organizational: <?php echo $organizational_con_num; ?></p>
                 </div>
             </div>
         </div>
@@ -138,7 +155,9 @@
                 <div class="card-side rounded-start" style="background-color: black"></div>
                 <div class="card-text">
                     <h5><i class="fa-solid fa-paper-plane"></i> Complains</h5>
-                    <p>Unsolved Complain: <?php echo "rr"; ?></p>
+                    <p>Unsolved Complain: <?php
+                    echo $complaint_num;
+                    ?></p>
                     <a class="btn btn-secondary rounded p-2" href="customer_info.php#complaint_history">Complain list</a>
                 </div>
             </div>
@@ -235,7 +254,7 @@
     include '_footer_common.php';
 
     // Season variable clear
-    require '_unset_season_variable.php';
+    require '_unset_session_variable.php';
 ?>
 </body>
 </html>

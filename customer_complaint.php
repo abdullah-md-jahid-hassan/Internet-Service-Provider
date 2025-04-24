@@ -31,8 +31,10 @@
             $details = mysqli_real_escape_string($connect, $_POST['details']);
             $customer_id = $_SESSION['id'];
 
-            $new_complaint_sql = "INSERT INTO `complaint` (`name`, `type`, `customer_id`, `state`, `details`) VALUES ('$name', '$type', '$customer_id', 'Pending', '$details')";
-
+            $new_complaint_sql = "INSERT INTO `complaint` 
+            (`name`, `type`, `customer_id`, `state`, `complaining_date`, `details`) 
+            VALUES ('$name', '$type', '$customer_id', 'Pending', NOW(), '$details')";
+        
             $new_complaint_query = mysqli_query($connect, $new_complaint_sql);
 
             if($new_complaint_query){
@@ -45,7 +47,7 @@
         }
     ?>
 
-    <!-- Add Plan form -->
+    <!-- Add complain form -->
     <div class="container rounded bg-black my-5 p-4 text-light">
         <h3 class="border p-2 text-center">Complaint Details</h3>
         <form method="post">

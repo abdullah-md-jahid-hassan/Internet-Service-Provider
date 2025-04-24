@@ -63,8 +63,16 @@
         $total_due = $total_due_row['total_due'] ?? 0; // Default to 0 if null
  
         // Fetch complaints from the database
-        $complaint_sql = "SELECT * FROM complaint WHERE customer_id = '{$customer_id}'";
-        $find_complains = mysqli_query($connect, $complaint_sql);    
+        $complaint_sql = "SELECT
+            title,
+            type,
+            state,
+            comments,
+            details,
+            DATE_FORMAT(complaining_date, '%D %M, %Y') AS date
+            FROM complaint WHERE customer_id = '{$customer_id}'";
+        $find_complains = mysqli_query($connect, $complaint_sql);
+        $complaint_num = mysqli_num_rows($find_complains);
 
         // Close the database connection
         mysqli_close($connect);
@@ -182,10 +190,11 @@
         <!-- Complaint History Section -->
         <div class='container my-5' id = 'complaint_history'>
             <div class='p-2 bg-danger rounded-top text-white d-flex justify-content-between'>
-                <?php if (mysqli_num_rows($find_complains) == 0): ?>
+                <?php if ($complaint_num == 0): ?>
                     <p class='text-center text-muted m-0'>No Complaint History Found</p>
+                    <a class="btn btn-warning p-2 fa-solid fa-plus" href="customer_complaint.php"><b> New Complain</b></a>
                 <?php else: ?>
-                    <h5 class="my-2">Total Complaints: <?php echo mysqli_num_rows($find_complains); ?></h5>
+                    <h5 class="my-2">Total Complaints: <?php echo $complaint_num; ?></h5>
                     <a class="btn btn-warning p-2 fa-solid fa-plus" href="customer_complaint.php"><b> New Complain</b></a>
             </div>
 
@@ -197,6 +206,7 @@
                                 <th>Complain Title</th>
                                 <th>Type</th>
                                 <th>Status</th>
+                                <th>Complaint Date</th>
                                 <th>Details</th>
                                 <th>Comments</th>
                             </tr>
@@ -204,9 +214,10 @@
                         <tbody>
                             <?php while ($row = mysqli_fetch_assoc($find_complains)): ?>
                                 <tr>
-                                    <td><?php echo $row['name']; ?></td>
+                                    <td><?php echo $row['title']; ?></td>
                                     <td><?php echo $row['type']; ?></td>
                                     <td><?php echo $row['state']; ?></td>
+                                    <td><?php echo $row['date']; ?></td>
                                     <td><?php echo nl2br($row['details']); ?></td>
                                     <td><?php echo $row['comments'] ? $row['comments'] : "<span class='text-muted'>No Comments</span>"; ?></td>
                                 </tr>

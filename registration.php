@@ -60,7 +60,6 @@
             $error = true;
         }
 
-        $registration_sql = "INSERT INTO `customer` (`email`, `phone`, `name`, `address`, `gender`, `password`, `nid`, `photo`) VALUES ('$email', '$phone', '$name', '$address', '$gender', '$pass', '$nid', '$photo_file_location')";
         $nid_get = "SELECT * FROM `customer` WHERE `nid` = '$nid'";
         $phone_get = "SELECT * FROM `customer` WHERE `phone` = '$phone'";
         $email_get = "SELECT * FROM `customer` WHERE `email` = '$email'";
@@ -107,6 +106,8 @@
             $photo_file_location = $photo_folder . "/" . $nid . "_photo." . $photo_file_type;
             $photo_tamp_name = $_FILES["photo"]["tmp_name"];
 
+            $registration_sql = "INSERT INTO `customer` (`email`, `phone`, `name`, `address`, `gender`, `password`, `nid`, `photo`) VALUES ('$email', '$phone', '$name', '$address', '$gender', '$pass', '$nid', '$photo_file_location')";
+            
             if(move_uploaded_file($photo_tamp_name, $photo_file_location)){
                 $state = mysqli_query($connect, $registration_sql);
 

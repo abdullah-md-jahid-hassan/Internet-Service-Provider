@@ -97,6 +97,27 @@
                         <b>NID: </b><?php echo $employee['nid'];?><br>
                         <b>Salary: </b><?php echo $employee['salary'];?>
                     </p>
+                    
+                    <!-- NID button -->
+                    <div class='btn-group'>
+                        <a class='btn btn-info' href='<?php echo $employee['nid_file'];?>' target='_blank'><i class="fa-solid fa-eye"></i> NID</a>
+
+                        <a class='btn btn-warning' href='<?php echo $employee['nid_file'];?>' target='_blank' download><i class="fa-solid fa-download"></i></a>
+                    </div>
+
+                    <!-- CV button -->
+                    <div class='btn-group'>
+                        <a class='btn btn-info' href='<?php echo $employee['resume_file'];?>' target='_blank'><i class="fa-solid fa-eye"></i> CV</a>
+
+                        <a class='btn btn-warning' href='<?php echo $employee['resume_file'];?>' target='_blank' download><i class="fa-solid fa-download"></i></a>
+                    </div>
+
+                    <!-- Certificate button -->
+                    <div class='btn-group'>
+                        <a class='btn btn-info' href='<?php echo $employee['certificate_file'];?>' target='_blank'><i class="fa-solid fa-eye"></i> Certificate</a>
+
+                        <a class='btn btn-warning' href='<?php echo $employee['certificate_file'];?>' target='_blank' download><i class="fa-solid fa-download"></i></a>
+                    </div>
                 </div>
             </div>
         </div>

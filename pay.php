@@ -46,6 +46,10 @@
             JOIN connections ON bill.connection_id = connections.id
             WHERE connections.customer_id = '{$customer_id}' 
             AND bill.state != 'Paid'";
+    
+        if($pay!='all'){
+            $con_pay_sql .= " AND bill.id = '$pay'";
+        }
 
         $find_con_pay = mysqli_query($connect, $con_pay_sql);
 

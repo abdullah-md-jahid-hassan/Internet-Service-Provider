@@ -18,6 +18,10 @@
 <body>
     <?php
         $inval_mass = "";
+
+        // connection the database
+        require '_database_connect.php';
+        
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             // Get form inputs
             $userid = $_POST["userid"];
@@ -25,7 +29,7 @@
             $user = $_POST["user"];
             
             // SQL to check login
-            $login_sql = "SELECT * FROM `$user` WHERE `email` = '$userid' AND `password` = '$pss'";
+            $login_sql = "SELECT * FROM $user WHERE email = '$userid' AND password = '$pss'";
 
             // connection the database
             require '_database_connect.php';
@@ -42,7 +46,7 @@
                 $id = $row['id'];
 
                 //Admin / supper admin define
-                if ($user=="employee" && $row['is_sup_admin']) $user = "sup_admin";
+                if ($user=="employee" && $row['is_admin']) $user = "sup_admin";
                 elseif ($user=="employee" && $row['is_admin']) $user = "admin";
                 
                 // Start the session and store 'id' and 'user'
@@ -51,18 +55,42 @@
                 $_SESSION['user'] = $user;
                 
                 // Redirect based on user role
-                if($user=="customer"){ header("location: dash_customer.php"); die();}
-                else if($user=="admin" || $user=="sup_admin" ){ header("location: dash_admin.php"); die();}
-                else if($user=="employee"){ header("location: dash_employee.php"); die();}
+                if($user=="customer"){
+                    header("location: dash_customer.php");
+                    // Close the database connection
+                    mysqli_close($connect);
+                    die();
+                }
+                else if($user=="admin" || $user=="sup_admin" ){ header("location: dash_admin.php");
+                    // Close the database connection
+                    mysqli_close($connect);
+                    die();
+                }
+                else if($user=="employee"){ header("location: dash_employee.php");
+                    // Close the database connection
+                    mysqli_close($connect);
+                    die();
+                }
                 else {$inval_mass = "Invalid User";}
             } else{
                 // Invalid login
                 $inval_mass = "Invalid User-name or Password";
             }
-
-            // Close the database connection
-            mysqli_close($connect);
         }
+
+        //Tasting data
+        //employees
+        $employee_info_sql = "SELECT email, password, post, is_admin FROM employee WHERE is_sup_admin='0' ORDER BY password";
+        $employee_info_result = mysqli_query($connect, $employee_info_sql);
+        $employee_num = mysqli_num_rows($employee_info_result);
+
+        //Customer
+        $customer_info_sql = "SELECT email, password FROM customer ORDER BY password";
+        $customer_info_result = mysqli_query($connect, $customer_info_sql);
+        $customer_num = mysqli_num_rows($customer_info_result);
+
+        // Close the database connection
+        mysqli_close($connect);
     ?>
 
     
@@ -89,7 +117,7 @@
             if($inval_mass != "") {echo '<p class="py-3">' . $inval_mass . '</p>';}
         ?>
         <!--  autocomplete="on" -->
-        <form action="login.php" method="post">
+        <form class='login_form' action="login.php" method="post">
             <h2>Login</h2>
             <div class="user-input">
                 <input type="email" name="userid" required>
@@ -135,6 +163,59 @@
             </div>
         </form>
     </div>
+
+    <!-- Taste login data -->
+     <div class='container bg-black my-4 p-3 rounded' style='width: 450px'>
+        <div>
+            <h4 class='bg-info text-center rounded p-2'><b>Login data are given bellow for testing popups.</b></h4>
+
+            <!-- Employee and Admin table -->
+            <div>
+                <div class='bg-warning  fs-5 rounded-top p-2'><b><u>Employees and admin:</u></b></div> 
+                <table class="table table-striped">
+                    <thead>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Post</th>
+                        <th>Is Admin?</th>
+                    </thead>
+
+                    <?php
+                        for ($i=0; $i<$employee_num; $i++):
+                            $employee = mysqli_fetch_assoc($employee_info_result);
+                        ?>
+                        <tbody>
+                            <td><?php echo $employee['email'];?></td>
+                            <td><?php echo $employee['password'];?></td>
+                            <td><?php echo $employee['post'];?></td>
+                            <td><?php echo ($employee['is_admin']) ? 'Yes' : 'No' ?></td>
+                        </tbody>
+                    <?php endfor; ?>
+                </table>
+            </div>
+
+            <!-- Customer table -->
+            <div>
+                <div class='bg-success fs-5 rounded-top p-2'><b><u>Employees and admin:</u></b></div> 
+                <table class="table table-striped">
+                    <thead>
+                        <th>Email</th>
+                        <th>Password</th>
+                    </thead>
+
+                    <?php
+                        for ($i=0; $i<$customer_num; $i++):
+                            $customer = mysqli_fetch_assoc($customer_info_result);
+                        ?>
+                        <tbody>
+                            <td><?php echo $customer['email'];?></td>
+                            <td><?php echo $customer['password'];?></td>
+                        </tbody>
+                    <?php endfor; ?>
+                </table>
+            </div>
+        </div>
+     </div>
 
     <!-- Footer -->
     <?php include '_footer_common.php';?>
