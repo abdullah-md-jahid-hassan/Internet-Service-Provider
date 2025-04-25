@@ -71,7 +71,7 @@
     $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}'";
     if(isset($key) && isset($word)){
         if($key=="all" && $word!=""){
-            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND CONCAT(name, address) LIKE '%$word%'";
+            $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND CONCAT(name, address, state) LIKE '%$word%'";
         } else if($key=="name" && $word!=""){
             $find_connections_sql = "SELECT * FROM `connections` WHERE `customer_id` = '{$_SESSION['id']}' AND `name` LIKE '%$word%'";
         } else if($key=="address" && $word!=""){

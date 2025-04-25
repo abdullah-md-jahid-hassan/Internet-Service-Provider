@@ -27,7 +27,7 @@
         // connect to the database
         require '_database_connect.php';
 
-        //getting tthe plan details
+        //getting the plan details
         // SQL
         $plan_sql = "SELECT * FROM `plans` WHERE `type` = '{$_SESSION['plan_type']}' AND `id` = '{$_SESSION['plan_id_new']}'";
         //Query
@@ -38,7 +38,7 @@
             $plan = mysqli_fetch_assoc($plan_query);
         }
 
-        //Gatting Customer Defalt Address
+        //Gatting Customer Default Address
         $address_sql = "SELECT * FROM `customer` WHERE `id` = '{$_SESSION['id']}'";
         //Query
         $address_query = mysqli_query($connect, $address_sql);
@@ -59,7 +59,7 @@
             // connect to the database
             require '_database_connect.php';
 
-            $new_connection_sql = "INSERT INTO `connections` (`type`, `name`, `customer_id`, `plan_id`, `address`, `starting_date`, `state`) VALUES ('{$_SESSION['plan_type']}', '{$_POST['name']}', '{$_SESSION['id']}', '{$_SESSION['plan_id_new']}', '{$_POST['address']}', '{$_POST['start_date_rq']}', 'Pending')";
+            $new_connection_sql = "INSERT INTO `connections` (`type`, `name`, `customer_id`, `plan_id`, `address`, `starting_date`, `state`, `submission_date`) VALUES ('{$_SESSION['plan_type']}', '{$_POST['name']}', '{$_SESSION['id']}', '{$_SESSION['plan_id_new']}', '{$_POST['address']}', '{$_POST['start_date_rq']}', 'Pending', DATE_FORMAT(CURDATE(), '%Y-%m-%d'))";
             $new_connection_query = mysqli_query($connect, $new_connection_sql);
 
             if($new_connection_query){

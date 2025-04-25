@@ -48,9 +48,17 @@
     $residential_plans_num = mysqli_num_rows($find_residential_plans);
 
     // Get number of Connections
-    $find_connections_sql = "SELECT * FROM `connections` WHERE `state` != 'Pending'";
+    $find_connections_sql = "SELECT 
+            COUNT(*) AS total_connections,
+            SUM(CASE WHEN type = 'residential_plans' THEN 1 ELSE 0 END) AS residential_connections
+        FROM `connections`
+        WHERE 1
+    ";
     $find_connections = mysqli_query($connect, $find_connections_sql);
-    $connections_num = mysqli_num_rows($find_connections);
+    $connections_result = mysqli_fetch_assoc($find_connections);
+    $connections_num = $connections_result['total_connections'];
+    $residential_connections_num = $connections_result['residential_connections'];
+    $organizational_connections_num = $connections_num - $residential_connections_num;
 
     // Get New connection requests
     $find_new_connections_sql = "SELECT * FROM `connections`  WHERE `state` = 'Pending'";
@@ -81,6 +89,33 @@
     $complaint_sql = "SELECT * FROM complaint WHERE 1";
     $find_complains = mysqli_query($connect, $complaint_sql);
     $complaint_num = mysqli_num_rows($find_complains);
+
+    //Last 1 year revenue
+    // Prepare date for last 6 months
+    $months = [];
+    for ($i = 11; $i >= 0; $i--) {
+        $months[] = date('y-m', strtotime("-$i months"));
+    }
+
+    // Initialize revenue arrays
+    $residential_revenue = array_fill(0, 12, 0);
+    $organizational_revenue = array_fill(0, 12, 0);
+
+    // Fetch all relevant revenue data for last 12 months
+    $start_date = date('Y-m-01', strtotime('-11 months'));
+    $sql = "SELECT `date`, `residential_plan`, `organizational_plan` FROM `revenue` WHERE `date` >= '$start_date'";
+    $result = mysqli_query($connect, $sql);
+
+    // Process data
+    while ($row = mysqli_fetch_assoc($result)) {
+        $date_key = date('y-m', strtotime($row['date']));
+        $index = array_search($date_key, $months);
+        if ($index !== false) {
+            $residential_revenue[$index] += (int)$row['residential_plan'];
+            $organizational_revenue[$index] += (int)$row['organizational_plan'];
+        }
+    }
+    
 
     // Close the database connection
     mysqli_close($connect);
@@ -280,21 +315,9 @@
             <!-- Doughnut-PI chart for plans -->
             <div class="col-lg-4 col-sm-12 my-3">
                 <div class="bg-light rounded p-3" style="width: 100%;">
-                    <h5 class=" text-center"><b>Connection Catagory Ratio</b></h5>
+                    <h5 class=" text-center"><b>Connection Category Ratio</b></h5>
                     <h6 class=" text-center"><b>Total Connections: <?php echo $organizational_plans_num + $residential_plans_num; ?></b></h6>
                     <canvas id="doughnut_pi_plans"></canvas>
-                </div>
-            </div>
-
-        </div>
-        <!-- Charts -->
-        <div class="row justify-content-center my-3">
-            
-            <!-- Line Chart for Customer And Connections -->
-            <div class="col-12">
-                <div class="bg-light rounded p-3" style="width: 100%;">
-                    <h5 class=" text-center"><b>1 year Growth Of Customer and Connections</b></h5>
-                    <canvas id="line_customer_and_connection"></canvas>
                 </div>
             </div>
 
@@ -302,49 +325,10 @@
 
     </div>
 
-    <!-- Comon js File For charts by chart.js -->
+    <!-- Common js File For charts by chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Line Chart for Customer And Connections
-        const line = document.getElementById('line_customer_and_connection');
-        new Chart(line, {
-            type: 'line',
-            data: {
-                labels: ['07-23', '08-23', '09-23', '10-23', '11-23', '12-23', '01-24', '02-24', '03-24', '04-24', '05-24', '06-24'],
-                datasets: [
-                    {
-                        label: 'Customers',
-                        data: [15, 30, 25, 40, 55, 100, 150, 250, 350, 330, 375, 413],
-                        borderColor: 'rgb(0, 255, 0)'
-                    },
-                    {
-                        label: 'Connections',
-                        data: [10, 35, 37, 50, 45, 90, 102, 157, 170, 210, 203, 256],
-                        borderColor: 'rgb(0, 0, 255)'
-                    }
-                ]
-            },
-            options: { 
-                scales: {
-                    beginAtZero: true,
-                    y: {  
-                        title: { 
-                            display: true, 
-                            text: 'Count Number Unit' 
-                        } 
-                    },
-                    x: {  
-                        title: { 
-                            display: true, 
-                            text: 'Months' 
-                        } 
-                    } 
-                }
-            }
-        });
-
-
         // Doughnut-PI chart for plans
         const d_pai = document.getElementById('doughnut_pi_plans');
         new Chart(d_pai, {
@@ -353,7 +337,7 @@
                 labels: ['Residential Plan', 'Organizational plan'],
                 datasets: [
                     {
-                        data: [<?php echo $residential_plans_num; ?>, <?php echo $organizational_plans_num; ?>],
+                        data: [<?php echo $residential_connections_num; ?>, <?php echo $organizational_connections_num; ?>],
                         backgroundColor: [
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)'
@@ -365,23 +349,28 @@
         });
 
 
+        // Convert PHP arrays to JavaScript arrays
+        const $months = <?php echo json_encode($months); ?>;
+        const $residential_revenue = <?php echo json_encode($residential_revenue); ?>;
+        const $organizational_revenue = <?php echo json_encode($organizational_revenue); ?>;
+        
         // bar chart for Revenue
         const bar = document.getElementById('area_revenue');
         new Chart(bar, {
             type: 'bar',
             data: {
-                labels: ['01-24', '02-24', '03-24', '04-24', '05-24', '06-24'],
+                labels: $months,
                 datasets: [
                     {
                         label: 'Residential Plan',
-                        data: [15, 30, 25, 40, 55, 100],
+                        data: $residential_revenue,
                         backgroundColor: ['rgba(188, 108, 37, 0.5)'],
                         borderWidth: 1,
                         order:2
                     },
                     {
                         label: 'Organizational plan',
-                        data: [25, 32, 27, 39, 45, 77],
+                        data: $organizational_revenue,
                         backgroundColor: ['rgba(42, 157, 143, 0.5)'],
                         borderWidth: 1,
                         order:2
@@ -394,7 +383,7 @@
                     y: {
                         title: { 
                             display: true, 
-                            text: 'Tk in K (x1000)' 
+                            text: 'Tk in K' 
                         } 
                     },
                     x: { 
@@ -410,7 +399,7 @@
 
     <?php
         //Clear Session Variable
-        include '_unset_season_variable.php';
+        include '_unset_session_variable.php';
     ?>
 
 </body>

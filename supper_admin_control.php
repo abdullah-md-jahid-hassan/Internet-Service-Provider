@@ -15,47 +15,99 @@
     // Defining Page Type
     $page_type = $page_name = "Supper Panel";
         
-    //Navbar
+    // Navbar
     require '_nav_admin.php';
 
-    //If Restore Button clicked
+
+    // If Restore Button clicked
     if (isset($_POST['restore'])){
-        try {
-            // Path to your SQL backup file (make sure it's secure and not user-uploadable)
-            $backupFile = 'path/to/your/backup.sql'; // Change this to your actual backup file path
-            
-            // Empty the database first
-            $tables = $conn->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
-            
-            if (count($tables) > 0) {
-                $conn->exec("SET FOREIGN_KEY_CHECKS = 0");
-                foreach ($tables as $table) {
-                    $conn->exec("DROP TABLE IF EXISTS `$table`");
-                }
-                $conn->exec("SET FOREIGN_KEY_CHECKS = 1");
-            }
-            
-            // Import the backup file
-            $command = "mysql -u ".DB_USER." -p".DB_PASS." ".DB_NAME." < ".$backupFile;
-            system($command, $output);
-            
-            if ($output === 0) {
-                $_SESSION['message'] = "Database restored successfully!";
-                $_SESSION['msg_type'] = "success";
-            } else {
-                $_SESSION['message'] = "Error restoring database!";
-                $_SESSION['msg_type'] = "danger";
-            }
-            
-            header("Location: ".$_SERVER['PHP_SELF']);
-            exit();
-            
-        } catch (PDOException $e) {
-            $_SESSION['message'] = "Error restoring database: ".$e->getMessage();
-            $_SESSION['msg_type'] = "danger";
-            header("Location: ".$_SERVER['PHP_SELF']);
-            exit();
+        // Database Connection
+        require '_database_connect.php';
+
+        // Disable foreign key checks
+        $connect->query("SET FOREIGN_KEY_CHECKS = 0");
+
+        // 2. Drop all views
+        $views = $connect->query("SELECT table_name FROM information_schema.views WHERE table_schema = '$database'");
+        while ($row = $views->fetch_assoc()) {
+            $connect->query("DROP VIEW IF EXISTS `{$row['table_name']}`");
         }
+
+        // 3. Drop all triggers
+        $triggers = $connect->query("SELECT TRIGGER_NAME FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = '$database'");
+        if ($triggers) {
+            while ($row = $triggers->fetch_assoc()) {
+                if (!empty($row['TRIGGER_NAME'])) {
+                    $triggerName = $connect->real_escape_string($row['TRIGGER_NAME']);
+                    $connect->query("DROP TRIGGER IF EXISTS `$triggerName`");
+                }
+            }
+        }
+        
+
+        // 4. Drop all events
+        $events = $connect->query("SELECT EVENT_NAME FROM information_schema.EVENTS WHERE EVENT_SCHEMA = '$database'");
+        if ($events) {
+            while ($row = $events->fetch_assoc()) {
+                if (!empty($row['EVENT_NAME'])) {
+                    $eventName = $connect->real_escape_string($row['EVENT_NAME']);
+                    $connect->query("DROP EVENT IF EXISTS `$eventName`");
+                }
+            }
+        }
+
+        // 5. Drop all tables
+        $tables = $connect->query("SHOW TABLES");
+        while ($row = $tables->fetch_row()) {
+            $connect->query("DROP TABLE IF EXISTS `{$row[0]}`");
+        }
+
+        // Re-enable foreign key checks
+        $connect->query("SET FOREIGN_KEY_CHECKS = 1");
+
+        // 6. Import SQL file
+        $mysqlPath = "C:\laragon\bin\mysql\mysql-8.0.30-winx64\bin\\mysql.exe"; // adjust if needed
+        $sqlFile = realpath("initial_data/isp_initial.sql");
+        $command = "cmd /c \"$mysqlPath -h $servername -u $username -p$password $database < \"$sqlFile\"\" 2>&1";
+        $output = shell_exec($command);
+
+        // 7. Empty the 'files' folder
+        function deleteFolderContents($folder) {
+            foreach (glob($folder . '/*') as $file) {
+                if (is_dir($file)) {
+                    deleteFolderContents($file);
+                    rmdir($file);
+                } else {
+                    unlink($file);
+                }
+            }
+        }
+        deleteFolderContents('files');
+
+        // 8. Copy from initial_data/files to files/
+        function copyFolder($src, $dst) {
+            if (!file_exists($dst)) {
+                mkdir($dst, 0777, true);
+            }
+            $dir = opendir($src);
+            while (false !== ($file = readdir($dir))) {
+                if ($file != '.' && $file != '..') {
+                    $srcPath = "$src/$file";
+                    $dstPath = "$dst/$file";
+                    if (is_dir($srcPath)) {
+                        copyFolder($srcPath, $dstPath);
+                    } else {
+                        copy($srcPath, $dstPath);
+                    }
+                }
+            }
+            closedir($dir);
+        }
+        copyFolder('initial_data/files', 'files');
+
+        echo "<script>window.location.href = 'dash_admin.php';</script>";
+        exit();
+        
     }
 ?>
 

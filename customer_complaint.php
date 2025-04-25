@@ -32,7 +32,7 @@
             $customer_id = $_SESSION['id'];
 
             $new_complaint_sql = "INSERT INTO `complaint` 
-            (`name`, `type`, `customer_id`, `state`, `complaining_date`, `details`) 
+            (`title`, `type`, `customer_id`, `state`, `complaining_date`, `details`) 
             VALUES ('$name', '$type', '$customer_id', 'Pending', NOW(), '$details')";
         
             $new_complaint_query = mysqli_query($connect, $new_complaint_sql);

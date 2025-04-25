@@ -97,7 +97,7 @@
         $insertion_info_sql = "SELECT 
                 connections.id AS con_id, 
                 connections.state AS con_state, 
-                connections.starting_date AS e_date, 
+                connections.starting_date AS s_date, 
                 connections.customer_id AS cus_id,
                 connections.req_plan AS req_plan,
                 task.end AS e_date, 
@@ -222,7 +222,10 @@
                         <td><?php echo htmlspecialchars($task['name']); ?></td>
                         <td><?php echo htmlspecialchars($task['address']); ?></td>
                         <?php if($task_type != "Completed"): ?>
-                            <td><?php echo htmlspecialchars($task['phone']); ?></td>
+                            <td><?php
+                                if(isset($task['phone'])) echo htmlspecialchars($task['phone']);
+                                else echo ""; ?>
+                            </td>
                         <?php endif; ?>
                         <td><?php echo htmlspecialchars($task['state']); ?></td>
                         <td><?php echo htmlspecialchars($task['end']); ?></td>
