@@ -1,6 +1,6 @@
+<?php session_start(); ?>
 <!-- _link_common.php -->
  
-<?php session_start(); ?>
 <link rel="icon" type="image/x-icon" href="images/logo/title_logo.png">
 
 <link rel="stylesheet" href="bootstrap5.3.3/css/bootstrap.min.css">

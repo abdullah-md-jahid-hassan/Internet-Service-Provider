@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,6 @@
     
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="carousel.css">
-    <link rel="stylesheet" href="footer.css">
     <link rel="stylesheet" href="carousel.css">
     <!-- Links End -->
 
