@@ -1,23 +1,6 @@
-<?php session_start(); ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-
-    <!-- Links Start -->
-    <?php require '_link_common.php'; ?>
-    
-    <link rel="stylesheet" href="registration.css">
-    <link rel="stylesheet" href="footer.css">
-    
-    <!-- Links End -->
-</head>
-<body>
-
-<!-- Database Connection -->
 <?php
+    session_start();
+
     $massage = "";
     $error = false;
     $hold_value = false;
@@ -116,7 +99,7 @@
                 mysqli_close($connect);
 
                 //Redirect to the login
-                header("location: login.php");
+                echo '<script>window.location.replace("login.php");</script>';
                 die();
             } else {
                 $photo_file_error = "Failed to upload the photo.";
@@ -124,7 +107,22 @@
         }
     }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
 
+    <!-- Links Start -->
+    <?php require '_link_common.php'; ?>
+    
+    <link rel="stylesheet" href="registration.css">
+    <link rel="stylesheet" href="footer.css">
+    
+    <!-- Links End -->
+</head>
+<body>
     <!-- Top Banner -->
     <img src="images\banar\welcome_to_the_famaly.gif" class="d-block w-100 mb-5" alt="Welcome">
     <!-- Or -->
