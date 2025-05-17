@@ -45,7 +45,10 @@ Internet-Service-Provider/
 ---
 
 📸 Screenshots
-![Screenshot 2025-05-12 161131](https://github.com/user-attachments/assets/f74d2ef8-b421-4703-bb2a-30fe96b55de6)
+![Screenshot 2025-05-12 161131](https://github.com/user-attachments/assets/c252d8aa-c6dc-423d-85a0-f6a34cc7ea8e)
+![Screenshot 2025-05-12 160943](https://github.com/user-attachments/assets/9d33ca05-b36f-4fa4-8066-5c8d0ffb9c1a)
+![Screenshot 2025-05-12 160746](https://github.com/user-attachments/assets/1a93a3d2-0b92-4c65-849a-566f4cce293e)
+
 
 
 📄 License
