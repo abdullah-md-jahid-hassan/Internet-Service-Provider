@@ -33,14 +33,23 @@ A comprehensive web-based application designed to streamline operations for Inte
 
 ## 📁 Project Structure
 Internet-Service-Provider/
+
 ├── admin_info.php
+
 ├── assign_task.php
+
 ├── payment/ # Payment-related scripts
+
 ├── function/ # Utility functions
+
 ├── images/ # Uploaded images
+
 ├── bootstrap5.3.3/ # Bootstrap framework
+
 ├── database_connect.php # DB connection config
+
 └── index.php # Main entry point
+
 
 ---
 
