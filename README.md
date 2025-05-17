@@ -26,7 +26,7 @@ A comprehensive web-based application designed to streamline operations for Inte
 
 ## 📁 Project Structure
 
-- `admin_info.php`: Administrator dashboard and information management.
+- `admin_dash.php`: Administrator dashboard and information management.
 - `assign_task.php`: Interface for assigning tasks to employees.
 - `payment/`: Handles all payment-related functionalities.
 - `function/`: Contains reusable PHP functions.
