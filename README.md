@@ -1,23 +1,36 @@
 # Internet Service Provider Management System
 
-![ISP Management](https://img.shields.io/badge/Project-ISP%20Management-blue)
-![Django](https://img.shields.io/badge/Framework-Django-green)
-![Python](https://img.shields.io/badge/Language-Python-yellow)
+A comprehensive web-based application designed to streamline operations for Internet Service Providers (ISPs). This system facilitates efficient management of customers, employees, payments, and service tasks, enhancing overall operational productivity.
 
-A comprehensive Internet Service Provider (ISP) management system built with Django that handles customer management, billing, service tracking, and support ticket processing.
+## 🚀 Features
 
-## Features
+- **User Authentication**: Secure login system for administrators, employees, and customers with role-based access control.
+- **Customer Management**: Add, view, update, and delete customer information seamlessly.
+- **Employee Management**: Manage employee records, assign tasks, and monitor performance.
+- **Payment Processing**: Track customer payments, generate invoices, and manage billing cycles.
+- **Task Assignment**: Allocate service tasks to employees and monitor their completion status.
+- **Responsive Design**: Mobile-friendly interface using Bootstrap 5.3.3 for optimal user experience across devices.
 
-- **Customer Management**: Create, view, update, and delete customer records
-- **Billing System**: Generate invoices, track payments, and manage subscriptions
-- **Service Tracking**: Monitor active services, bandwidth usage, and service status
-- **Support Tickets**: Handle customer support requests and track resolution progress
-- **User Authentication**: Secure login system for admin and staff members
-- **Reporting**: Generate various business reports and analytics
+## 🛠️ Technologies Used
 
-## Technologies Used
+- **Frontend**: HTML5, CSS3, Bootstrap 5.3.3
+- **Backend**: PHP
+- **Database**: MySQL
+- **Version Control**: Git
 
-- **Backend**: Django 3.2, Python 3.9
-- **Frontend**: HTML5, CSS3, Bootstrap 5
-- **Database**: SQLite (Development), PostgreSQL (Production-ready)
-- **Other Tools**: jQuery, DataTables, Chart.js
+## 📁 Project Structure
+
+- `admin_info.php`: Administrator dashboard and information management.
+- `assign_task.php`: Interface for assigning tasks to employees.
+- `payment/`: Handles all payment-related functionalities.
+- `function/`: Contains reusable PHP functions.
+- `images/`: Stores image assets used in the application.
+- `bootstrap5.3.3/`: Bootstrap framework files for styling and responsiveness.
+
+📄 License
+This project is licensed under the MIT License.
+
+👤 Author
+Abdullah Md Jahid Hassan
+
+GitHub: abdullah-md-jahid-hassan
