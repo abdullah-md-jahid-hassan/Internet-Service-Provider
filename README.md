@@ -1,6 +1,12 @@
 # Internet Service Provider Management System
 
-A comprehensive web-based application designed to streamline operations for Internet Service Providers (ISPs). This system facilitates efficient management of customers, employees, payments, and service tasks, enhancing overall operational productivity.
+
+![ISP Management](https://img.shields.io/badge/Project-ISP%20Management-blue)
+![PHP](https://img.shields.io/badge/Language-PHP-yellow)
+![MySQL](https://img.shields.io/badge/Database-MySQL-blue)
+![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-orange)
+
+A comprehensive web-based application designed to streamline operations for Internet Service Providers (ISPs). This system efficiently manages customers, employees, payments, and service tasks, enhancing overall operational productivity.
 
 ## 🚀 Features
 
