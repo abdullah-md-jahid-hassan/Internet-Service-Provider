@@ -1,14 +1,12 @@
 # Internet Service Provider Management System
 
+
 ![ISP Management](https://img.shields.io/badge/Project-ISP%20Management-blue)
-![PHP](https://img.shields.io/badge/Backend-PHP-green)
+![PHP](https://img.shields.io/badge/Language-PHP-yellow)
 ![MySQL](https://img.shields.io/badge/Database-MySQL-blue)
 ![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-orange)
-![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 
-A complete web-based solution for managing day-to-day operations of an Internet Service Provider (ISP). This system allows administrators to manage customer data, employee assignments, service tasks, and payment history efficiently from a single dashboard.
-
----
+A comprehensive web-based application designed to streamline operations for Internet Service Providers (ISPs). This system efficiently manages customers, employees, payments, and service tasks, enhancing overall operational productivity.
 
 ## 🔍 Features
 
@@ -34,4 +32,26 @@ A complete web-based solution for managing day-to-day operations of an Internet 
 ---
 
 ## 📁 Project Structure
+Internet-Service-Provider/
+├── admin_info.php
+├── assign_task.php
+├── payment/ # Payment-related scripts
+├── function/ # Utility functions
+├── images/ # Uploaded images
+├── bootstrap5.3.3/ # Bootstrap framework
+├── database_connect.php # DB connection config
+└── index.php # Main entry point
 
+---
+
+📸 Screenshots
+![Screenshot 2025-05-12 161131](https://github.com/user-attachments/assets/f74d2ef8-b421-4703-bb2a-30fe96b55de6)
+
+
+📄 License
+This project is licensed under the MIT License.
+
+👤 Author
+Abdullah Md Jahid Hassan
+
+GitHub: abdullah-md-jahid-hassan
